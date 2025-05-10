@@ -1,0 +1,82 @@
+/* Custom styles for employer dashboard */
+
+/* Card hover effects */
+.card.shadow-sm:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Table hover animation */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+/* Action buttons styling */
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-danger, .btn-outline-info {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Progress bars */
+.progress {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Status badges */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+/* Quick action buttons hover effect */
+.btn-outline-primary:hover, 
+.btn-outline-success:hover,
+.btn-outline-info:hover,
+.btn-outline-warning:hover {
+  transform: translateY(-3px);
+  transition: transform 0.2s ease;
+}
+
+/* Candidate images */
+.rounded-circle {
+  object-fit: cover;
+}
+
+/* Interview date box */
+.bg-light.rounded {
+  min-width: 45px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .card-header button, 
+  .card-header .btn {
+    margin-top: 0.5rem;
+  }
+  
+  .d-flex.align-items-center {
+    flex-wrap: wrap;
+  }
+  
+  .ms-3.text-end {
+    margin-top: 1rem;
+    text-align: left !important;
+    margin-left: 0 !important;
+  }
+  
+  .btn-group {
+    width: 100%;
+    display: flex;
+  }
+  
+  .btn-group .btn {
+    flex: 1;
+  }
+}

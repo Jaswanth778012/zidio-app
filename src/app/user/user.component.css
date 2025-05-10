@@ -1,0 +1,56 @@
+/* Custom styles to enhance Bootstrap */
+
+/* Card hover effects */
+.card.shadow-sm:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Course card image height */
+.card-img-top {
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Calendar day with event indicator */
+.position-relative span.bg-danger {
+  width: 5px;
+  height: 5px;
+}
+
+/* Calendar current day styling */
+.table td.bg-primary {
+  width: 32px;
+  height: 32px;
+}
+
+/* Custom transitions */
+.btn, .card {
+  transition: all 0.3s ease;
+}
+
+/* Assignment status indicators */
+.rounded-circle.bg-danger, 
+.rounded-circle.bg-warning, 
+.rounded-circle.bg-success {
+  width: 10px;
+  height: 10px;
+}
+
+/* Event date box */
+.bg-light.rounded {
+  min-width: 45px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+  .d-flex.align-items-center {
+    flex-wrap: wrap;
+  }
+  
+  .d-flex.align-items-center button {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
