@@ -1,0 +1,43 @@
+/* src/app/components/register/register.component.css */
+
+.register-container {
+  width: 400px;
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: grey;
+}
+
+.register-container h2 {
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+}
+.login-link {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+/* .login-card {
+  width: 400px;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: grey;
+} */

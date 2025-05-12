@@ -1,0 +1,9 @@
+.space-buttons
+{
+    flex:auto;
+}
+
+.button-style {
+  display: table-cell;
+  max-width: 600px;
+}

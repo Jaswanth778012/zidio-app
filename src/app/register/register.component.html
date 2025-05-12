@@ -1,1 +1,30 @@
-<p>register works!</p>
+<div class="register-container">
+     
+
+  <h2 class="title">Register</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+    
+    <input id="userName" formControlName="userName" placeholder="username" required />
+
+    <label for="userFirstName">First Name:</label>
+    <input id="userFirstName" formControlName="userFirstName" placeholder="FirstName" required />
+
+    <label for="userLastName">Last Name:</label>
+    <input id="userLastName" formControlName="userLastName" placeholder="LastName" required />
+
+    <label for="userPassword">Password:</label>
+    <input id="userPassword" type="password" formControlName="userPassword" placeholder="password" required />
+
+    <label for="role">Role:</label>
+    <select id="role" formControlName="role">
+      <option value="Student">Student</option>
+      <option value="Employer">Employer</option>
+    </select>
+
+    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    <p class="login-link">Already have an account? <a routerLink="/login">Login</a></p>
+  </form>
+
+</div>

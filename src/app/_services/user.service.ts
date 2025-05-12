@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAuthService } from './user-auth.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,27 @@ export class UserService {
   public login(loginData: any) { //fetch the data from the login form
     return this.httpClient.post(this.PATH_VARIABLE_API+'/authenticate', loginData, { headers: this.requestHeader });
   }
+
+ // REGISTER - for User role
+  public registerUser(userData: any) {
+    const params = new HttpParams().set('roleName', 'User');
+    return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
+  }
+
+  // REGISTER - for Employer role
+  public registerEmployer(userData: any) {
+    const params = new HttpParams().set('roleName', 'Employer');
+    return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
+  }
+
+  public updatePassword(data: any) {
+  return this.httpClient.put(this.PATH_VARIABLE_API+'/updatePassword', data, {
+    responseType: 'text',
+    headers: new HttpHeaders({ 'No-Auth': 'True' }) // Assuming this endpoint does not require login
+  });
+}
+
+
   public forUser(){
     return this.httpClient.get(this.PATH_VARIABLE_API+'/forUser', {
       responseType: 'text',
@@ -48,3 +70,4 @@ export class UserService {
   }
 
 }
+

@@ -10,7 +10,7 @@ export class AuthInterceptor implements HttpInterceptor{
     constructor(private userAutheService: UserAuthService,private router:Router) { }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if(req.headers.get("No-Auth") === "True"){
-            return next.handle(req.clone());
+            return next.handle(req);
         }
         const token = this.userAutheService.getToken();
         if (token) {

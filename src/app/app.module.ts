@@ -18,7 +18,15 @@ import { AuthInterceptor } from './_auth/auth.interceptor';
 import { UserService } from './_services/user.service';
 import { RegisterComponent } from './register/register.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatInputModule} from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatOptionModule } from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,14 +37,23 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     EmployerComponent,
     ForbiddenComponent,
     HeaderComponent,
-    RegisterComponent
+    RegisterComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RouterModule // Ensure RouterModule is configured properly
+    RouterModule, // Ensure RouterModule is configured properly
+    MatToolbarModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatTabsModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatOptionModule
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

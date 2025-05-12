@@ -7,10 +7,12 @@ import { EmployerComponent } from './employer/employer.component';
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AuthGuard } from './_auth/auth.guard';
+import { RegisterComponent } from './register/register.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent
   },
   {
@@ -38,7 +40,16 @@ const routes: Routes = [
   {
     path: 'forbidden',
     component: ForbiddenComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'updatepassword',
+    component: UpdatePasswordComponent
   }
+
 ];
 
 @NgModule({

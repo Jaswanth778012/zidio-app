@@ -1,4 +1,21 @@
-<nav class="navbar navbar-expand-lg bg-secondary">
+<mat-toolbar color="primary">
+  <span style="margin-right: 10px;">
+    <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+    Zidio-Connect
+  </span><br>
+  <div class="button-style">
+  <button mat-raised-button routerLink="/" color="primary" style="margin-right: 10px;" >Home</button>
+  <button mat-raised-button color="secondary" routerLink="/admin"  *ngIf="userService.roleMatch(['Admin'])" >Admin Dashboard</button>
+  <button mat-raised-button color="secondary"  routerLink="/user"*ngIf="userService.roleMatch(['User'])">Student Dashboard</button>
+  <button mat-raised-button color="secondary"  routerLink="/user"*ngIf="userService.roleMatch(['Employer'])">Employer Dashboard</button>
+  </div>
+  <span class="space-buttons"></span>
+  <button *ngIf="!isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
+  <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
+</mat-toolbar>
+
+
+<!-- <nav class="navbar navbar-expand-lg bg-secondary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
@@ -26,4 +43,4 @@
       <button *ngIf="isLoggedIn()" class="btn btn-danger" type="button" (click)="logout()">Logout</button>
     </div>
   </div>
-</nav>
+</nav> -->
