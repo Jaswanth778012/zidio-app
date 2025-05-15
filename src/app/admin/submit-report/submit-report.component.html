@@ -1,0 +1,19 @@
+<mat-card class="mat-elevation-z4" style="margin: 20px;">
+  <mat-card-title>
+    <mat-icon>feedback</mat-icon> Submit Report
+  </mat-card-title>
+
+  <mat-card-content>
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Reported By (Username)</mat-label>
+      <input matInput [(ngModel)]="reportedBy" placeholder="Enter your username">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Reason</mat-label>
+      <textarea matInput rows="4" [(ngModel)]="reason" placeholder="Describe the issue"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="submit()">Submit Report</button>
+  </mat-card-content>
+</mat-card>

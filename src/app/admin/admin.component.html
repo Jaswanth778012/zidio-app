@@ -1,28 +1,60 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12" style="text-align: center;">
-        <h1>Admin Dashboard</h1>
+        <h1>Admin Dashboard</h1>  
+        <h2>Welcome, {{ userName}} </h2>
         <p>Manage users, courses, and more.</p>
         </div>
     </div>
+    <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
+  <mat-icon>supervisor_account</mat-icon>
+  User Management
+</a>
+<a mat-button routerLink="/admin/employers" routerLinkActive="active-link">
+  <mat-icon>business_center</mat-icon>
+  Employer Management
+</a>
+<a mat-button routerLink="/admin/students" routerLinkActive="active-link">
+    <mat-icon>school</mat-icon>
+    Student Management
+  </a>
+<a mat-button routerLink="/admin/courses">
+  <mat-icon>book</mat-icon> Manage Courses
+</a>
+<a mat-button routerLink="/admin/internships" routerLinkActive="active-link">
+  <mat-icon>school</mat-icon>
+  Internship Moderation
+</a>
+
+<a mat-button routerLink="/admin/jobs" routerLinkActive="active-link">
+  <mat-icon>work</mat-icon>
+  Job Moderation
+</a>
+
+<a mat-button routerLink="/admin/analytics" routerLinkActive="active-link">
+    <mat-icon>analytics</mat-icon>
+    Analytics Dashboard
+  </a>
+
+  <a mat-button routerLink="/admin/notifications" routerLinkActive="active-link">
+  <mat-icon
+    matBadge="{{ unreadCount }}"
+    matBadgeColor="warn"
+    [matBadgeHidden]="unreadCount === 0"
+    matBadgeOverlap="false"
+    >notifications</mat-icon
+  >
+  <span class="ml-2">notifications</span>
+</a>
+
+  <a mat-button routerLink="/admin/reports" routerLinkActive="active-link">
+  <mat-icon>report</mat-icon>
+  Reports & Feedback
+</a>
+<a mat-button routerLink="/submit-report" routerLinkActive="active-link">
+  <mat-icon>feedback</mat-icon> Submit Report
+</a>
+
+
     
-    <div class="row">
-        <div class="col-md-4">
-        <h2>Manage Users</h2>
-        <p>Add, edit, or remove users from the system.</p>
-        <button class="btn btn-primary" routerLink="/admin/manage-users">Go to Manage Users</button>
-        </div>
-    
-        <div class="col-md-4">
-        <h2>Manage Courses</h2>
-        <p>Add, edit, or remove courses from the system.</p>
-        <button class="btn btn-primary" routerLink="/admin/manage-courses">Go to Manage Courses</button>
-        </div>
-    
-        <div class="col-md-4">
-        <h2>View Reports</h2>
-        <p>Generate and view reports on user activity and course performance.</p>
-        <button class="btn btn-primary" routerLink="/admin/reports">Go to Reports</button>
-        </div>
-    </div>
 </div>

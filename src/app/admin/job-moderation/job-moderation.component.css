@@ -1,0 +1,23 @@
+.full-width-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2b4cb8;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+th.mat-header-cell {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+td.mat-cell {
+  padding: 10px;
+}

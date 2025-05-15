@@ -1,0 +1,25 @@
+.full-width-table {
+  width: 100%;
+}
+
+.badge {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.approved {
+  background-color: #c8e6c9;
+  color: #256029;
+}
+
+.blocked {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.pending {
+  background-color: #fff9c4;
+  color: #f57f17;
+}

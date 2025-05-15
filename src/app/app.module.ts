@@ -27,6 +27,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { MatSelectModule } from '@angular/material/select';
+import { EmployerManagementComponent } from './admin/employer-management/employer-management.component';
+import { CourseManagementComponent } from './admin/course-management/course-management.component';
+import { InternshipModerationComponent } from './admin/internship-moderation/internship-moderation.component';
+import { JobModerationComponent } from './admin/job-moderation/job-moderation.component';
+import { AnalyticsDashboardComponent } from './admin/analytics-dashboard/analytics-dashboard.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { StudentManagementComponent } from './admin/student-management/student-management.component';
+import { ReportsComponent } from './admin/reports/reports.component';
+import { SubmitReportComponent } from './admin/submit-report/submit-report.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotificationsComponent } from './admin/notifications/notifications.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +57,20 @@ import { MatOptionModule } from '@angular/material/core';
     ForbiddenComponent,
     HeaderComponent,
     RegisterComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    UserManagementComponent,
+    EmployerManagementComponent,
+    CourseManagementComponent,
+    InternshipModerationComponent,
+    JobModerationComponent,
+    AnalyticsDashboardComponent,
+    StudentManagementComponent,
+    ReportsComponent,
+    SubmitReportComponent,
+    NotificationsComponent,
+
+
+
   ],
   imports: [
     BrowserModule,
@@ -52,8 +84,17 @@ import { MatOptionModule } from '@angular/material/core';
     MatTabsModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatOptionModule,
     MatCardModule,
-    MatOptionModule
+    MatIconModule,
+    MatTableModule,
+    MatSelectModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    MatButtonToggleModule,
+    MatListModule,
+    MatBadgeModule
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

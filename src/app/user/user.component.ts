@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
+import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
   selector: 'app-user',
@@ -9,10 +10,13 @@ import { UserService } from '../_services/user.service';
 export class UserComponent implements OnInit {
 
   message: any;
-  constructor(private userService: UserService) { }
+  role: any;
+  userName!: string | null;
+  constructor(private userService: UserService,private authService: UserAuthService) { }
 
   ngOnInit(): void {
     // Initialization logic can go here
+    this.userName = this.authService.getUsername();
     this.forUser();
   }
 
@@ -20,7 +24,7 @@ export class UserComponent implements OnInit {
 
   // Example method
   forUser(){
-    this.userService.forUser().subscribe(
+    this.userService.forStudent().subscribe(
       (response: any) => {
         console.log(response);
         this.message = response;

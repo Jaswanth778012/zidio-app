@@ -1,0 +1,86 @@
+<mat-card class="mat-elevation-z4 dashboard-card">
+  <mat-card-title>📊 Analytics Dashboard</mat-card-title>
+  <mat-card-content *ngIf="stats">
+
+    <!-- 🔹 Metrics cards -->
+    <div class="dashboard-grid">
+      <mat-card class="stat-card">
+        <mat-icon>group</mat-icon> Users: {{ stats.totalUsers }}
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>business_center</mat-icon> Employers: {{ stats.employersCount }}
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>school</mat-icon> Students: {{ stats.studentsCount }}
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>work</mat-icon> Jobs: {{ stats.jobsCount }}
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>assignment</mat-icon> Internships: {{ stats.internshipsCount }}
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>menu_book</mat-icon> Courses: {{ stats.coursesCount }}
+      </mat-card>
+    </div>
+
+    <!-- 🔹 Charts -->
+    <h1>User Status Breakdown</h1>
+    <div class="chart-container">
+        <h3>UserStatusChart</h3>
+      <ngx-charts-pie-chart
+        [results]="userStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [explodeSlices]="false"
+        [gradient]="false"
+        colorScheme="{ domain: ['#5ef201
+', '#ffc107', '#f44336'] }"
+      ></ngx-charts-pie-chart>
+
+      <h3>jobInternshipChart</h3>
+      <ngx-charts-pie-chart
+        [results]="jobInternshipChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [explodeSlices]="false"
+        [gradient]="false"
+        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+      ></ngx-charts-pie-chart>
+      </div>
+
+       <div class="chart-container">      <h3>JobStatusChart</h3>
+      <ngx-charts-pie-chart
+        [results]="jobStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [explodeSlices]="false"
+        [gradient]="false"
+        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+      ></ngx-charts-pie-chart>
+      <h3>InternshipStatusChart</h3>
+      <ngx-charts-pie-chart
+        [results]="internshipStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [explodeSlices]="false"
+        [gradient]="false"
+        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+      ></ngx-charts-pie-chart>
+    </div>
+
+  </mat-card-content>
+</mat-card>

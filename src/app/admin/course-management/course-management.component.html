@@ -1,0 +1,61 @@
+<mat-card style="margin: 20px;">
+  <mat-card-title class="w-90">📚 Course Management</mat-card-title>
+  <mat-card-content>
+
+    <!-- Add New Course -->
+    <div class="mb-3">
+      <mat-form-field appearance="outline">
+        <mat-label>New Course Name</mat-label>
+        <input matInput [(ngModel)]="newCourseName">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="addCourse()">➕ Add</button>
+    </div>
+
+    <!-- Course Table -->
+    <table mat-table [dataSource]="courses" class="mat-elevation-z8 full-width-table">
+
+      <ng-container matColumnDef="courseName">
+        <th mat-header-cell *matHeaderCellDef>Course</th>
+        <td mat-cell *matCellDef="let course">{{ course.courseName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="faculty">
+        <th mat-header-cell *matHeaderCellDef>Faculty</th>
+        <td mat-cell *matCellDef="let course">
+          {{ course.faculty?.userName || 'Not Assigned' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let course">
+          <!-- Assign Faculty -->
+          <mat-form-field appearance="fill" style="width: 150px;">
+            <mat-label>Assign Faculty</mat-label>
+            <input matInput [(ngModel)]="assignUserName">
+          </mat-form-field>
+          <button mat-icon-button color="primary" (click)="assignFaculty(course.id)">
+            <mat-icon>person_add</mat-icon>
+          </button>
+
+          <!-- Edit -->
+          <mat-form-field appearance="fill" style="width: 150px;">
+            <mat-label>Edit Name</mat-label>
+            <input matInput [(ngModel)]="updatedCourseName">
+          </mat-form-field>
+          <button mat-icon-button color="accent" (click)="updateCourse(course.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <!-- Delete -->
+          <button mat-icon-button color="warn" (click)="deleteCourse(course.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['courseName', 'faculty', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['courseName', 'faculty', 'actions']"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

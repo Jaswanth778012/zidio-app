@@ -1,0 +1,39 @@
+<mat-card class="mat-elevation-z4" style="margin: 20px; border-radius: 10px;">
+  <mat-card-title>
+    <mat-icon color="warn">report_problem</mat-icon> Reports & Feedback
+  </mat-card-title>
+
+  <mat-card-content *ngIf="reports.length > 0; else noReports">
+    <mat-table [dataSource]="reports" class="mat-elevation-z2">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let report"> {{ report.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reporter">
+        <th mat-header-cell *matHeaderCellDef> Reporter </th>
+        <td mat-cell *matCellDef="let report"> {{ report.reportedBy }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reason">
+        <th mat-header-cell *matHeaderCellDef> Reason </th>
+        <td mat-cell *matCellDef="let report"> {{ report.reason }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let report">
+          <button mat-raised-button color="primary" (click)="resolve(report.id)">Resolve</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['id', 'reporter', 'reason', 'action']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['id', 'reporter', 'reason', 'action']"></tr>
+    </mat-table>
+  </mat-card-content>
+
+  <ng-template #noReports>
+    <p style="padding: 20px;">🎉 No unresolved reports!</p>
+  </ng-template>
+</mat-card>

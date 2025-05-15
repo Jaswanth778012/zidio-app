@@ -20,7 +20,7 @@ export class UserService {
 
  // REGISTER - for User role
   public registerUser(userData: any) {
-    const params = new HttpParams().set('roleName', 'User');
+    const params = new HttpParams().set('roleName', 'Student');
     return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
   }
 
@@ -38,8 +38,8 @@ export class UserService {
 }
 
 
-  public forUser(){
-    return this.httpClient.get(this.PATH_VARIABLE_API+'/forUser', {
+  public forStudent(){
+    return this.httpClient.get(this.PATH_VARIABLE_API+'/forStudent', {
       responseType: 'text',
     });
   }
@@ -53,20 +53,14 @@ export class UserService {
       responseType: 'text',
     });
   }
-  public roleMatch(allowedRoles: any): boolean {
-    let isMatch = false;
-    const userRoles: any = this.userAuthService.getRoles();
-    if (userRoles != null && userRoles) {
-      for (let i = 0; i < userRoles.length; i++) {
-        for (let j = 0; j < allowedRoles.length; j++) {
-          if (userRoles[i].roleName === allowedRoles[j]) {
-            isMatch = true;
-            return isMatch;
-          }
-        }
-      }
+   public roleMatch(allowedRoles: string[]): boolean {
+    const userRoles: string[] = this.userAuthService.getRoles(); // Returns ["Admin"], ["Employer"], etc.
+
+    if (!userRoles || userRoles.length === 0) {
+      return false;
     }
-    return isMatch;
+
+    return allowedRoles.some(role => userRoles.includes(role));
   }
 
 }

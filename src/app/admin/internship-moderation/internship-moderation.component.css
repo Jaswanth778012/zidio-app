@@ -1,0 +1,39 @@
+.full-width-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+mat-card {
+  padding: 16px;
+  background-color: #fafafa;
+  border-radius: 12px;
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+th.mat-header-cell {
+  font-weight: bold;
+  background-color: #e0e0e0;
+}
+
+td.mat-cell {
+  padding: 10px 8px;
+}
+
+button {
+  margin-left: 10px;
+}

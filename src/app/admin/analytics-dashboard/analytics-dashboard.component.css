@@ -1,0 +1,19 @@
+.dashboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  flex: 1 1 200px;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+.chart-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}

@@ -1,0 +1,48 @@
+<div class="p-6 space-y-6">
+  <!-- Filter Toggle Buttons -->
+  <mat-button-toggle-group [(ngModel)]="filter" (change)="loadNotifications()" appearance="legacy">
+    <mat-button-toggle value="all">All</mat-button-toggle>
+    <mat-button-toggle value="unread">Unread</mat-button-toggle>
+    <mat-button-toggle value="unresolved">Unresolved</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!-- Notification List -->
+  <div *ngIf="notifications.length > 0" class="space-y-4">
+    <mat-card *ngFor="let notification of notifications" class="shadow-md rounded-xl p-4">
+      <div class="flex flex-col gap-2">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800">{{ notification.title }}</h3>
+          <p class="text-gray-700">{{ notification.message }}</p>
+        </div>
+
+        <div class="text-sm text-gray-500">
+          <span class="mr-4">{{ notification.type }}</span>
+          <span>Priority: 
+            <span 
+              [ngClass]="{
+                'text-red-600 font-semibold': notification.priority === 'HIGH',
+                'text-yellow-600': notification.priority === 'MEDIUM',
+                'text-green-600': notification.priority === 'LOW'
+              }"
+            >
+              {{ notification.priority }}
+            </span>
+          </span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 mt-2">
+          <button mat-stroked-button color="primary" (click)="markAsRead(notification.id)" *ngIf="!notification.read">
+            Mark as Read
+          </button>
+          <button mat-stroked-button color="warn" (click)="resolve(notification.id)" *ngIf="!notification.resolved">
+            Resolve
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <p *ngIf="notifications.length === 0" class="text-gray-500 text-center text-lg">No notifications found.</p>
+</div>
+
