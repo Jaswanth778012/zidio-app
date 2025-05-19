@@ -46,6 +46,10 @@ import { NotificationsComponent } from './admin/notifications/notifications.comp
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +98,11 @@ import { MatBadgeModule } from '@angular/material/badge';
     NoopAnimationsModule,
     MatButtonToggleModule,
     MatListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

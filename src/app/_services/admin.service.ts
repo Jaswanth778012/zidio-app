@@ -45,21 +45,74 @@ resetStudentPassword(userName: string, newPassword: string) {
   return this.http.put(`${this.baseUrl}/students/${userName}/reset-password?newPassword=${newPassword}`, {});
 }
 
-
+//courses
 getAllCourses(): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/courses`);
 }
 
-addCourse(name: string) {
-  return this.http.post(`${this.baseUrl}/courses?courseName=${name}`, {});
+addCourse(courseRequest :any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/courses`,courseRequest);
 }
 
-updateCourse(id: number, name: string) {
-  return this.http.put(`${this.baseUrl}/courses/${id}?courseName=${name}`, {});
+updateCourse(id: number, courseUpdateRequest: any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/courses/${id}`,courseUpdateRequest);
+}
+
+updateCourseStatus(id: number, status: string): Observable<any> {
+  return this.http.put(`${this.baseUrl}/courses/${id}/status?status=${status}`, {});
+}
+
+toggleCourseVisibility(id: number, active: boolean): Observable<any> {
+  return this.http.put(`${this.baseUrl}/courses/${id}/visibility?active=${active}`, {});
+}
+
+archiveCourse(id: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/courses/${id}/archive`);
+}
+
+filterCourses(params: any): Observable<any> {
+  return this.http.get(`${this.baseUrl}/courses/filter`, { params });
+}
+
+getCourseAuditLogs(id: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/courses/${id}/audit`);
+}
+
+getFlaggedReviews(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/reviews/flagged`);
+}
+
+getCourseReviews(courseId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/courses/${courseId}/reviews`);
+}
+
+deleteReview(id: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/reviews/${id}`);
+}
+
+flagReview(id: number): Observable<any> {
+  return this.http.put(`${this.baseUrl}/reviews/${id}/flag`, {});
+}
+
+// Categories
+getAllCategories(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/categories`);
+}
+
+createCategory(category: any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/categories`, category);
+}
+
+updateCategory(id: number, category: any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/categories/${id}`, category);
+}
+
+deleteCategory(id: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/categories/${id}`);
 }
 
 deleteCourse(id: number) {
-  return this.http.delete(`${this.baseUrl}/courses/${id}`);
+  return this.http.delete(`${this.baseUrl}/courses/${id}/delete`);
 }
 
 assignFaculty(courseId: number, userName: string) {
@@ -132,4 +185,14 @@ getAllNotifications(): Observable<any[]> {
     return this.http.put<void>(`${this.baseUrl}/notifications/${id}/resolve`, {});
   }
 
+   createNotification(notification: {
+    type: string,
+    title: string,
+    message: string,
+    priority: string,
+    referenceId: number
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/notifications`, notification);
+  }
 }
+
