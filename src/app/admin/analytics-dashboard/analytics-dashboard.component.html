@@ -30,7 +30,7 @@
     </div>
 
     <!-- 🔹 Charts -->
-    <h1>User Status Breakdown</h1>
+    <h3>User Status Breakdown</h3>
     <div class="chart-container">
         <h3>UserStatusChart</h3>
       <ngx-charts-pie-chart
@@ -41,8 +41,7 @@
         [doughnut]="true"
         [explodeSlices]="false"
         [gradient]="false"
-        colorScheme="{ domain: ['#5ef201
-', '#ffc107', '#f44336'] }"
+        [scheme]="userStatusColors"
       ></ngx-charts-pie-chart>
 
       <h3>jobInternshipChart</h3>
@@ -54,11 +53,11 @@
         [doughnut]="true"
         [explodeSlices]="false"
         [gradient]="false"
-        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+        [scheme]="jobInternshipColors"
       ></ngx-charts-pie-chart>
       </div>
-
-       <div class="chart-container">      <h3>JobStatusChart</h3>
+      <div class="chart-container">
+      <h3>JobStatusChart</h3>
       <ngx-charts-pie-chart
         [results]="jobStatusChart"
         [view]="view"
@@ -80,7 +79,33 @@
         [gradient]="false"
         colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
       ></ngx-charts-pie-chart>
+
+      
     </div>
+
+    <h3>userscount</h3>
+      <ngx-charts-bar-vertical
+        [results]="studentsandemployersChart"
+        [view]="view"
+        [legend]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showDataLabel]="true"
+        [gradient]="false"
+        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+      ></ngx-charts-bar-vertical>
+
+      <!-- <h3>courseStatus</h3>
+      <ngx-charts-bar-vertical
+        [results]="studentsandemployersChart"
+        [view]="view"
+        [legend]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showDataLabel]="true"
+        [gradient]="false"
+        colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
+      ></ngx-charts-bar-vertical> -->
 
   </mat-card-content>
 </mat-card>

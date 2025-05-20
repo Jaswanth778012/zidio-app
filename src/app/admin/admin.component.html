@@ -1,60 +1,104 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-12" style="text-align: center;">
-        <h1>Admin Dashboard</h1>  
-        <h2>Welcome, {{ userName}} </h2>
-        <p>Manage users, courses, and more.</p>
+<div class="container-fluid py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h1 class="h3 mb-0">Admin Dashboard</h1>
+          <div class="d-flex align-items-center">
+            <span class="me-3">Welcome, {{userName}}</span>
+            <div class="dropdown">
+  <button
+    class="btn btn-light dropdown-toggle d-flex align-items-center"
+    type="button"
+    id="adminDropdown"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <img
+      src="assets/admin.png"
+      alt="Admin"
+      class="rounded-circle me-2"
+      width="32"
+      height="32"
+    />
+    <span>Admin Panel</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+    <li>
+      <a class="dropdown-item" routerLink="/admin/admin-profile">
+        <i class="bi bi-gear me-2"></i> Admin profile
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" routerLink="/admin/users">
+        <i class="bi bi-people me-2"></i> User Management
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" routerLink="/reports">
+        <i class="bi bi-bar-chart me-2"></i> Reports
+      </a>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item" href="#" (click)="logout()">
+        <i class="bi bi-box-arrow-right me-2"></i> Logout
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+          </div>
         </div>
+      </div>
     </div>
-    <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
-  <mat-icon>supervisor_account</mat-icon>
-  User Management
-</a>
-<a mat-button routerLink="/admin/employers" routerLinkActive="active-link">
-  <mat-icon>business_center</mat-icon>
-  Employer Management
-</a>
-<a mat-button routerLink="/admin/students" routerLinkActive="active-link">
+  </div>
+
+  <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
+    <mat-icon>supervisor_account</mat-icon>
+    User Management
+  </a>
+  <a mat-button routerLink="/admin/employers" routerLinkActive="active-link">
+    <mat-icon>business_center</mat-icon>
+    Employer Management
+  </a>
+  <a mat-button routerLink="/admin/students" routerLinkActive="active-link">
     <mat-icon>school</mat-icon>
     Student Management
   </a>
-<a mat-button routerLink="/admin/courses">
-  <mat-icon>book</mat-icon> Manage Courses
-</a>
-<a mat-button routerLink="/admin/internships" routerLinkActive="active-link">
-  <mat-icon>school</mat-icon>
-  Internship Moderation
-</a>
+  <a mat-button routerLink="/admin/courses">
+    <mat-icon>book</mat-icon> Manage Courses
+  </a>
+  <a mat-button routerLink="/admin/internships" routerLinkActive="active-link">
+    <mat-icon>school</mat-icon>
+    Internship Moderation
+  </a>
 
-<a mat-button routerLink="/admin/jobs" routerLinkActive="active-link">
-  <mat-icon>work</mat-icon>
-  Job Moderation
-</a>
+  <a mat-button routerLink="/admin/jobs" routerLinkActive="active-link">
+    <mat-icon>work</mat-icon>
+    Job Moderation
+  </a>
 
-<a mat-button routerLink="/admin/analytics" routerLinkActive="active-link">
+  <a mat-button routerLink="/admin/analytics" routerLinkActive="active-link">
     <mat-icon>analytics</mat-icon>
     Analytics Dashboard
   </a>
 
   <a mat-button routerLink="/admin/notifications" routerLinkActive="active-link">
-  <mat-icon
-    matBadge="{{ unreadCount }}"
-    matBadgeColor="warn"
-    [matBadgeHidden]="unreadCount === 0"
-    matBadgeOverlap="false"
-    >notifications</mat-icon
-  >
-  <span class="ml-2">notifications</span>
-</a>
+    <mat-icon matBadge="{{ unreadCount }}" matBadgeColor="warn" [matBadgeHidden]="unreadCount === 0"
+      matBadgeOverlap="false">notifications</mat-icon>
+    <span class="ml-2">notifications</span>
+  </a>
 
   <a mat-button routerLink="/admin/reports" routerLinkActive="active-link">
-  <mat-icon>report</mat-icon>
-  Reports & Feedback
-</a>
-<a mat-button routerLink="/submit-report" routerLinkActive="active-link">
-  <mat-icon>feedback</mat-icon> Submit Report
-</a>
+    <mat-icon>report</mat-icon>
+    Reports & Feedback
+  </a>
+  <a mat-button routerLink="/submit-report" routerLinkActive="active-link">
+    <mat-icon>feedback</mat-icon> Submit Report
+  </a>
 
 
-    
+
 </div>

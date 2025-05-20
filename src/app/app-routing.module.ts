@@ -19,6 +19,7 @@ import { StudentManagementComponent } from './admin/student-management/student-m
 import { ReportsComponent } from './admin/reports/reports.component';
 import { SubmitReportComponent } from './admin/submit-report/submit-report.component';
 import { NotificationsComponent } from './admin/notifications/notifications.component';
+import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 
 
 const routes: Routes = [
@@ -92,6 +93,10 @@ const routes: Routes = [
 },
 { path: 'admin/reports', 
   component: ReportsComponent
+},
+{
+  path: 'admin/admin-profile',
+  component: AdminProfileComponent
 },
 {
   path: 'submit-report',

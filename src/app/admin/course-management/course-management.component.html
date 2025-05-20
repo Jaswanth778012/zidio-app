@@ -127,7 +127,7 @@
 
     <ng-container matColumnDef="category">
       <th mat-header-cell *matHeaderCellDef> Category </th>
-      <td mat-cell *matCellDef="let course"> {{ course.categoryName }} </td>
+      <td mat-cell *matCellDef="let course"> {{ course.category.name }} </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -181,7 +181,7 @@
     <h3>Audit Logs</h3>
     <mat-list>
       <mat-list-item *ngFor="let log of auditLogs">
-        {{ log.timestamp }} - {{ log.action }} by {{ log.admin }}
+        {{ log.timestamp }} - {{ log.action }} By {{ log.admin }}
       </mat-list-item>
     </mat-list>
   </div>

@@ -50,6 +50,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,7 +74,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReportsComponent,
     SubmitReportComponent,
     NotificationsComponent,
-
+    AdminProfileComponent,
+  
 
 
   ],
@@ -102,7 +105,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+
+    
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

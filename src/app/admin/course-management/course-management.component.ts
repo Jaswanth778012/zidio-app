@@ -89,7 +89,7 @@ export class CourseManagementComponent implements OnInit {
   this.adminService.getAllCategories().subscribe({
     next: (data) => {
       this.categories = data;
-      if (data.length > 0 && !this.courseForm.get('categoryId')?.value == null) {
+      if (data.length > 0 && this.courseForm.get('categoryId')?.value == null) {
         this.courseForm.patchValue({ categoryId: data[0].id });
       }
     },
@@ -124,8 +124,8 @@ export class CourseManagementComponent implements OnInit {
       : [],
     certificate: this.courseForm.value.certificate || false,
     selfPaced: this.courseForm.value.selfPaced || false,
-    startDate: startDateValue ? new Date(startDateValue).toISOString().split('T')[0] : null,
-    endDate: endDateValue ? new Date(endDateValue).toISOString().split('T')[0] : null,
+    startDate: startDateValue ? new Date(startDateValue).toISOString() : null,
+    endDate: endDateValue ? new Date(endDateValue).toISOString() : null,
     creatorUsername: this.userAuthService.getUsername() || this.adminuserName,
     categoryId: this.courseForm.value.categoryId,
     categories: this.courseForm.value.categories || []
@@ -134,23 +134,25 @@ export class CourseManagementComponent implements OnInit {
   console.log('Course Payload:', payload);
 
   this.adminService.addCourse(payload).subscribe({
-    next: () => {
-      this.snackBar.open('✅ Course added', 'Close', { duration: 3000 });
-      // Fix typo here: selfPaced with capital P
+  next: (response) => {
+    console.log('Backend Response:', response);
+    if (response.status === 'success') {
+      this.snackBar.open('✅ ' + response.message, 'Close', { duration: 3000 });
       this.courseForm.reset({ contentType: 'video', certificate: false, selfPaced: false });
       this.loadCourses();
-    },
-    error: (err) => {
-      console.error('Error adding course:', err);
-
-      // If backend sent additional error info in err.error, log it
-      if (err.error) {
-        console.error('Backend error message:', JSON.stringify(err.error));
-      }
-
+    } else {
       this.snackBar.open('❌ Failed to add course', 'Close', { duration: 3000 });
     }
-  });
+  },
+  error: (err) => {
+    console.error('Error adding course:', err);
+    const errorMessage = err.error?.message || 'Something went wrong';
+    this.snackBar.open(`❌ ${errorMessage}`, 'Close', { duration: 3000 });
+  }
+});
+
+
+  
 }
 
 
@@ -200,20 +202,27 @@ export class CourseManagementComponent implements OnInit {
     },
     error: (err) => {
       console.error('Error deleting course:', err);
-      this.snackBar.open('❌ Error deleting course', 'Close', { duration: 3000 });
+      this.snackBar.open(`❌ Error deleting course (${err.status}): ${err.error}`, 'Close', { duration: 3000 });
     }
   });
 }
 
+
   archiveCourse(CourseId: number): void {
   this.adminService.archiveCourse(CourseId).subscribe({
-    next: () => this.loadCourses(),
+    next: () => {
+      this.loadCourses();
+      this.snackBar.open('✅ Course archived', 'Close', { duration: 3000 });
+    },
     error: (err) => {
       console.error('Error archiving course:', err);
-      this.snackBar.open('❌ Error archiving course', 'Close', { duration: 3000 });
+
+      const message = err?.error?.error || '❌ Error archiving course';
+      this.snackBar.open(message, 'Close', { duration: 3000 });
     }
   });
 }
+
 
 
   toggleVisibility(id: number, active: boolean): void {

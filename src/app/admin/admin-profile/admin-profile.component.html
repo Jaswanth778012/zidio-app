@@ -1,0 +1,35 @@
+<div class="profile-container">
+  <h2>Admin Profile</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>First Name:</label>
+      <input type="text" [(ngModel)]="profile.userFirstName" name="fullName" required />
+    </div>
+
+    <div>
+      <label>Last Name:</label>
+      <input type="text" [(ngModel)]="profile.userLastName" name="lastName" required />
+    </div>
+    <div>
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="profile.email" name="email" required />
+    </div>
+
+    <div>
+      <label>Phone:</label>
+      <input type="text" [(ngModel)]="profile.phone" name="phone" />
+    </div>
+
+    <div>
+      <label>Profile Picture:</label>
+      <input type="file" (change)="onFileSelected($event)" />
+      <div *ngIf="imagePreview" class="image-preview">
+        <img [src]="imagePreview" alt="Profile Picture" width="150" />
+      </div>
+    </div>
+
+    <button type="submit">Save Profile</button>
+  </form>
+</div>
+

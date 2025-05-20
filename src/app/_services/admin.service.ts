@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AdminProfile } from '../_model/admin-profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ toggleCourseVisibility(id: number, active: boolean): Observable<any> {
 }
 
 archiveCourse(id: number): Observable<any> {
-  return this.http.delete(`${this.baseUrl}/courses/${id}/archive`);
+  return this.http.put(`${this.baseUrl}/courses/${id}/archive`,null);
 }
 
 filterCourses(params: any): Observable<any> {
@@ -112,7 +113,7 @@ deleteCategory(id: number): Observable<any> {
 }
 
 deleteCourse(id: number) {
-  return this.http.delete(`${this.baseUrl}/courses/${id}/delete`);
+  return this.http.delete(`${this.baseUrl}/courses/${id}/delete`,{ responseType: 'text' });
 }
 
 assignFaculty(courseId: number, userName: string) {
@@ -193,6 +194,15 @@ getAllNotifications(): Observable<any[]> {
     referenceId: number
   }): Observable<any> {
     return this.http.post(`${this.baseUrl}/notifications`, notification);
+  }
+
+  //profile service for admin
+  getProfile(): Observable<AdminProfile> {
+    return this.http.get<AdminProfile>(`${this.baseUrl}`);
+  }
+
+  updateProfile(formData: FormData): Observable<AdminProfile> {
+    return this.http.post<AdminProfile>(`${this.baseUrl}`, formData);
   }
 }
 
