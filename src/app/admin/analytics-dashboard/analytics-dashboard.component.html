@@ -1,8 +1,117 @@
+<!-- <mat-card class="mat-elevation-z4 dashboard-wrapper">
+
+ 
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <mat-icon>work</mat-icon>
+      <div class="stat-info">
+        <h2>{{ stats.jobsCount }}</h2>
+        <span>Active Jobs</span>
+      </div>
+    </div>
+    <div class="stat-card green">
+      <mat-icon>group</mat-icon>
+      <div class="stat-info">
+        <h2>{{ stats.totalUsers }}</h2>
+        <span>Total Users</span>
+      </div>
+    </div>
+    <div class="stat-card cyan">
+      <mat-icon>assignment</mat-icon>
+      <div class="stat-info">
+        <h2>{{ stats.internshipsCount }}</h2>
+        <span>Internships</span>
+      </div>
+    </div>
+    <div class="stat-card amber">
+      <mat-icon>school</mat-icon>
+      <div class="stat-info">
+        <h2>{{ stats.studentsCount }}</h2>
+        <span>Students</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>User Status Breakdown</h3>
+      <ngx-charts-pie-chart
+        [results]="userStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [scheme]="userStatusColors">
+      </ngx-charts-pie-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Job vs Internship</h3>
+      <ngx-charts-pie-chart
+        [results]="jobInternshipChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [scheme]="jobInternshipColors">
+      </ngx-charts-pie-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Job Status</h3>
+      <ngx-charts-pie-chart
+        [results]="jobStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [scheme]="jobInternshipColors">
+      </ngx-charts-pie-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Internship Status</h3>
+      <ngx-charts-pie-chart
+        [results]="internshipStatusChart"
+        [view]="view"
+        [legend]="true"
+        [labels]="true"
+        [doughnut]="true"
+        [scheme]="jobInternshipColors">
+      </ngx-charts-pie-chart>
+    </div>
+  </div>
+
+  <div class="bar-chart-container">
+    <h3>Students & Employers</h3>
+    <ngx-charts-bar-vertical
+      [results]="studentsandemployersChart"
+      [view]="view"
+      [legend]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [showDataLabel]="true"
+      colorScheme="{ domain: ['#3f51b5', '#00bcd4','#8bc34a'] }">
+    </ngx-charts-bar-vertical>
+  </div>
+
+</mat-card> -->
+
+
+
+
+
+
+
+
+
+
+
 <mat-card class="mat-elevation-z4 dashboard-card">
-  <mat-card-title>📊 Analytics Dashboard</mat-card-title>
   <mat-card-content *ngIf="stats">
 
-    <!-- 🔹 Metrics cards -->
+    
     <div class="dashboard-grid">
       <mat-card class="stat-card">
         <mat-icon>group</mat-icon> Users: {{ stats.totalUsers }}
@@ -29,10 +138,10 @@
       </mat-card>
     </div>
 
-    <!-- 🔹 Charts -->
-    <h3>User Status Breakdown</h3>
+   
+    
     <div class="chart-container">
-        <h3>UserStatusChart</h3>
+      <h3><b>UserStatusChart</b></h3>
       <ngx-charts-pie-chart
         [results]="userStatusChart"
         [view]="view"
@@ -44,7 +153,7 @@
         [scheme]="userStatusColors"
       ></ngx-charts-pie-chart>
 
-      <h3>jobInternshipChart</h3>
+      <h3><b>jobInternshipChart</b></h3>
       <ngx-charts-pie-chart
         [results]="jobInternshipChart"
         [view]="view"
@@ -57,7 +166,7 @@
       ></ngx-charts-pie-chart>
       </div>
       <div class="chart-container">
-      <h3>JobStatusChart</h3>
+      <h3><b>JobStatusChart</b></h3>
       <ngx-charts-pie-chart
         [results]="jobStatusChart"
         [view]="view"
@@ -68,7 +177,7 @@
         [gradient]="false"
         colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
       ></ngx-charts-pie-chart>
-      <h3>InternshipStatusChart</h3>
+      <h3><b>InternshipStatusChart</b></h3>
       <ngx-charts-pie-chart
         [results]="internshipStatusChart"
         [view]="view"
@@ -83,7 +192,7 @@
       
     </div>
 
-    <h3>userscount</h3>
+    <h3><b>userscount</b></h3>
       <ngx-charts-bar-vertical
         [results]="studentsandemployersChart"
         [view]="view"
@@ -93,9 +202,9 @@
         [showDataLabel]="true"
         [gradient]="false"
         colorScheme="{ domain: ['#3f51b5', '#00bcd4', '#8bc34a'] }"
-      ></ngx-charts-bar-vertical>
+      ></ngx-charts-bar-vertical> 
 
-      <!-- <h3>courseStatus</h3>
+       <!-- <h3>courseStatus</h3>
       <ngx-charts-bar-vertical
         [results]="studentsandemployersChart"
         [view]="view"

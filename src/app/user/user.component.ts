@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../_services/user.service';
 import { UserAuthService } from '../_services/user-auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -12,11 +13,11 @@ export class UserComponent implements OnInit {
   message: any;
   role: any;
   userName!: string | null;
-  constructor(private userService: UserService,private authService: UserAuthService) { }
+  constructor(private userService: UserService,private userAuthService: UserAuthService, private router : Router) { }
 
   ngOnInit(): void {
     // Initialization logic can go here
-    this.userName = this.authService.getUsername();
+    this.userName = this.userAuthService.getUsername();
     this.forUser();
   }
 
@@ -33,5 +34,11 @@ export class UserComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+   public logout()
+  {
+    this.userAuthService.clear();
+    this.router.navigate(['/']);
   }
 }

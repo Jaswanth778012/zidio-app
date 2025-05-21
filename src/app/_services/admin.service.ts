@@ -198,11 +198,16 @@ getAllNotifications(): Observable<any[]> {
 
   //profile service for admin
   getProfile(): Observable<AdminProfile> {
-    return this.http.get<AdminProfile>(`${this.baseUrl}`);
+    return this.http.get<AdminProfile>(`${this.baseUrl}/profile`);
   }
 
   updateProfile(formData: FormData): Observable<AdminProfile> {
-    return this.http.post<AdminProfile>(`${this.baseUrl}`, formData);
-  }
+  const token = localStorage.getItem('token'); // Or sessionStorage, depending on how you store the token
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
+  return this.http.post<AdminProfile>(`${this.baseUrl}/profile`, formData, { headers });
+}
+
 }
 

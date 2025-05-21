@@ -1,8 +1,55 @@
 <mat-toolbar color="primary">
+  <div class="topbar">
+  <button *ngIf="userService.roleMatch(['Admin'])" mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+</div>
+<div class="overlay" *ngIf="!isDesktop && sidebarOpen" (click)="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" [@sidebarState]="sidebarOpen ? 'open' : 'closed'"*ngIf="userService.roleMatch(['Admin'])">
+  <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
+    <mat-icon>supervisor_account</mat-icon> User Management
+  </a>
+  <a mat-button routerLink="/admin/employers" routerLinkActive="active-link">
+    <mat-icon>business_center</mat-icon> Employer Management
+  </a>
+  <a mat-button routerLink="/admin/students" routerLinkActive="active-link">
+    <mat-icon>school</mat-icon> Student Management
+  </a>
+  <a mat-button routerLink="/admin/courses">
+    <mat-icon>book</mat-icon> Manage Courses
+  </a>
+  <a mat-button routerLink="/admin/internships" routerLinkActive="active-link">
+    <mat-icon>school</mat-icon> Internship Moderation
+  </a>
+  <a mat-button routerLink="/admin/jobs" routerLinkActive="active-link">
+    <mat-icon>work</mat-icon> Job Moderation
+  </a>
+  <a mat-button routerLink="/admin/notifications" routerLinkActive="active-link">
+    <mat-icon
+  matBadge="{{ unreadCount }}"
+  matBadgeColor="warn"
+  [matBadgeHidden]="unreadCount === 0"
+  matBadgeOverlap="false"
+  aria-hidden="false"
+>
+  notifications
+</mat-icon>
+    <span class="ml-2">Notifications</span>
+  </a>
+  <a mat-button routerLink="/admin/reports" routerLinkActive="active-link">
+    <mat-icon>report</mat-icon> Reports & Feedback
+  </a>
+  <a mat-button routerLink="/submit-report" routerLinkActive="active-link">
+    <mat-icon>feedback</mat-icon> Submit Report
+  </a>
+</nav>
   <span style="margin-right: 10px;">
     <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
     Zidio-Connect
   </span><br>
+
   <div class="button-style">
   <button mat-raised-button routerLink="/" color="primary" style="margin-right: 10px;" >Home</button>
   <button mat-raised-button color="secondary" routerLink="/admin"  *ngIf="userService.roleMatch(['Admin'])" >Admin Dashboard</button>
@@ -13,5 +60,6 @@
   <button *ngIf="!isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
   <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
 </mat-toolbar>
+
 
 

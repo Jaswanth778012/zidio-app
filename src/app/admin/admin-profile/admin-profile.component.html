@@ -1,6 +1,32 @@
 <div class="profile-container">
   <h2>Admin Profile</h2>
 
+  <div class="profile-picture">
+    <img *ngIf="profilePicturePreview" [src]="profilePicturePreview" alt="Profile Picture" width="150">
+    <input type="file" (change)="onFileSelected($event)">
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label>First Name:</label>
+    <input formControlName="userFirstName" type="text">
+
+    <label>Last Name:</label>
+    <input formControlName="userLastName" type="text">
+
+    <label>Email:</label>
+    <input formControlName="email" type="email">
+
+    <label>Phone:</label>
+    <input formControlName="phone" type="text">
+
+    <button type="submit">Update Profile</button>
+  </form>
+</div>
+
+
+<!-- <div class="profile-container">
+  <h2>Admin Profile</h2>
+
   <form (ngSubmit)="onSubmit()">
     <div>
       <label>First Name:</label>
@@ -32,4 +58,4 @@
     <button type="submit">Save Profile</button>
   </form>
 </div>
-
+ -->

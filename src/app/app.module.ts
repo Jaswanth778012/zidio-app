@@ -51,7 +51,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
-
+import { provideAnimations } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -106,7 +106,7 @@ import { AdminProfileComponent } from './admin/admin-profile/admin-profile.compo
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-
+    
     
   ],
   providers: [
@@ -118,8 +118,13 @@ import { AdminProfileComponent } from './admin/admin-profile/admin-profile.compo
       multi: true
     },
     UserService,
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    
+   
+    provideAnimations()
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
