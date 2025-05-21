@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminProfile } from '../_model/admin-profile.model';
+import { AdminNotification } from '../_model/admin-notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -170,8 +171,8 @@ submitReport(report: { reportedBy: string, reason: string }) {
   return this.http.post(`${this.baseUrl}/report`, report);
 }
 //notifications
-getAllNotifications(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/notifications`);
+getAllNotifications(page: number, size: number): Observable<{content: AdminNotification[], totalPages: number }> {
+    return this.http.get<{ content: AdminNotification[], totalPages: number }>(`${this.baseUrl}/notifications?page=${page}&size=${size}`);
   }
  getUnreadNotifications(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/notifications/unread`);
@@ -179,8 +180,19 @@ getAllNotifications(): Observable<any[]> {
    getUnresolvedNotifications(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/notifications/unresolved`);
   }
+  getByPriority(priority: string): Observable<AdminNotification[]> {
+    return this.http.get<AdminNotification[]>(`${this.baseUrl}/notifications/priority/${priority}`);
+  }
+
+  getByType(type: string): Observable<AdminNotification[]> {
+    return this.http.get<AdminNotification[]>(`${this.baseUrl}/notifications/type/${type}`);
+  }
+
   markNotificationAsRead(id: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/notifications/${id}/read`, {});
+  }
+  markAllNotificationAsRead() {
+    return this.http.put(`${this.baseUrl}/notifications/read-all`, {});
   }
   resolveNotification(id: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/notifications/${id}/resolve`, {});

@@ -1,12 +1,103 @@
 <div class="p-6 space-y-6">
-  <!-- Filter Toggle Buttons -->
+  <!-- Top Controls -->
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Filter Toggle Buttons -->
+    <mat-button-toggle-group [(ngModel)]="filter" (change)="loadNotifications()" appearance="legacy">
+      <mat-button-toggle value="all">All</mat-button-toggle>
+      <mat-button-toggle value="unread">Unread</mat-button-toggle>
+      <mat-button-toggle value="unresolved">Unresolved</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <!-- Extra Filters -->
+    <div class="flex gap-4 items-center">
+      <mat-form-field appearance="fill">
+        <mat-label>Priority</mat-label>
+        <mat-select (selectionChange)="getByPriority($event.value)">
+          <mat-option value="">All</mat-option>
+          <mat-option value="HIGH">High</mat-option>
+          <mat-option value="MEDIUM">Medium</mat-option>
+          <mat-option value="LOW">Low</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select (selectionChange)="getByType($event.value)">
+          <mat-option value="">All</mat-option>
+          <mat-option value="NEW_COURSE_SUBMISSION">New Course Submission</mat-option>
+          <mat-option value="COURSE_DELETED">Course Deleted</mat-option>
+          <!-- Add more types as needed -->
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Mark All As Read -->
+  <div class="text-right">
+    <button mat-raised-button color="primary" (click)="markAllAsRead()">Mark All As Read</button>
+  </div>
+
+  <!-- Notification List -->
+  <div *ngIf="notifications.length > 0" class="space-y-4">
+    <mat-card *ngFor="let notification of notifications" class="shadow-md rounded-xl p-4">
+      <div class="flex flex-col gap-2">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800">{{ notification.title }}</h3>
+          <p class="text-gray-700">{{ notification.message }}</p>
+        </div>
+
+        <div class="text-sm text-gray-500">
+          <span class="mr-4">Type: {{ notification.type }}</span>
+          <span>Priority: 
+            <span 
+              [ngClass]="{
+                'text-red-600 font-semibold': notification.priority === 'HIGH',
+                'text-yellow-600': notification.priority === 'MEDIUM',
+                'text-green-600': notification.priority === 'LOW'
+              }"
+            >
+              {{ notification.priority }}
+            </span>
+          </span>
+        </div>
+
+        <div class="text-xs text-gray-400">{{ notification.timestamp | date: 'short' }}</div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 mt-2">
+          <button mat-stroked-button color="primary" (click)="markAsRead(notification.id)" *ngIf="!notification.read">
+            Mark as Read
+          </button>
+          <button mat-stroked-button color="warn" (click)="resolve(notification.id)" *ngIf="!notification.resolved">
+            Resolve
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <p *ngIf="!loading && notifications.length === 0" class="text-gray-500 text-center text-lg">No notifications found.</p>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center items-center gap-4 mt-6" *ngIf="filter === 'all' && totalPages > 1">
+    <button mat-stroked-button (click)="prevPage()" [disabled]="page === 0">Previous</button>
+    <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+    <button mat-stroked-button (click)="nextPage()" [disabled]="page >= totalPages - 1">Next</button>
+  </div>
+</div>
+
+
+
+
+
+<!-- <div class="p-6 space-y-6">
+  
   <mat-button-toggle-group [(ngModel)]="filter" (change)="loadNotifications()" appearance="legacy">
     <mat-button-toggle value="all">All</mat-button-toggle>
     <mat-button-toggle value="unread">Unread</mat-button-toggle>
     <mat-button-toggle value="unresolved">Unresolved</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <!-- Notification List -->
   <div *ngIf="notifications.length > 0" class="space-y-4">
     <mat-card *ngFor="let notification of notifications" class="shadow-md rounded-xl p-4">
       <div class="flex flex-col gap-2">
@@ -30,7 +121,7 @@
           </span>
         </div>
 
-        <!-- Actions -->
+        
         <div class="flex gap-3 mt-2">
           <button mat-stroked-button color="primary" (click)="markAsRead(notification.id)" *ngIf="!notification.read">
             Mark as Read
@@ -45,4 +136,4 @@
 
   <p *ngIf="notifications.length === 0" class="text-gray-500 text-center text-lg">No notifications found.</p>
 </div>
-
+ -->
