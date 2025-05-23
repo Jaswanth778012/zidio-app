@@ -1,46 +1,14 @@
 <div class="course-management-container">
 
-  <!-- Search Bar -->
-  <mat-form-field appearance="outline" class="search-field">
-    <mat-label>Search Courses</mat-label>
-    <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Enter course name">
-  </mat-form-field>
-
-  <!-- Filter Form -->
-  <form [formGroup]="filterForm" (ngSubmit)="filterCourses()" class="filter-form">
-    <mat-form-field>
-      <mat-label>Category</mat-label>
-      <mat-select formControlName="categoryId">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option value="">All</mat-option>
-        <mat-option value="APPROVED">Approved</mat-option>
-        <mat-option value="PENDING">Pending</mat-option>
-        <mat-option value="REJECTED">Rejected</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Active</mat-label>
-      <mat-select formControlName="active">
-        <mat-option [value]="true">Active</mat-option>
-        <mat-option [value]="false">Inactive</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit">Apply Filter</button>
-  </form>
-
   <!-- Add New Course Form -->
    <form [formGroup]="courseForm" (ngSubmit)="editCourse ? updateCourse(editCourse.id) : addCourse()" class="course-form">
     <h3>{{ editCourse ? '✏️ Edit Course' : '➕ Add New Course' }}</h3>
 
+    <!-- <mat-form-field appearance="outline" >
+    <mat-label>Course Image</mat-label>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  </mat-form-field> -->
+<br>
     <mat-form-field appearance="outline">
       <mat-label>Course Name</mat-label>
       <input matInput formControlName="courseName" required>
@@ -113,13 +81,55 @@
       </mat-error>
     </mat-form-field>
 
+   <!-- New: Price -->
+  <mat-form-field appearance="outline" >
+    <mat-label>Price</mat-label>
+    <input matInput type="number" formControlName="price" min="0" placeholder="Enter course price" />
+    <mat-error *ngIf="courseForm.get('price')?.hasError('min')">Price must be >= 0</mat-error>
+  </mat-form-field>
+
+  <!-- New: Discounted Price -->
+  <mat-form-field appearance="outline" >
+    <mat-label>Discounted Price</mat-label>
+    <input matInput type="number" formControlName="discountedPrice" min="0" placeholder="Enter discounted price" />
+    <mat-error *ngIf="courseForm.get('discountedPrice')?.hasError('min')">Discounted price must be >= 0</mat-error>
+  </mat-form-field>
+
     <button mat-raised-button color="accent" type="submit">{{ editCourse ? 'Update Course' : 'Add Course' }}</button>
   </form>
 
+
+
   <!-- Course List -->
    <h2>📚 All Courses</h2>
+   <!-- Search Bar -->
+  <input type="text" placeholder="Search by course name" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+
+  <!-- Filter Form -->
+  <form [formGroup]="filterForm" (ngSubmit)="filterCourses()">
+    <select formControlName="categoryId">
+      <option value="">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category.name }}</option>
+    </select>
+
+    <select formControlName="status">
+      <option value="">All Statuses</option>
+      <option value="APPROVED">APPROVED</option>
+      <option value="REJECTED">REJECTED</option>
+      <option value="true">Archived</option>
+    </select>
+
+    <select formControlName="active">
+      <option value="">All</option>
+      <option [value]="true">Active</option>
+      <option [value]="false">Inactive</option>
+    </select>
+
+    <button type="submit">Apply Filters</button>
+  </form>
     <table mat-table [dataSource]="filteredCourses" class="mat-elevation-z4 full-width-table">
 
+    
         <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Course Name </th>
       <td mat-cell *matCellDef="let course"> {{ course.courseName }} </td>
@@ -129,6 +139,21 @@
       <th mat-header-cell *matHeaderCellDef> Category </th>
       <td mat-cell *matCellDef="let course"> {{ course.category.name }} </td>
     </ng-container>
+
+    <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> Price </th>
+    <td mat-cell *matCellDef="let course"> Rs{{ course.price?.toFixed(2) || '0.00' }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discountedPrice">
+    <th mat-header-cell *matHeaderCellDef> Discounted Price </th>
+    <td mat-cell *matCellDef="let course">
+      <span *ngIf="course.discountedPrice != null && course.discountedPrice < course.price">
+        Rs{{ course.discountedPrice.toFixed(2) }}
+      </span>
+      <span *ngIf="!course.discountedPrice || course.discountedPrice >= course.price">-</span>
+    </td>
+  </ng-container>
 
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> Status </th>
@@ -152,6 +177,9 @@
         <button mat-icon-button (click)="archiveCourse(course.id)">
           <mat-icon>archive</mat-icon>
         </button>
+        <button mat-icon-button (click)="unarchiveCourse(course.id)">
+          <mat-icon>Unarchive</mat-icon>
+        </button>
         <button mat-icon-button (click)="getAuditLogs(course.id)">
           <mat-icon>history</mat-icon>
         </button>
@@ -161,8 +189,8 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['name', 'category', 'status', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['name', 'category', 'status', 'actions']"></tr>
+    <tr mat-header-row *matHeaderRowDef="['name', 'category','price','discountedPrice', 'status', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['name', 'category','price','discountedPrice', 'status', 'actions']"></tr>
   </table>
 
   <hr />
@@ -181,7 +209,7 @@
     <h3>Audit Logs</h3>
     <mat-list>
       <mat-list-item *ngFor="let log of auditLogs">
-        {{ log.timestamp }} - {{ log.action }} By {{ log.admin }}
+        {{ log.timestamp }} - {{ log.action }} By {{ log.performedBy }}
       </mat-list-item>
     </mat-list>
   </div>
@@ -233,101 +261,5 @@
       <button mat-button color="warn" (click)="deleteCategory(category.id)">Delete</button>
     </div>
   </div>
-    
-  <!-- <mat-accordion class="course-list">
-    <mat-expansion-panel *ngFor="let course of filteredCourses">
-      <mat-expansion-panel-header>
-        <mat-panel-title>{{ course.name }}</mat-panel-title>
-        <mat-panel-description>
-          Status: {{ course.status }} | Active: {{ course.active }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <p><strong>Description:</strong> {{ course.description }}</p>
-      <p><strong>Category:</strong> {{ course.category?.name || 'N/A' }}</p>
-
-      
-      <div class="edit-course">
-        <mat-form-field>
-          <input matInput placeholder="Update Name" [(ngModel)]="updatedCourseName" name="updatedCourseName">
-        </mat-form-field>
-        <button mat-button color="primary" (click)="updateCourse(course.id)">Update</button>
-      </div>
-
-      
-      <div class="assign-faculty">
-        <mat-form-field>
-          <input matInput placeholder="Assign Faculty Username" [(ngModel)]="assignUserName" name="assignUserName">
-        </mat-form-field>
-        <button mat-button color="primary" (click)="assignFaculty(course.id)">Assign</button>
-      </div>
-
-      
-      <div class="actions">
-        <button mat-button color="warn" (click)="deleteCourse(course.id)">Delete</button>
-        <button mat-button (click)="archiveCourse(course.id)">Archive</button>
-        <button mat-button (click)="toggleVisibility(course.id, course.active)">
-          {{ course.active ? 'Deactivate' : 'Activate' }}
-        </button>
-        <button mat-button (click)="changeStatus(course.id, 'APPROVED')">Approve</button>
-        <button mat-button (click)="changeStatus(course.id, 'REJECTED')">Reject</button>
-        <button mat-button (click)="getAuditLogs(course.id)">Audit Logs</button>
-        <button mat-button (click)="getCourseReviews(course.id)">Reviews</button>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion> -->
-
-  
-  <!-- <section class="reviews-section">
-    <h3>🚩 Flagged Reviews</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let review of flaggedReviews">
-        {{ review.comment }} - <strong>{{ review.courseName }}</strong>
-        <button mat-icon-button color="warn" (click)="deleteReview(review.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </section> -->
-
-  <!-- Selected Course Reviews
-  <section *ngIf="selectedCourseReviews.length > 0" class="reviews-section">
-    <h3>📚 Reviews for Course ID: {{ selectedCourseId }}</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let review of selectedCourseReviews">
-        {{ review.comment }}
-        <button mat-button color="warn" (click)="flagReview(review.id)">Flag</button>
-      </mat-list-item>
-    </mat-list>
-  </section> -->
-
-  <!-- Audit Logs
-  <section *ngIf="auditLogs.length > 0" class="audit-section">
-    <h3>🧾 Audit Logs for Course ID: {{ selectedCourseId }}</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let log of auditLogs">
-        {{ log.timestamp }} - {{ log.message }}
-      </mat-list-item>
-    </mat-list>
-  </section> -->
-
-  <!-- Category Management
-  <section class="category-section">
-    <h3>📂 Manage Categories</h3>
-    <mat-form-field>
-      <input matInput placeholder="New Category" [(ngModel)]="selectedCategory.name" name="categoryName">
-    </mat-form-field>
-    <button mat-raised-button color="accent" (click)="createCategory()">Create</button>
-
-    <mat-list>
-      <mat-list-item *ngFor="let category of categories">
-        {{ category.name }}
-        <button mat-button color="primary" (click)="updateCategory(category)">Update</button>
-        <button mat-icon-button color="warn" (click)="deleteCategory(category.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </section> -->
 
 </div>

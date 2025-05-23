@@ -52,6 +52,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { FileToUrlPipe } from './pipes/file-to-url.pipe'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,7 +76,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     SubmitReportComponent,
     NotificationsComponent,
     AdminProfileComponent,
-  
+    FileToUrlPipe
 
 
   ],

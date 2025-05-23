@@ -27,17 +27,19 @@ export class AuthInterceptor implements HttpInterceptor{
                 }else if (err.status === 403) {
                     this.router.navigate(['/forbidden']);
                 }
-                return throwError("some thing is wrong");
+                return throwError(()=> err);
             })
         );
     }
     
     private addToken(req: HttpRequest<any>, token: string) {
-        return req.clone({
+        const clonedReq = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${token}`
             }
         });
+        console.log('Added Authorization header:', clonedReq.headers.get('Authorization'));
+  return clonedReq;
 }
 }
 

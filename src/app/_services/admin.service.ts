@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminProfile } from '../_model/admin-profile.model';
@@ -17,7 +17,7 @@ export class AdminService {
   }
 
   updateUserStatus(userName: string, status: string) {
-    return this.http.put(`${this.baseUrl}/users/${userName}/status?status=${status}`, {});
+    return this.http.put(`${this.baseUrl}/users/${userName}/status?status=${status}`, {},{responseType: 'text'});
   }
 
   resetUserPassword(userName: string, newPassword: string) {
@@ -29,7 +29,7 @@ export class AdminService {
 }
 
 updateEmployerStatus(username: string, status: string) {
-  return this.http.put(`${this.baseUrl}/employers/${username}/status?status=${status}`, {});
+  return this.http.put(`${this.baseUrl}/employers/${username}/status?status=${status}`, {},{responseType: 'text'});
 }
 resetEmployerPassword(userName: string, newPassword: string) {
     return this.http.put(`${this.baseUrl}/employers/${userName}/reset-password?newPassword=${newPassword}`, {});
@@ -40,7 +40,7 @@ resetEmployerPassword(userName: string, newPassword: string) {
 }
 
 updateStudentStatus(userName: string, status: string) {
-  return this.http.put(`${this.baseUrl}/students/${userName}/status?userStatus=${status}`, {});
+  return this.http.put(`${this.baseUrl}/students/${userName}/status?userStatus=${status}`, {},{responseType: 'text'});
 }
 
 resetStudentPassword(userName: string, newPassword: string) {
@@ -57,6 +57,11 @@ addCourse(courseRequest :any): Observable<any> {
 }
 
 updateCourse(id: number, courseUpdateRequest: any): Observable<any> {
+  const token = localStorage.getItem('token'); // or get from a proper AuthService method
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
   return this.http.put(`${this.baseUrl}/courses/${id}`,courseUpdateRequest);
 }
 
@@ -69,9 +74,11 @@ toggleCourseVisibility(id: number, active: boolean): Observable<any> {
 }
 
 archiveCourse(id: number): Observable<any> {
-  return this.http.put(`${this.baseUrl}/courses/${id}/archive`,null);
+  return this.http.put(`${this.baseUrl}/courses/${id}/archive`,{},{ responseType: 'text' });
 }
-
+unarchiveCourse(id: number): Observable<any> {
+  return this.http.put(`${this.baseUrl}/courses/${id}/unarchive`, {});
+}
 filterCourses(params: any): Observable<any> {
   return this.http.get(`${this.baseUrl}/courses/filter`, { params });
 }

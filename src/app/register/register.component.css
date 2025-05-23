@@ -3,10 +3,11 @@
 .register-container {
   width: 400px;
   margin: auto;
+  margin-top: 50px;
   padding: 2rem;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: grey;
+  background-color: lightgrey;
 }
 
 .register-container h2 {

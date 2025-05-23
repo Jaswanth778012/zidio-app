@@ -36,11 +36,11 @@ export class AnalyticsDashboardComponent implements OnInit {
     domain: ['#3f51b5', '#00bcd4', '#8bc34a']
   };
 
-  statusColors: Color = {
-    name: 'StatusScheme',
+  jobStatusColors: Color = {
+    name: 'JobStatusScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#3f51b5', '#00bcd4', '#8bc34a']
+    domain: ['', '#00bcd4', '#8bc34a']
   };
 
   view: [number, number] = [500, 300];

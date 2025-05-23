@@ -2,6 +2,228 @@
   padding: 24px;
   max-width: 1200px;
   margin: auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+.course-image-upload {
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.course-image-upload label {
+  display: block;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;     /* font-medium */
+  color: #374151;       /* text-gray-700 */
+  margin-bottom: 0.25rem; /* mb-1 */
+}
+
+.course-image-upload input[type="file"] {
+  display: block;
+  width: 100%;
+  font-size: 0.875rem;         /* text-sm */
+  color: #374151;              /* text-gray-700 */
+  border: 1px solid #d1d5db;   /* border-gray-300 */
+  border-radius: 0.5rem;       /* rounded-lg */
+  background-color: #ffffff;  /* bg-white */
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+}
+
+.course-image-upload input[type="file"]:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 */
+  border-color: #3b82f6;
+}
+
+h2, h3 {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  color: #3f51b5;
+}
+
+.search-field,
+.filter-form mat-form-field,
+.course-form mat-form-field,
+.course-form mat-checkbox,
+.filter-form mat-checkbox {
+  width: 100%;
+  max-width: 400px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.course-form {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.filter-form {
+  margin-top: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.full-width-table {
+  width: 100%;
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin-right: 16px;
+}
+
+mat-checkbox {
+  margin-top: 10px;
+  margin-right: 16px;
+}
+
+mat-icon-button {
+  margin-right: 4px;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 8px;
+}
+
+mat-list-item span {
+  flex: 1;
+}
+
+button {
+  margin: 8px 8px 8px 0;
+}
+
+hr {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.category-management,
+.audit-log-panel,
+.review-section {
+  margin-top: 32px;
+}
+
+.review-section mat-list,
+.audit-log-panel mat-list {
+  background: #f9f9f9;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+table.mat-elevation-z4 {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+th.mat-header-cell {
+  background-color: #3f51b5;
+  color: white;
+  font-weight: 600;
+  padding: 12px 8px;
+  text-align: left;
+  border-radius: 4px;
+}
+
+td.mat-cell {
+  background-color: white;
+  padding: 12px 8px;
+  vertical-align: middle;
+  border-bottom: 8px solid transparent;
+}
+
+td.mat-cell img {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .filter-form,
+  .course-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field,
+  .filter-form mat-form-field,
+  .course-form mat-form-field,
+  .course-form mat-checkbox,
+  .filter-form mat-checkbox {
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  table.mat-elevation-z4 {
+    font-size: 14px;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    padding: 8px 6px;
+  }
+}
+
+/* Search bar */
+.course-management-container input[type="text"] {
+  width: 300px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Filter form layout */
+.course-management-container form[formGroup] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Filter form dropdowns */
+.course-management-container form[formGroup] select {
+  padding: 8px 10px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* Filter button */
+.course-management-container form[formGroup] button[type="submit"] {
+  padding: 8px 16px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+/* .course-management-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 h2, h3 {
@@ -102,4 +324,4 @@ hr {
     width: 100%;
     margin-bottom: 16px;
   }
-}
+} */

@@ -17,7 +17,8 @@ export class CourseManagementComponent implements OnInit {
   flaggedReviews: any[] = [];
   selectedCourseReviews: any[] = [];
   auditLogs: any[] = [];
-
+  selectedFile: File | null = null;
+  imagePreview: string | null = null; 
 
   filterForm!: FormGroup;
   courseForm!: FormGroup;
@@ -31,9 +32,10 @@ export class CourseManagementComponent implements OnInit {
 
   newCourseName: string = '';
   updatedCourseName = '';
-  adminuserName = 'admin123' // This should be fetched from the auth service
+  adminuserName = this.userAuthService.getUsername(); // This should be fetched from the auth service
   reviews: any[] = [];
   selectedCategoryId: number = 1;
+
 
   constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService) {}
 
@@ -44,7 +46,6 @@ export class CourseManagementComponent implements OnInit {
     this.loadFlaggedReviews();
     
   }
-
   initForms(): void
   {
     this.filterForm = this.fb.group({
@@ -52,7 +53,9 @@ export class CourseManagementComponent implements OnInit {
       status: [''],
       active: ['']
     });
+
     this.courseForm = this.fb.group({
+      id: [null], 
     courseName: ['', Validators.required],
     description: ['', Validators.required],
     tags: [[]],
@@ -65,9 +68,10 @@ export class CourseManagementComponent implements OnInit {
     startDate: [''],
     endDate: [''],
     creatorUsername: [''],
-    categoryId: [1, Validators.required]
-    
-
+    categoryId: [1, Validators.required],
+    image: [''],                      // URL or base64 string for course image
+  price: [null, [Validators.min(0)]],               // number for price
+  discountedPrice: [null, [Validators.min(0)]] 
     // Add other controls as needed
   });
   }
@@ -99,7 +103,6 @@ export class CourseManagementComponent implements OnInit {
   });
 }
 
-
   addCourse() {
   if (this.courseForm.invalid) {
     this.snackBar.open('❌ Please fill all required fields', 'Close', { duration: 3000 });
@@ -128,7 +131,9 @@ export class CourseManagementComponent implements OnInit {
     endDate: endDateValue ? new Date(endDateValue).toISOString() : null,
     creatorUsername: this.userAuthService.getUsername() || this.adminuserName,
     categoryId: this.courseForm.value.categoryId,
-    categories: this.courseForm.value.categories || []
+    categories: this.courseForm.value.categories || [],
+  price: this.courseForm.value.price,
+  discountedPrice: this.courseForm.value.discountedPrice
   };
 
   console.log('Course Payload:', payload);
@@ -140,6 +145,10 @@ export class CourseManagementComponent implements OnInit {
       this.snackBar.open('✅ ' + response.message, 'Close', { duration: 3000 });
       this.courseForm.reset({ contentType: 'video', certificate: false, selfPaced: false });
       this.loadCourses();
+      this.selectedFile = null;
+      this.imagePreview = null;
+        
+
     } else {
       this.snackBar.open('❌ Failed to add course', 'Close', { duration: 3000 });
     }
@@ -150,21 +159,19 @@ export class CourseManagementComponent implements OnInit {
     this.snackBar.open(`❌ ${errorMessage}`, 'Close', { duration: 3000 });
   }
 });
-
-
   
 }
-
-
  startEdit(course: any): void {
     this.editCourse = { ...course };
     this.courseForm.patchValue({
-      ...course
+      ...course,
+      image: course.image || '',
+    price: course.price,
+    discountedPrice: course.discountedPrice
     });
     this.selectedCourseId = course.id;
+    this.selectedFile = null;
   }
-
-
   updateCourse(courseId: number) {
   const payload = {
     courseName: this.courseForm.value.courseName,
@@ -178,13 +185,16 @@ export class CourseManagementComponent implements OnInit {
     startDate: this.courseForm.value.startDate,
     endDate: this.courseForm.value.endDate,
     creatorUsername: this.userAuthService.getUsername() || this.adminuserName,
-    categoryId: this.courseForm.value.categoryId
+    categoryId: this.courseForm.value.categoryId,
+    image: this.courseForm.value.image || '',
+  price: this.courseForm.value.price,
+  discountedPrice: this.courseForm.value.discountedPrice
   };
 
   this.adminService.updateCourse(courseId, payload).subscribe({
     next: () => {
       this.snackBar.open('✅ Course updated successfully', 'Close', { duration: 3000 });
-      this.loadCourses();
+          this.loadCourses();
     },
     error: (err) => {
       console.error('Error updating course:', err);
@@ -192,8 +202,6 @@ export class CourseManagementComponent implements OnInit {
     }
   });
 }
-
-
  deleteCourse(courseId: number) {
   this.adminService.deleteCourse(courseId).subscribe({
     next: () => {
@@ -206,25 +214,35 @@ export class CourseManagementComponent implements OnInit {
     }
   });
 }
-
-
-  archiveCourse(CourseId: number): void {
-  this.adminService.archiveCourse(CourseId).subscribe({
+  archiveCourse(courseId: number): void {
+  console.log('Archiving course with ID:', courseId);
+  this.adminService.archiveCourse(courseId).subscribe({
     next: () => {
-      this.loadCourses();
       this.snackBar.open('✅ Course archived', 'Close', { duration: 3000 });
+      this.loadCourses();
     },
     error: (err) => {
       console.error('Error archiving course:', err);
-
-      const message = err?.error?.error || '❌ Error archiving course';
+      console.log('Full error object:', JSON.stringify(err));
+      const message = err?.error?.error || err?.error?.message || err.message || '❌ Error archiving course';
       this.snackBar.open(message, 'Close', { duration: 3000 });
     }
   });
 }
 
-
-
+unarchiveCourse(courseId: number): void {
+  this.adminService.unarchiveCourse(courseId).subscribe({
+    next: () => {
+      this.snackBar.open('✅ Course unarchived', 'Close', { duration: 3000 });
+      this.loadCourses();
+    },
+    error: (err) => {
+      console.error('Error unarchiving course:', err);
+      const message = err?.error?.error || '❌ Error unarchiving course';
+      this.snackBar.open(message, 'Close', { duration: 3000 });
+    }
+  });
+}
   toggleVisibility(id: number, active: boolean): void {
     this.adminService.toggleCourseVisibility(id, !active).subscribe(() => this.loadCourses());
   }
@@ -241,9 +259,6 @@ export class CourseManagementComponent implements OnInit {
     }
   });
 }
-
-
-
   assignFaculty(courseId: number): void {
     if (!this.assignUserName?.trim()) return;
     this.adminService.assignFaculty(courseId, this.assignUserName).subscribe({
@@ -256,18 +271,15 @@ export class CourseManagementComponent implements OnInit {
   }
 
   filterCourses(): void {
-    const params = this.filterForm.value;
-    this.adminService.filterCourses(params).subscribe(data => {
-  this.courses = data;
-  this.filteredCourses = data;
-});
-  }
-
+  this.applySearchAndFilter();
+}
   getAuditLogs(courseId: number): void {
-    this.selectedCourseId = courseId;
-    this.adminService.getCourseAuditLogs(courseId).subscribe(logs => this.auditLogs = logs);
-  }
-
+  this.selectedCourseId = courseId;
+  this.adminService.getCourseAuditLogs(courseId).subscribe(logs => {
+    this.auditLogs = logs;
+    console.log('Audit Logs:', this.auditLogs);
+  });
+}
   getCourseReviews(courseId: number): void {
      this.selectedCourseId = courseId;
     this.adminService.getCourseReviews(courseId).subscribe(reviews => this.selectedCourseReviews = reviews);
@@ -307,10 +319,24 @@ export class CourseManagementComponent implements OnInit {
   }
 
   onSearchChange(): void {
-  const term = this.searchTerm.toLowerCase();
-  this.filteredCourses = this.courses.filter(course =>
-    course.name.toLowerCase().includes(term)
-  );
+  this.applySearchAndFilter();
+}
+
+applySearchAndFilter() {
+  let courses = [...this.courses]; // assuming `this.courses` has all courses
+
+  if (this.searchTerm) {
+    const lowerSearch = this.searchTerm.toLowerCase();
+    courses = courses.filter(c => c.courseName.toLowerCase().includes(lowerSearch));
+  }
+
+  const { categoryId, status, active } = this.filterForm.value;
+
+  if (categoryId) courses = courses.filter(c => c.category.id === categoryId);
+  if (status) courses = courses.filter(c => c.status === status);
+  if (active !== '') courses = courses.filter(c => c.active === active);
+
+  this.filteredCourses = courses;
 }
 }
 
