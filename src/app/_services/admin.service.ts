@@ -224,6 +224,7 @@ getAllNotifications(page: number, size: number): Observable<{content: AdminNotif
     return this.http.put<void>(`${this.baseUrl}/notifications/${id}/resolve`, {});
   }
 
+
    createNotification(notification: {
     type: string,
     title: string,
@@ -234,6 +235,18 @@ getAllNotifications(page: number, size: number): Observable<{content: AdminNotif
     return this.http.post(`${this.baseUrl}/notifications`, notification);
   }
 
+  deleteNotification(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/notifications/${id}`, { responseType: 'text' });
+  }
+
+ deleteAllNotifications(): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/notifications/deleteAll`);
+}
+
+resolveAllNotifications(): Observable<any> {
+  return this.http.put(`${this.baseUrl}/notifications/resolve-all`, {});
+}
+ 
   //profile service for admin
   getProfile(): Observable<AdminProfile> {
     return this.http.get<AdminProfile>(`${this.baseUrl}/profile`);

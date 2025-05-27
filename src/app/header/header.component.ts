@@ -3,6 +3,7 @@ import { UserAuthService } from '../_services/user-auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AdminService } from '../_services/admin.service';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +29,7 @@ export class HeaderComponent implements OnInit {
         this.sidebarOpen = false;
       }
     }
-  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService) { }
+  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService,private adminService: AdminService) { }
 
   ngOnInit(): void {
     // Initialization logic here
@@ -48,5 +49,7 @@ export class HeaderComponent implements OnInit {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
+
+  
 
 }

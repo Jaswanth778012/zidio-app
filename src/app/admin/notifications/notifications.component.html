@@ -32,9 +32,11 @@
     </div>
   </div>
 
-  <!-- Mark All As Read -->
+  <!-- Mark All As -->
   <div class="text-right">
     <button mat-raised-button color="primary" (click)="markAllAsRead()">Mark All As Read</button>
+     <button mat-raised-button color="warn" (click)="deleteAll()">Delete All</button>
+      <button mat-raised-button color="accent" (click)="resolveAll()">Resolve All</button>
   </div>
 
   <!-- Notification List -->
@@ -48,14 +50,12 @@
 
         <div class="text-sm text-gray-500">
           <span class="mr-4">Type: {{ notification.type }}</span>
-          <span>Priority: 
-            <span 
-              [ngClass]="{
+          <span>Priority:
+            <span [ngClass]="{
                 'text-red-600 font-semibold': notification.priority === 'HIGH',
                 'text-yellow-600': notification.priority === 'MEDIUM',
                 'text-green-600': notification.priority === 'LOW'
-              }"
-            >
+              }">
               {{ notification.priority }}
             </span>
           </span>
@@ -71,12 +71,16 @@
           <button mat-stroked-button color="warn" (click)="resolve(notification.id)" *ngIf="!notification.resolved">
             Resolve
           </button>
+          <button mat-stroked-button color="accent" (click)="onDeleteNotification(notification.id)">
+            Delete
+          </button>
         </div>
       </div>
     </mat-card>
   </div>
 
-  <p *ngIf="!loading && notifications.length === 0" class="text-gray-500 text-center text-lg">No notifications found.</p>
+  <p *ngIf="!loading && notifications.length === 0" class="text-gray-500 text-center text-lg">No notifications found.
+  </p>
 
   <!-- Pagination Controls -->
   <div class="flex justify-center items-center gap-4 mt-6" *ngIf="filter === 'all' && totalPages > 1">
