@@ -52,17 +52,36 @@ getAllCourses(): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/courses`);
 }
 
-addCourse(courseRequest :any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/courses`,courseRequest);
+addCourse(courseRequest: any, imageFiles: File[]): Observable<any> {
+  const formData = new FormData();
+  formData.append('course', new Blob([JSON.stringify(courseRequest)], { type: 'application/json' }));
+  imageFiles.forEach(file => {
+    formData.append('imageFile', file);
+  });
+
+  return this.http.post(`${this.baseUrl}/courses`, formData);
 }
 
-updateCourse(id: number, courseUpdateRequest: any): Observable<any> {
-  const token = localStorage.getItem('token'); // or get from a proper AuthService method
+updateCourse(id: number, courseUpdateRequest: any, imageFiles: File[]): Observable<any> {
+  const token = localStorage.getItem('token'); // Or from AuthService
   const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
+    'Authorization': `Bearer ${token}`
   });
-  return this.http.put(`${this.baseUrl}/courses/${id}`,courseUpdateRequest);
+
+  const formData = new FormData();
+  formData.append('course', new Blob([JSON.stringify(courseUpdateRequest)], { type: 'application/json' }));
+
+  // Append files if provided
+  // if (imageFiles && imageFiles.length > 0) {
+  //   for (let i = 0; i < imageFiles.length; i++) {
+  //     formData.append('imageFile', imageFiles[i]);
+  //   }
+  // }
+  imageFiles.forEach(file => {
+    formData.append('imageFile', file);
+  });
+
+  return this.http.put(`${this.baseUrl}/courses/${id}`, formData, { headers });
 }
 
 updateCourseStatus(id: number, status: string): Observable<any> {

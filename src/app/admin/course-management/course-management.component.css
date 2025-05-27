@@ -219,6 +219,35 @@ td.mat-cell img {
   transition: background-color 0.2s ease;
 }
 
+.image-preview-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.preview-image {
+  width: 200px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: white;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+}
+.thumb-btn{
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
+
 
 /* .course-management-container {
   padding: 24px;

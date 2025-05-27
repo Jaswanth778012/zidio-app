@@ -13,7 +13,7 @@ import { UserManagementComponent } from '../admin/user-management/user-managemen
 export class LoginComponent implements OnInit {
     loginError: string = '';
   isLoading: boolean = false;
-  constructor(private userService: UserService, private userAuthService: UserAuthService, private router: Router) { }
+  constructor(public userService: UserService, private userAuthService: UserAuthService, private router: Router) { }
 
   ngOnInit(): void {
     // Initialization logic here

@@ -1,13 +1,27 @@
 <div class="course-management-container">
 
+  
+
   <!-- Add New Course Form -->
    <form [formGroup]="courseForm" (ngSubmit)="editCourse ? updateCourse(editCourse.id) : addCourse()" class="course-form">
     <h3>{{ editCourse ? '✏️ Edit Course' : '➕ Add New Course' }}</h3>
 
-    <!-- <mat-form-field appearance="outline" >
-    <mat-label>Course Image</mat-label>
+    <!-- <mat-label>Course Image</mat-label>
     <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-  </mat-form-field> -->
+    <br>
+    <img *ngIf="imagePreview" [src]="imagePreview" alt="Course Preview" width="200" height="auto" style="margin-top: 10px;">
+  <br> -->
+  <mat-label>Course Image</mat-label>
+<input type="file" (change)="onFileSelected($event)" accept="image/*" />
+<br>
+
+<div class="image-preview-container" *ngIf="imagePreview">
+  <img [src]="imagePreview" alt="Course Preview" class="preview-image" />
+  <button mat-icon-button class="remove-button" (click)="removeImage()" aria-label="Remove Image">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<br>
 <br>
     <mat-form-field appearance="outline">
       <mat-label>Course Name</mat-label>

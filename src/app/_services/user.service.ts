@@ -30,6 +30,11 @@ export class UserService {
     return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
   }
 
+  // public registerAdmin(userData: any) {
+  //   const params = new HttpParams().set('roleName', 'Admin');
+  //   return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
+  // }
+
   public updatePassword(data: any) {
   return this.httpClient.put(this.PATH_VARIABLE_API+'/updatePassword', data, {
     responseType: 'text',

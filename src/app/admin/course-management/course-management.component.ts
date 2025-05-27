@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserAuthService } from '../../_services/user-auth.service';
 import { TagContentType } from '@angular/compiler';
+import { FileHandle } from '../../_model/file-handle.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-course-management',
@@ -35,9 +37,9 @@ export class CourseManagementComponent implements OnInit {
   adminuserName = this.userAuthService.getUsername(); // This should be fetched from the auth service
   reviews: any[] = [];
   selectedCategoryId: number = 1;
+   selectedFileHandle: FileHandle | null = null;
 
-
-  constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService) {}
+  constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.initForms();
@@ -68,10 +70,10 @@ export class CourseManagementComponent implements OnInit {
     startDate: [''],
     endDate: [''],
     creatorUsername: [''],
-    categoryId: [1, Validators.required],
-    image: [''],                      // URL or base64 string for course image
+    categoryId: [1, Validators.required],                   // URL or base64 string for course image
   price: [null, [Validators.min(0)]],               // number for price
-  discountedPrice: [null, [Validators.min(0)]] 
+  discountedPrice: [null, [Validators.min(0)]] ,
+  courseImages: [[]]
     // Add other controls as needed
   });
   }
@@ -133,12 +135,16 @@ export class CourseManagementComponent implements OnInit {
     categoryId: this.courseForm.value.categoryId,
     categories: this.courseForm.value.categories || [],
   price: this.courseForm.value.price,
-  discountedPrice: this.courseForm.value.discountedPrice
+  discountedPrice: this.courseForm.value.discountedPrice,
   };
-
+const imageFiles: File[] = [];
+  if (this.selectedFile) {
+    // If you only allow one file selected, wrap it in an array
+    imageFiles.push(this.selectedFile);
+  }
   console.log('Course Payload:', payload);
 
-  this.adminService.addCourse(payload).subscribe({
+  this.adminService.addCourse(payload, imageFiles).subscribe({
   next: (response) => {
     console.log('Backend Response:', response);
     if (response.status === 'success') {
@@ -161,6 +167,45 @@ export class CourseManagementComponent implements OnInit {
 });
   
 }
+removeImage(): void {
+  this.selectedFileHandle = null;
+  this.imagePreview = null;
+}
+
+
+onFileSelected(event: any) {
+  const files: FileList = event.target.files;
+  if (files && files.length > 0) {
+    this.selectedFile = files[0];
+
+    const reader = new FileReader();
+      reader.onload = e => this.imagePreview = reader.result as string;
+      reader.readAsDataURL(this.selectedFile);
+  }
+}
+
+//  onFileSelected(event: any): void {
+//     const files: FileList = event.target.files;
+//     if (files && files.length > 0) {
+//       const file = files[0];
+//       const url = this.sanitizer.bypassSecurityTrustUrl(
+//         window.URL.createObjectURL(file)
+//       );
+
+//       this.selectedFileHandle = {
+//         file: file,
+//         url: url
+//       };
+//       // Optional: For preview
+//       const reader = new FileReader();
+//       reader.onload = () => {
+//         this.imagePreview = reader.result as string;
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   }
+
+
  startEdit(course: any): void {
     this.editCourse = { ...course };
     this.courseForm.patchValue({
@@ -190,8 +235,10 @@ export class CourseManagementComponent implements OnInit {
   price: this.courseForm.value.price,
   discountedPrice: this.courseForm.value.discountedPrice
   };
+  const formData = new FormData();
 
-  this.adminService.updateCourse(courseId, payload).subscribe({
+  // Append image files if any - assuming you have a file input bound to this.selectedFiles (File[])
+  this.adminService.updateCourse(courseId,payload, this.selectedFile? [this.selectedFile] : []).subscribe({
     next: () => {
       this.snackBar.open('✅ Course updated successfully', 'Close', { duration: 3000 });
           this.loadCourses();
