@@ -5,12 +5,13 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { UserAuthService } from '../../_services/user-auth.service';
 import { TagContentType } from '@angular/compiler';
 import { FileHandle } from '../../_model/file-handle.model';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-course-management',
   templateUrl: './course-management.component.html',
-  styleUrl: './course-management.component.css'
+  styleUrls: ['./course-management.component.css']
 })
 export class CourseManagementComponent implements OnInit {
   courses: any[] = [];
@@ -39,7 +40,7 @@ export class CourseManagementComponent implements OnInit {
   selectedCategoryId: number = 1;
    selectedFileHandle: FileHandle | null = null;
 
-  constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService, private sanitizer: DomSanitizer) {}
+  constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService, private sanitizer: DomSanitizer, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.initForms();
@@ -78,12 +79,49 @@ export class CourseManagementComponent implements OnInit {
   });
   }
 
+  imageUrls: { [courseId: number]: SafeUrl } = {};
+  
+  baseUrl: string = 'http://localhost:8080/admin';
+  getImageUrl(imageName: string): string { // Adjust this to your actual base URL
+    console.log('imageName', imageName); // 🔍 Debug this
+  const url = `${this.baseUrl}/courses/image/${encodeURIComponent(imageName)}`;
+  console.log('Constructed Image URL:', url); // 🔍 Debug thi
+  return url;
+  }
+
+  // Call this once courses data is loaded
+ loadImagesForCourses(courses: any[]) {
+  courses.forEach(course => {
+    if (course.courseImages?.length > 0) {
+      const imageName = course.courseImages[0].imageName;
+      this.http.get(`${this.baseUrl}/courses/image/${imageName}`, {
+        responseType: 'blob',
+        withCredentials: false, // in case you're using cookies for session
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + this.userAuthService.getToken()  // Inject token
+        })
+      }).subscribe({
+        next: (blob) => {
+          const objectURL = URL.createObjectURL(blob);
+          this.imageUrls[course.id] = this.sanitizer.bypassSecurityTrustUrl(objectURL) as string;
+        },
+        error: (err) => {
+          console.error(`Error loading image for course ${course.id}:`, err);
+        }
+      });
+    }
+  });
+}
+
+
+
   loadCourses() {
   this.adminService.getAllCourses().subscribe({
     next: (res) => {
       console.log('Courses loaded:', res); // 🔍 Debug this
       this.courses = res;
       this.filteredCourses = res;
+      this.loadImagesForCourses(this.filteredCourses);
     },
     error: (err) => {
       console.error('Error loading courses:', err);
@@ -381,7 +419,10 @@ applySearchAndFilter() {
 
   if (categoryId) courses = courses.filter(c => c.category.id === categoryId);
   if (status) courses = courses.filter(c => c.status === status);
-  if (active !== '') courses = courses.filter(c => c.active === active);
+  if (active !== '' && active !=null){ 
+    const activeBool = active ==='true' || active === true;
+    courses = courses.filter(c => c.active === active);
+  }
 
   this.filteredCourses = courses;
 }

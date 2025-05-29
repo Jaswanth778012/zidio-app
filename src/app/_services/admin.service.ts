@@ -49,7 +49,11 @@ resetStudentPassword(userName: string, newPassword: string) {
 
 //courses
 getAllCourses(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/courses`);
+  const token = localStorage.getItem('token');
+const headers = new HttpHeaders({
+  'Authorization': `Bearer ${token}`
+});
+return this.http.get<any[]>(`${this.baseUrl}/courses`, { headers });
 }
 
 addCourse(courseRequest: any, imageFiles: File[]): Observable<any> {
@@ -106,9 +110,15 @@ getCourseAuditLogs(id: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/courses/${id}/audit`);
 }
 
+
 getFlaggedReviews(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/reviews/flagged`);
+  const token = localStorage.getItem('token');  // Or wherever you store the token
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.get<any[]>(`${this.baseUrl}/reviews/flagged`, { headers });
 }
+
 
 getCourseReviews(courseId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/courses/${courseId}/reviews`);
@@ -124,8 +134,13 @@ flagReview(id: number): Observable<any> {
 
 // Categories
 getAllCategories(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/categories`);
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.get<any[]>(`${this.baseUrl}/categories`, { headers });
 }
+
 
 createCategory(category: any): Observable<any> {
   return this.http.post(`${this.baseUrl}/categories`, category);
