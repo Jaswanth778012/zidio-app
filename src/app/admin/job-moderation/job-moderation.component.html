@@ -12,6 +12,15 @@
         <td mat-cell *matCellDef="let job">{{ job.title }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="companyName">
+        <th mat-header-cell *matHeaderCellDef>CompanyName</th>
+        <td mat-cell *matCellDef="let job">{{ job.companyName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="applicationDeadline">
+        <th mat-header-cell *matHeaderCellDef>ApplicationDeadline</th>
+        <td mat-cell *matCellDef="let job">{{ job.applicationDeadline }}</td>
+      </ng-container>
       <!-- Flagged -->
       <ng-container matColumnDef="flagged">
         <th mat-header-cell *matHeaderCellDef>Flagged</th>
@@ -44,3 +53,5 @@
     </table>
   </mat-card-content>
 </mat-card>
+
+

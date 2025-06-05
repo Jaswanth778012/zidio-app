@@ -175,7 +175,7 @@ updateInternshipStatus(id: number, status: string): Observable<any> {
 }
 
 deleteInternship(id: number): Observable<any> {
-  return this.http.delete(`${this.baseUrl}/internships/${id}`);
+  return this.http.delete(`${this.baseUrl}/internships/${id}`,{ responseType: 'text' as 'json' });
 }
 
 // Jobs
@@ -192,7 +192,7 @@ updateJobStatus(id: number, status: string): Observable<any> {
 }
 
 deleteJob(id: number): Observable<any> {
-  return this.http.delete(`${this.baseUrl}/jobs/${id}`);
+  return this.http.delete(`${this.baseUrl}/jobs/${id}`,{ responseType: 'text' as 'json' });
 }
 //Analytics
 getAnalyticsDashboard(): Observable<any> {
@@ -268,7 +268,7 @@ resolveAllNotifications(): Observable<any> {
   }
 
   updateProfile(formData: FormData): Observable<AdminProfile> {
-  const token = localStorage.getItem('token'); // Or sessionStorage, depending on how you store the token
+  const token = localStorage.getItem('token'); 
   const headers = {
     'Authorization': `Bearer ${token}`
   };

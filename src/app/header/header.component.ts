@@ -1,10 +1,11 @@
-import { Component,HostListener, OnInit } from '@angular/core';
+import { Component,HostListener, OnInit , ViewChild} from '@angular/core';
 import { UserAuthService } from '../_services/user-auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AdminService } from '../_services/admin.service';
-
+import { MatSidenav } from '@angular/material/sidenav';
+import { BreakpointObserver,Breakpoints } from '@angular/cdk/layout';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,9 +19,11 @@ import { AdminService } from '../_services/admin.service';
     ]
 })
 export class HeaderComponent implements OnInit {
+  isSmallScreen: boolean = false;
   sidebarOpen = false;
   isDesktop = true;
    unreadCount: number = 0;
+     @ViewChild('sidenav') sidenav!: MatSidenav;
   
     @HostListener('window:resize', [])
     onResize() {
@@ -29,10 +32,14 @@ export class HeaderComponent implements OnInit {
         this.sidebarOpen = false;
       }
     }
-  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService,private adminService: AdminService) { }
+  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService,private adminService: AdminService,private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
     // Initialization logic here
+     this.breakpointObserver.observe([Breakpoints.Handset])
+      .subscribe(result => {
+        this.isSmallScreen = result.matches;
+      });
   }
 
   // Add any methods or properties needed for the header component

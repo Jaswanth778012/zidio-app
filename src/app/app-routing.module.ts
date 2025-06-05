@@ -20,6 +20,8 @@ import { ReportsComponent } from './admin/reports/reports.component';
 import { SubmitReportComponent } from './admin/submit-report/submit-report.component';
 import { NotificationsComponent } from './admin/notifications/notifications.component';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 const routes: Routes = [
@@ -104,6 +106,14 @@ const routes: Routes = [
 },
 { path: 'admin/notifications', 
   component: NotificationsComponent
+},
+{
+  path: 'about',
+  component: AboutComponent
+},
+{
+  path: 'contact',
+  component: ContactComponent
 }
 ];
 

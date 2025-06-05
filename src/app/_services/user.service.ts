@@ -18,7 +18,7 @@ export class UserService {
     return this.httpClient.post(this.PATH_VARIABLE_API+'/authenticate', loginData, { headers: this.requestHeader });
   }
 
- // REGISTER - for User role
+ // REGISTER - for Student role
   public registerUser(userData: any) {
     const params = new HttpParams().set('roleName', 'Student');
     return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });

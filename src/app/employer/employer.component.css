@@ -1,36 +1,30 @@
-/* Custom styles for employer dashboard */
+/* Custom styles for employer dashboard
 
-/* Card hover effects */
 .card.shadow-sm:hover {
   transform: translateY(-5px);
   transition: transform 0.3s ease;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Table hover animation */
 .table-hover tbody tr:hover {
   background-color: rgba(0, 123, 255, 0.05);
   transition: background-color 0.2s ease;
 }
 
-/* Action buttons styling */
 .btn-outline-primary, .btn-outline-secondary, .btn-outline-danger, .btn-outline-info {
   padding: 0.25rem 0.5rem;
 }
 
-/* Progress bars */
 .progress {
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
-/* Status badges */
 .badge {
   font-weight: 500;
   padding: 0.35em 0.65em;
 }
 
-/* Quick action buttons hover effect */
 .btn-outline-primary:hover, 
 .btn-outline-success:hover,
 .btn-outline-info:hover,
@@ -39,17 +33,14 @@
   transition: transform 0.2s ease;
 }
 
-/* Candidate images */
 .rounded-circle {
   object-fit: cover;
 }
 
-/* Interview date box */
 .bg-light.rounded {
   min-width: 45px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .card-header {
     flex-direction: column;
@@ -79,4 +70,160 @@
   .btn-group .btn {
     flex: 1;
   }
+} */
+
+/* .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
+
+h2 {
+  margin-top: 2rem;
+  color: #3f51b5;
+  font-weight: bold;
+}
+
+.styled-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button[type="submit"] {
+  margin-top: 1rem;
+  grid-column: span 2;
+  justify-self: start;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+}
+
+mat-icon {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+mat-icon:hover {
+  color: #f44336;
+}
+
+.job-internship-list {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+} */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  margin-top: 2rem;
+  color: #3f51b5;
+}
+
+.styled-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+mat-form-field {
+  flex: 1 1 calc(50% - 1rem);
+  min-width: 200px;
+}
+
+button[type="submit"], button[type="button"] {
+  margin-top: 1rem;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 0;
+}
+
+.job-info, .internship-info {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+.job-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.job-actions button {
+  margin-left: 0.5rem;
+}
+
+.job-image img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+

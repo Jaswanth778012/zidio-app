@@ -1,0 +1,105 @@
+<div class="container">
+
+  <h2>Job Postings</h2>
+  <form [formGroup]="jobForm" (ngSubmit)="editJob ? updateJob(editJob.id) : createJob()" class="styled-form" enctype="multipart/form-data">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Skills Required</mat-label>
+      <input matInput formControlName="skillsRequired" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Salary</mat-label>
+      <input matInput formControlName="salary" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput formControlName="startDate" type="date" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Application Deadline</mat-label>
+      <input matInput formControlName="applicationDeadline" type="datetime-local" />
+      <mat-hint>Format: DD-MM-YYYY HH:MM</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Company Name</mat-label>
+      <input matInput formControlName="companyName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>About Company</mat-label>
+      <textarea matInput formControlName="aboutCompany"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Openings</mat-label>
+      <input matInput formControlName="numberOfOpenings" type="number" min="1" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Eligibility</mat-label>
+      <input matInput formControlName="eligibility" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Perks</mat-label>
+      <input matInput formControlName="perks" />
+    </mat-form-field>
+
+    <input type="file" (change)="onJobFileChange($event)" accept="image/*" />
+    <button mat-raised-button color="primary" type="submit">
+      {{ editJob ? 'Update Job' : 'Add Job' }}
+    </button>
+    <button *ngIf="editJob" mat-button type="button" (click)="editJob = null; jobForm.reset(); selectedJobFile = null;">
+      Cancel Edit
+    </button>
+  </form>
+
+
+    <h3>Current Jobs</h3>
+<div *ngFor="let job of jobs" class="job-card">
+  <div class="job-header">
+    <h4>{{ job.title }}</h4>
+    <div class="job-actions">
+      <button mat-icon-button color="primary" (click)="editJobForm(job)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteJob(job.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <img [src]="'http://localhost:8080'+job.companyLogo" alt="Company Logo" width="100" />
+
+  <p><strong>Description:</strong> {{ job.description }}</p>
+  <p><strong>Location:</strong> {{ job.location }}</p>
+  <p><strong>Company:</strong> {{ job.companyName }}</p>
+  <p><strong>Start Date:</strong> {{ job.startDate | date }}</p>
+  <p><strong>Application Deadline:</strong> {{ job.applicationDeadline | date:'short' }}</p>
+  <p><strong>Number of Openings:</strong> {{ job.numberOfOpenings }}</p>
+</div>
+
+<!-- Pagination Controls -->
+<div class="pagination-controls">
+  <button mat-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+  <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+  <button mat-button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages()">Next</button>
+</div>

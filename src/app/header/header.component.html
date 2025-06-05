@@ -1,4 +1,7 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="navbar">
+  <button mat-icon-button (click)="sidenav.toggle()" class="menu-button" *ngIf="!isLoggedIn()">
+    <mat-icon>menu</mat-icon>
+    </button>
   <div class="topbar">
   <button *ngIf="userService.roleMatch(['Admin'])" mat-icon-button (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
@@ -7,6 +10,7 @@
 <div class="overlay" *ngIf="!isDesktop && sidebarOpen" (click)="toggleSidebar()"></div>
 
 <!-- Sidebar -->
+ 
 <nav class="sidebar" [@sidebarState]="sidebarOpen ? 'open' : 'closed'"*ngIf="userService.roleMatch(['Admin'])">
   <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
     <mat-icon>supervisor_account</mat-icon> User Management
@@ -45,21 +49,44 @@
     <mat-icon>feedback</mat-icon> Submit Report
   </a>
 </nav>
-  <span style="margin-right: 10px;">
+
+
+  <span style="margin-right: 10px;" class="logo">
     <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
     Zidio-Connect
   </span><br>
 
-  <div class="button-style">
-  <button mat-raised-button routerLink="/" color="primary" style="margin-right: 10px;" >Home</button>
-  <button mat-raised-button color="secondary" routerLink="/admin"  *ngIf="userService.roleMatch(['Admin'])" >Admin Dashboard</button>
-  <button mat-raised-button color="secondary"  routerLink="/user"*ngIf="userService.roleMatch(['Student'])">Student Dashboard</button>
-  <button mat-raised-button color="secondary"  routerLink="/user"*ngIf="userService.roleMatch(['Employer'])">Employer Dashboard</button>
+
+  <div class="nav-buttons" *ngIf="!isSmallScreen" >
+  <button mat-raised-button routerLink="/" color="primary" style="margin-left: 10px;" >Home</button>
+  <button mat-raised-button color="primary" routerLink="/internships"style="margin-left: 10px;">Internships</button>
+  <button mat-raised-button color="primary" routerLink="/jobs"style="margin-left: 10px;">Jobs</button>
+  <button mat-raised-button color="secondary" routerLink="/admin" style="margin-left: 10px;"  *ngIf="userService.roleMatch(['Admin'])" >Admin Dashboard</button>
+  <button mat-raised-button color="secondary"  routerLink="/student"*ngIf="userService.roleMatch(['Student'])">Student Dashboard</button>
+  <button mat-raised-button color="secondary"  routerLink="/employer"*ngIf="userService.roleMatch(['Employer'])">Employer Dashboard</button>
   </div>
+
   <span class="space-buttons"></span>
+  <button mat-raised-button color="primary" routerLink="/about" style="margin-right: 10px;">About</button>
+  <button mat-raised-button color="primary" routerLink="/contact"style="margin-right: 10px;">Contact</button>
   <button *ngIf="!isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
   <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
 </mat-toolbar>
-
-
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <button mat-button routerLink="/">Home</button>
+    <button mat-button routerLink="/internships">Internships</button>
+    <button mat-button routerLink="/jobs">Jobs</button>
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button routerLink="/contact">Contact</button>
+    <button *ngIf="!isLoggedIn()" routerLink="/login" mat-button>Login</button>
+    <button *ngIf="isLoggedIn()" (click)="logout()" mat-button>Logout</button>
+    <button mat-button *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>
+    <button mat-button *ngIf="userService.roleMatch(['Student'])" routerLink="/student">Student Dashboard</button>
+    <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer">Employer Dashboard</button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 

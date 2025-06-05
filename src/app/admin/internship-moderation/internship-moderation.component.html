@@ -9,6 +9,16 @@
       <td mat-cell *matCellDef="let item">{{ item.title }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef>companyName</th>
+      <td mat-cell *matCellDef="let item">{{ item.companyName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="applicationDeadline">
+      <th mat-header-cell *matHeaderCellDef>applicationDeadline</th>
+      <td mat-cell *matCellDef="let item">{{ item.applicationDeadline }}</td>
+    </ng-container>
+
     <!-- Flagged -->
     <ng-container matColumnDef="flagged">
       <th mat-header-cell *matHeaderCellDef>Flagged</th>

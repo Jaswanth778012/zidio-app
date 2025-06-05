@@ -1,0 +1,22 @@
+.about-section {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.team {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.team-card {
+  width: 150px;
+  text-align: center;
+}
+
+.team-card img {
+  width: 100%;
+  border-radius: 50%;
+}

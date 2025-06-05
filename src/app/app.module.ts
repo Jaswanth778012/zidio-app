@@ -52,7 +52,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { FileToUrlPipe } from './pipes/file-to-url.pipe'; 
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+import { MatSidenav,MatSidenavModule } from '@angular/material/sidenav';
+import { JobManagementComponent } from './employer/job-management/job-management.component';
+import { InternshipManagementComponent } from './employer/internship-management/internship-management.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +81,11 @@ import { FileToUrlPipe } from './pipes/file-to-url.pipe';
     SubmitReportComponent,
     NotificationsComponent,
     AdminProfileComponent,
-    FileToUrlPipe
+    AboutComponent,
+    ContactComponent,
+    JobManagementComponent,
+    InternshipManagementComponent,
+   
 
 
   ],
@@ -107,6 +116,8 @@ import { FileToUrlPipe } from './pipes/file-to-url.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatSidenav,
+    MatSidenavModule
     
     
   ],

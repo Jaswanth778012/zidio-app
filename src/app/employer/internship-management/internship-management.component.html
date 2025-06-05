@@ -1,0 +1,102 @@
+ <h2>Internship Postings</h2>
+  <form [formGroup]="internshipForm" (ngSubmit)="editInternship ? updateInternship(editInternship.id) : createInternship()" class="styled-form" enctype="multipart/form-data">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Duration</mat-label>
+      <input matInput formControlName="duration" placeholder="e.g. 3 months" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Stipend</mat-label>
+      <input matInput formControlName="stipend" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Application Deadline</mat-label>
+      <input matInput formControlName="applicationDeadline" type="datetime-local" />
+      <mat-hint>Format: DD-MM-YYYY HH:MM</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput formControlName="startDate" type="date" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Company Name</mat-label>
+      <input matInput formControlName="companyName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>About Company</mat-label>
+      <textarea matInput formControlName="aboutCompany"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Openings</mat-label>
+      <input matInput formControlName="numberOfOpenings" type="number" min="1" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Eligibility</mat-label>
+      <input matInput formControlName="eligibility" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Perks</mat-label>
+      <input matInput formControlName="perks" />
+    </mat-form-field>
+
+    <input type="file" (change)="onInternshipFileChange($event)" accept="image/*" />
+    <button mat-raised-button color="primary" type="submit">
+      {{ editInternship ? 'Update Internship' : 'Add Internship' }}
+    </button>
+    <button *ngIf="editInternship" mat-button type="button" (click)="editInternship = null; internshipForm.reset(); selectedInternshipFile = null;">
+      Cancel Edit
+    </button>
+  </form>
+
+  <h3 class="section-heading">Current Internships</h3>
+<div *ngFor="let internship of internships" class="job-card mat-elevation-z2">
+  <div class="job-header">
+    <h4>{{ internship.title }}</h4>
+    <div class="job-actions">
+      <button mat-icon-button color="primary" (click)="editInternshipForm(internship)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteInternship(internship.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <img [src]="'http://localhost:8080'+internship.companyLogo" alt="Company Logo" width="100" />
+  <p><strong>Description:</strong> {{ internship.description }}</p>
+  <p><strong>Location:</strong> {{ internship.location }}</p>
+  <p><strong>Company:</strong> {{ internship.companyName }}</p>
+  <p><strong>Duration:</strong> {{ internship.duration }}</p>
+  <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+  <p><strong>Start Date:</strong> {{ internship.startDate | date }}</p>
+
+ <div class="pagination-controls">
+  <button mat-button (click)="goToInternshipPage(currentInternshipPage - 1)" [disabled]="currentInternshipPage === 1">Prev</button>
+  <span>Page {{ currentInternshipPage }} of {{ totalInternshipPages() }}</span>
+  <button mat-button (click)="goToInternshipPage(currentInternshipPage + 1)" [disabled]="currentInternshipPage === totalInternshipPages()">Next</button>
+</div>
+
+</div>
+
