@@ -15,6 +15,7 @@ export class JobManagementComponent implements OnInit {
     currentPage: number = 1;
 pageSize: number = 3;
 totalJobs: number = 0;
+searchTerm: string='';
     editJob: any = null;
   constructor(private fb: FormBuilder, private employerService: EmployerService, private snackBar: MatSnackBar) { }
   ngOnInit(): void {
@@ -63,15 +64,18 @@ totalJobs: number = 0;
     this.editJob = job;
     this.jobForm.patchValue(job);
   }
-  loadJobs(page: number = 1): void {
+  loadJobs(page: number = 1) {
   this.currentPage = page;
-  this.employerService.getJobsPaged(this.currentPage - 1, this.pageSize).subscribe(response => {
-    this.jobs = response.content;
-    this.totalJobs = response.totalElements;
-    console.log('Loaded paginated jobs:', this.jobs);
-  });
+  this.employerService.getFilteredJobs(this.currentPage - 1, this.pageSize, this.searchTerm)
+    .subscribe(response => {
+      this.jobs = response.content;
+      this.totalJobs = response.totalElements;
+    });
 }
 
+onSearchChange() {
+  this.loadJobs(1);
+}
   goToPage(page: number): void {
   if (page < 1 || page > this.totalPages()) return;
   this.loadJobs(page);

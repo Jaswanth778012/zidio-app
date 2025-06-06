@@ -23,7 +23,9 @@ export class EmployerComponent implements OnInit {
   currentPage: number = 1;
 pageSize: number = 3;
 totalJobs: number = 0;
+searchTerm: string = '';
   internships: any[] = [];
+  internshipSearchTerm: string = '';
   currentInternshipPage: number = 1;
 internshipPageSize: number = 3;
 totalInternships: number = 0;
@@ -143,14 +145,29 @@ initializeForms() {
     this.internshipForm.patchValue(internship);
   }
 
-
-  loadJobs(page: number = 1): void {
+  // loadJobs() {
+  //   this.employerService.getAllJobs().subscribe(data => {this.jobs = data,console.log('Loaded jobs:', this.jobs); });
+  // }
+//   loadJobs(page: number = 1): void {
+//   this.currentPage = page;
+//   this.employerService.getJobsPaged(this.currentPage - 1, this.pageSize).subscribe(response => {
+//     this.jobs = response.content;
+//     this.totalJobs = response.totalElements;
+//     console.log('Loaded paginated jobs:', this.jobs);
+//   });
+// }
+loadJobs(page: number = 1): void {
   this.currentPage = page;
-  this.employerService.getJobsPaged(this.currentPage - 1, this.pageSize).subscribe(response => {
-    this.jobs = response.content;
-    this.totalJobs = response.totalElements;
-    console.log('Loaded paginated jobs:', this.jobs);
-  });
+  this.employerService.getFilteredJobs(this.currentPage - 1, this.pageSize, this.searchTerm)
+    .subscribe(response => {
+      this.jobs = response.content;
+      this.totalJobs = response.totalElements;
+      console.log('Loaded paginated jobs:', this.jobs);
+    });
+}
+
+onSearchChange() {
+  this.loadJobs(1);
 }
 
 goToPage(page: number): void {
@@ -163,14 +180,26 @@ totalPages(): number {
 }
 
 
- loadInternships(page: number = 1): void {
+//  loadInternships(page: number = 1): void {
+//   this.currentInternshipPage = page;
+//   this.employerService.getInternshipsPaged(this.currentInternshipPage - 1, this.internshipPageSize).subscribe(response => {
+//     this.internships = response.content;
+//     this.totalInternships = response.totalElements;
+//     console.log('Loaded paginated internships:', this.internships);
+//   });
+// }
+loadInternships(page: number = 1) {
   this.currentInternshipPage = page;
-  this.employerService.getInternshipsPaged(this.currentInternshipPage - 1, this.internshipPageSize).subscribe(response => {
-    this.internships = response.content;
-    this.totalInternships = response.totalElements;
-    console.log('Loaded paginated internships:', this.internships);
-  });
+  this.employerService.getFilteredInternships(this.currentInternshipPage - 1, this.pageSize, this.internshipSearchTerm)
+    .subscribe(response => {
+      this.internships = response.content;
+      this.totalInternships = response.totalElements;
+    });
 }
+onInternshipSearchChange() {
+  this.loadInternships(1);
+}
+
  goToInternshipPage(page: number): void {
   if (page < 1 || page > this.totalInternshipPages()) return;
   this.loadInternships(page);

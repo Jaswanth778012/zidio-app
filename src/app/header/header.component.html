@@ -1,15 +1,13 @@
 <mat-toolbar color="primary" class="navbar">
-  <button mat-icon-button (click)="sidenav.toggle()" class="menu-button" *ngIf="!isLoggedIn()">
+  <button mat-icon-button (click)="sidenav.toggle()" class="menu-button" *ngIf="!isDesktop &&!isLoggedIn()"> 
     <mat-icon>menu</mat-icon>
     </button>
   <div class="topbar">
-  <button *ngIf="userService.roleMatch(['Admin'])" mat-icon-button (click)="toggleSidebar()">
+  <button *ngIf="isDesktop && userService.roleMatch(['Admin'])" mat-icon-button (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
 </div>
 <div class="overlay" *ngIf="!isDesktop && sidebarOpen" (click)="toggleSidebar()"></div>
-
-<!-- Sidebar -->
  
 <nav class="sidebar" [@sidebarState]="sidebarOpen ? 'open' : 'closed'"*ngIf="userService.roleMatch(['Admin'])">
   <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
@@ -48,8 +46,11 @@
   <a mat-button routerLink="/submit-report" routerLinkActive="active-link">
     <mat-icon>feedback</mat-icon> Submit Report
   </a>
+  <a mat-button routerLink="/admin"   >
+    <mat-icon>dashboard</mat-icon> Admin Dashboard
+  </a>
 </nav>
-
+ 
 
   <span style="margin-right: 10px;" class="logo">
     <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
@@ -69,16 +70,16 @@
   <span class="space-buttons"></span>
   <button mat-raised-button color="primary" routerLink="/about" style="margin-right: 10px;">About</button>
   <button mat-raised-button color="primary" routerLink="/contact"style="margin-right: 10px;">Contact</button>
-  <button *ngIf="!isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
-  <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
+  <button *ngIf="isDesktop && !isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
+  <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" class="sidenav">
     <button mat-button routerLink="/">Home</button>
     <button mat-button routerLink="/internships">Internships</button>
     <button mat-button routerLink="/jobs">Jobs</button>
-    <button mat-button routerLink="/about">About</button>
-    <button mat-button routerLink="/contact">Contact</button>
+    <!-- <button mat-button routerLink="/about">About</button>
+    <button mat-button routerLink="/contact">Contact</button>-->
     <button *ngIf="!isLoggedIn()" routerLink="/login" mat-button>Login</button>
     <button *ngIf="isLoggedIn()" (click)="logout()" mat-button>Logout</button>
     <button mat-button *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>

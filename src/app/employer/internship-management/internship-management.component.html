@@ -72,6 +72,12 @@
   </form>
 
   <h3 class="section-heading">Current Internships</h3>
+  <input
+  type="text"
+  placeholder="Search internships..."
+  [(ngModel)]="internshipSearchTerm"
+  (input)="onInternshipSearchChange()"
+  class="search-input"/>
 <div *ngFor="let internship of internships" class="job-card mat-elevation-z2">
   <div class="job-header">
     <h4>{{ internship.title }}</h4>

@@ -16,6 +16,7 @@ export class InternshipManagementComponent implements OnInit{
     currentInternshipPage: number = 1;
 internshipPageSize: number = 3;
 totalInternships: number = 0;
+internshipSearchTerm: string = '';
     editInternship: any = null;
   
   constructor(private fb: FormBuilder, private employerService: EmployerService, private snackBar: MatSnackBar) { }
@@ -71,13 +72,17 @@ totalInternships: number = 0;
     this.internshipForm.patchValue(internship);
   }
 
-  loadInternships(page: number = 1): void {
+  loadInternships(page: number = 1) {
   this.currentInternshipPage = page;
-  this.employerService.getInternshipsPaged(this.currentInternshipPage - 1, this.internshipPageSize).subscribe(response => {
-    this.internships = response.content;
-    this.totalInternships = response.totalElements;
-    console.log('Loaded paginated internships:', this.internships);
-  });
+  this.employerService.getFilteredInternships(this.currentInternshipPage - 1, this.internshipPageSize, this.internshipSearchTerm)
+    .subscribe(response => {
+      this.internships = response.content;
+      this.totalInternships = response.totalElements;
+      console.log('Loaded paginated internships:', this.internships);
+    });
+}
+onInternshipSearchChange() {
+  this.loadInternships(1);
 }
   goToInternshipPage(page: number): void {
   if (page < 1 || page > this.totalInternshipPages()) return;

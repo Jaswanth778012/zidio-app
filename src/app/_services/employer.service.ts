@@ -36,9 +36,16 @@ export class EmployerService {
     return this.http.patch(`${this.baseUrl}/jobs/${id}/flag?flagged=${flagged}`, {});
   }
 
-  getJobsPaged(page: number, size: number): Observable<any> {
-  return this.http.get(`${this.baseUrl}/jobs/paged?page=${page}&size=${size}`);
+  getFilteredJobs(page: number, size: number, search: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/jobs/paged`, {
+    params: {
+      page: page.toString(),
+      size: size.toString(),
+      search: search
+    }
+  });
 }
+
 
   createInternship(internship: any, file: File): Observable<any> {
     const formData = new FormData();
@@ -70,9 +77,16 @@ export class EmployerService {
     return this.http.patch(`${this.baseUrl}/internships/${id}/status?status=${status}`, {});
   }
 
-  getInternshipsPaged(page: number, size: number): Observable<any> {
-  return this.http.get(`${this.baseUrl}/internships/paged?page=${page}&size=${size}`);
+  getFilteredInternships(page: number, size: number, search: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/internships/paged`, {
+    params: {
+      page: page.toString(),
+      size: size.toString(),
+      search: search
+    }
+  });
 }
+
 
 } 
 
