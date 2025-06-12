@@ -22,6 +22,12 @@ import { NotificationsComponent } from './admin/notifications/notifications.comp
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { MessageDashComponent } from './employer/message-dash/message-dash.component';
+import { ComposeComponent } from './employer/compose/compose.component';
+import { SentComponent } from './employer/sent/sent.component';
+import { AdmincomposeComponent } from './admin/admincompose/admincompose.component';
+import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessage-dash.component';
+import { AdminsentComponent } from './admin/adminsent/adminsent.component';
 
 
 const routes: Routes = [
@@ -101,6 +107,19 @@ const routes: Routes = [
   component: AdminProfileComponent
 },
 {
+  path: 'admin/compose',
+  component: AdmincomposeComponent
+},
+{
+  path: 'admin/inbox',
+  component: AdminmessageDashComponent
+},
+{
+  path: 'admin/sent',
+  component: AdminsentComponent
+},
+
+{
   path: 'submit-report',
   component: SubmitReportComponent
 },
@@ -114,7 +133,29 @@ const routes: Routes = [
 {
   path: 'contact',
   component: ContactComponent
+},
+{
+  path: 'employer/jobs',
+  component: JobModerationComponent
+},
+{
+  path: 'employer/internships',
+  component: InternshipModerationComponent
+},
+{
+  path: 'employer/messages',
+  component: MessageDashComponent
+
+},
+{
+  path: 'employer/compose',
+  component: ComposeComponent
+},
+{
+  path: 'employer/sent',
+  component: SentComponent
 }
+
 ];
 
 @NgModule({

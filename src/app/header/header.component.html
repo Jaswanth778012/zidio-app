@@ -11,10 +11,10 @@
  
 <nav class="sidebar" [@sidebarState]="sidebarOpen ? 'open' : 'closed'"*ngIf="userService.roleMatch(['Admin'])">
   <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
-    <mat-icon>supervisor_account</mat-icon> User Management
+    <mat-icon>supervisor_account</mat-icon>User Management 
   </a>
   <a mat-button routerLink="/admin/employers" routerLinkActive="active-link">
-    <mat-icon>business_center</mat-icon> Employer Management
+    <mat-icon>business_center</mat-icon>Employer Management
   </a>
   <a mat-button routerLink="/admin/students" routerLinkActive="active-link">
     <mat-icon>school</mat-icon> Student Management
@@ -40,6 +40,27 @@
 </mat-icon>
     <span class="ml-2">Notifications</span>
   </a>
+
+   <button mat-button [matMenuTriggerFor]="messagesMenu">
+    <mat-icon>mail</mat-icon>
+    <span class="ml-2">Messages</span>
+    <mat-icon>expand_more</mat-icon>
+  </button>
+
+  <mat-menu #messagesMenu="matMenu">
+    <button mat-menu-item [routerLink]="'/admin/compose'">
+      <mat-icon>edit</mat-icon>
+      <span>Compose</span>
+    </button>
+    <button mat-menu-item [routerLink]="'/admin/inbox'">
+      <mat-icon>inbox</mat-icon>
+      <span>Inbox</span>
+    </button>
+    <button mat-menu-item [routerLink]="'/admin/sent'">
+      <mat-icon>send</mat-icon>
+      <span>Sent</span>
+    </button>
+  </mat-menu>
   <a mat-button routerLink="/admin/reports" routerLinkActive="active-link">
     <mat-icon>report</mat-icon> Reports & Feedback
   </a>
@@ -65,6 +86,9 @@
   <button mat-raised-button color="secondary" routerLink="/admin" style="margin-left: 10px;"  *ngIf="userService.roleMatch(['Admin'])" >Admin Dashboard</button>
   <button mat-raised-button color="secondary"  routerLink="/student"*ngIf="userService.roleMatch(['Student'])">Student Dashboard</button>
   <button mat-raised-button color="secondary"  routerLink="/employer"*ngIf="userService.roleMatch(['Employer'])">Employer Dashboard</button>
+  <button mat-raised-button color="secondary"  routerLink="/employer/compose"*ngIf="userService.roleMatch(['Employer'])">Employer Message</button>
+  <button mat-raised-button color="secondary"  routerLink="/employer/sent"*ngIf="userService.roleMatch(['Employer'])">Employer Message</button>
+  <button mat-raised-button color="secondary"  routerLink="/employer/messages"*ngIf="userService.roleMatch(['Employer'])">Employer Message</button>
   </div>
 
   <span class="space-buttons"></span>
@@ -85,6 +109,9 @@
     <button mat-button *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>
     <button mat-button *ngIf="userService.roleMatch(['Student'])" routerLink="/student">Student Dashboard</button>
     <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer">Employer Dashboard</button>
+    <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer/compose">Employer Message</button>
+    <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer/sent">Employer Message</button>
+    <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer/messages">Employer Message</button>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

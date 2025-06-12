@@ -1,0 +1,28 @@
+.dialog-container {
+  padding: 10px;
+  max-width: 600px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.subject {
+  font-size: 20px;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 10px;
+}
+
+.meta {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.meta p {
+  margin: 4px 0;
+}
+
+.body {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #333;
+}

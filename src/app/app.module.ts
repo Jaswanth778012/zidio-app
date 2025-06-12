@@ -57,6 +57,16 @@ import { ContactComponent } from './contact/contact.component';
 import { MatSidenav,MatSidenavModule } from '@angular/material/sidenav';
 import { JobManagementComponent } from './employer/job-management/job-management.component';
 import { InternshipManagementComponent } from './employer/internship-management/internship-management.component';
+import { MessageDashComponent } from './employer/message-dash/message-dash.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ComposeComponent } from './employer/compose/compose.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { SentComponent } from './employer/sent/sent.component';
+import { AdmincomposeComponent } from './admin/admincompose/admincompose.component';
+import { AdminsentComponent } from './admin/adminsent/adminsent.component';
+import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessage-dash.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +95,14 @@ import { InternshipManagementComponent } from './employer/internship-management/
     ContactComponent,
     JobManagementComponent,
     InternshipManagementComponent,
-   
+    MessageDashComponent,
+    ComposeComponent,
+    MessageDialogComponent,
+    SentComponent,
+    AdmincomposeComponent,
+    AdminsentComponent,
+    AdminmessageDashComponent,
+
 
 
   ],
@@ -117,7 +134,10 @@ import { InternshipManagementComponent } from './employer/internship-management/
     MatNativeDateModule,
     MatCheckboxModule,
     MatSidenav,
-    MatSidenavModule
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatMenuModule
     
     
   ],

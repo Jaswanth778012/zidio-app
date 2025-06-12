@@ -1,0 +1,55 @@
+/* .compose-card {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-card-title
+{
+    margin-bottom: 10px;
+} */
+
+.compose-card {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fafafa;
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  .full-width {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .actions {
+    text-align: right;
+    margin-top: 25px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  &.elevation {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}

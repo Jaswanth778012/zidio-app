@@ -1,0 +1,24 @@
+<mat-dialog-content class="dialog-container">
+  <h2 mat-dialog-title class="subject">
+    {{ data.subject }}
+  </h2>
+
+  <mat-divider></mat-divider>
+
+  <div class="meta">
+     <p><strong>From:</strong> {{ data.sender.userName }}</p>
+    <p><strong>To:</strong> {{ data.recipient.userName }}</p>
+    <p><strong>Sent:</strong> {{ data.createdAt | date:'medium' }}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="body">
+    <p style="white-space: pre-line">{{ data.body }}</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="primary">Close</button>
+</mat-dialog-actions>
+

@@ -1,0 +1,34 @@
+<div class="messages-container">
+  <h2>Inbox Messages</h2>
+
+  <button (click)="markAllInboxAsRead()" class="mark-all-btn">Mark All as Read</button>
+    <button (click)="deleteAllSentMessages()" class="delete-all-btn">Delete All</button>
+    <div *ngIf="messages.length === 0">
+    <p>No messages found.</p>
+  </div>
+  <div *ngFor="let msg of messages" class="message-card" [class.unread]="!msg.isRead">
+    <div class="meta">
+      TO: {{ msg.recipient.userName }} | {{ msg.createdAt | date:'short' }}
+    </div>
+
+    <div class="subject">
+      <strong>{{ msg.subject }}</strong>
+    </div>
+
+    <div class="body">
+      {{ msg.body | slice:0:100 }}...
+    </div>
+
+    <div class="actions">
+      <button (click)="markAsRead(msg)" [disabled]="msg.isRead">Mark as Read</button>
+      <button (click)="deleteMessage(msg.id!)" class="delete-btn">Delete</button>
+      <button mat-button (click)="openMessage(msg)">View Full Message</button>
+    </div>
+  </div>
+
+  <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="page === 0">Previous</button>
+    <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page + 1 >= totalPages">Next</button>
+  </div>
+</div>
