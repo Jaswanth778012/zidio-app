@@ -67,6 +67,7 @@ import { SentComponent } from './employer/sent/sent.component';
 import { AdmincomposeComponent } from './admin/admincompose/admincompose.component';
 import { AdminsentComponent } from './admin/adminsent/adminsent.component';
 import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessage-dash.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessag
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
     
     
   ],

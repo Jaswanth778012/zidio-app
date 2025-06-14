@@ -46,8 +46,18 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="['userName', 'userStatus', 'changeStatus', 'resetPassword']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['userName', 'userStatus', 'changeStatus', 'resetPassword']"></tr>
+      <!-- Delete User -->
+      <ng-container matColumnDef="deleteUser">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-mini-fab color="warn" (click)="deleteUser(user.userName)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['userName', 'userStatus', 'changeStatus', 'resetPassword', 'deleteUser']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['userName', 'userStatus', 'changeStatus', 'resetPassword', 'deleteUser']"></tr>
     </table>
   </mat-card-content>
 </mat-card>

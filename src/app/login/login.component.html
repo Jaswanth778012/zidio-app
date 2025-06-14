@@ -11,12 +11,25 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Password</mat-label>
-        <input matInput type="password" matInput 
-        ngModel
-        name="userPassword"
-        id ="userPassword"
-        placeholder="password">
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          ngModel
+          name="userPassword"
+          id="userPassword"
+          placeholder="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="toggleShowPassword()"
+          type="button"
+          aria-label="Toggle password visibility"
+        >
+          <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
       </mat-form-field>
+
       <button mat-raised-button color="primary" class="login-button" type="submit">
         Login
       </button>

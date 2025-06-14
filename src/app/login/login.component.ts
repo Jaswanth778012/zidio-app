@@ -13,6 +13,7 @@ import { UserManagementComponent } from '../admin/user-management/user-managemen
 export class LoginComponent implements OnInit {
     loginError: string = '';
   isLoading: boolean = false;
+  showPassword = false;
   constructor(public userService: UserService, private userAuthService: UserAuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -82,4 +83,7 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  toggleShowPassword(): void {
+  this.showPassword = !this.showPassword;
+}
 }

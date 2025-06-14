@@ -10,6 +10,9 @@ import { Router, RouterEvent } from '@angular/router';
 })
 export class UpdatePasswordComponent {
   forgotPasswordForm: FormGroup;
+  showCurrentPassword = false;
+showNewPassword = false;
+showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -17,7 +20,9 @@ export class UpdatePasswordComponent {
   ) {
     this.forgotPasswordForm = this.fb.group({
       userName: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]]
+      currentPassword:['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmNewPassword: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -38,4 +43,15 @@ export class UpdatePasswordComponent {
       });
     }
   }
+  togglePasswordVisibility(field: 'current' | 'new' | 'confirm') {
+  if (field === 'current') this.showCurrentPassword = !this.showCurrentPassword;
+  if (field === 'new') this.showNewPassword = !this.showNewPassword;
+  if (field === 'confirm') this.showConfirmPassword = !this.showConfirmPassword;
+}
+
+get passwordMismatch(): boolean {
+  const newPass = this.forgotPasswordForm.get('newPassword')?.value;
+  const confirmPass = this.forgotPasswordForm.get('confirmNewPassword')?.value;
+  return newPass && confirmPass && newPass !== confirmPass;
+}
 }

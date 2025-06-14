@@ -19,7 +19,7 @@
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
   width: 250px;
   height: 100vh;
@@ -30,7 +30,7 @@
   z-index: 1000;
 }
 
-.sidebar a {
+/* .sidebar a {
   display: flex;
   align-items: center;
   padding: 10px 10px;
@@ -38,7 +38,7 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  gap: 16px; /* spacing between icon and text */
+  gap: 16px; 
   white-space: nowrap;
 }
 
@@ -49,17 +49,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
 .sidebar a span {
   line-height: 1;
 }
 
 
-.active-link {
+ .active-link {
   background-color: #1e88e5;
   color: white;
-}
+} 
 
 .main-content {
   padding: 20px;
@@ -198,53 +198,254 @@
   }
 }
 
-/* for the dropdown menu for messages */
-/* Style for the dropdown trigger button */
+
+.sidebar a,
 .sidebar button[mat-button] {
   display: flex;
   align-items: center;
-  padding: 10px 10px;
+  padding: 10px;
   color: white;
   text-align: left;
   font-weight: 500;
   font-size: 14px;
-  gap: 16px;
+  gap: 12px;
   background: none;
   border: none;
   width: 100%;
   cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 }
 
-/* Optional: Add hover effect for consistency */
+.sidebar a mat-icon,
+.sidebar button[mat-button] mat-icon,
+.mat-menu-item mat-icon {
+  font-size: 24px;
+  min-width: 24px;  
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 .sidebar button[mat-button]:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Style for the dropdown icon */
+
 .sidebar button[mat-button] mat-icon:last-child {
   margin-left: auto;
   font-size: 18px;
 }
 
-/* Override Angular Material menu panel inside the sidebar */
+
 .mat-menu-panel {
   background-color: #313285;
   color: white;
   border-radius: 4px;
 }
 
-/* Style for items inside the dropdown */
+
 .mat-menu-item {
   color: white;
   font-size: 14px;
 }
 
-/* Icon spacing inside the dropdown items */
-.mat-menu-item mat-icon {
-  margin-right: 12px;
-}
 
-/* Hover effect for dropdown items */
 .mat-menu-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+}
+
+
+.navbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+}
+
+
+.topbar {
+  display: flex;
+  align-items: center;
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-buttons button {
+  margin-left: 10px;
+}
+
+
+.space-buttons {
+  flex: 1 1 auto;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #313285;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.sidebar a,
+.sidebar button[mat-button] {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: white;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.sidebar a mat-icon,
+.sidebar button[mat-button] mat-icon,
+.mat-menu-item mat-icon {
+  font-size: 24px;
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.active-link {
+  background-color: #1e88e5;
+  color: white;
+}
+
+.sidebar button[mat-button]:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.sidebar button[mat-button] mat-icon:last-child {
+  margin-left: auto;
+  font-size: 18px;
+}
+
+
+.mat-menu-panel {
+  background-color: #313285;
+  color: white;
+  border-radius: 4px;
+}
+
+.mat-menu-item {
+  color: white;
+  font-size: 14px;
+}
+
+.mat-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 900;
+}
+
+
+.sidenav-container {
+  height: calc(100vh - 64px);
+  margin-top: 64px;
+}
+
+
+.sidenav {
+  width: 250px;
+  padding: 1rem;
+}
+
+
+.main-content {
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+  margin-left: 0;
+}
+
+.main-content.sidebar-open {
+  margin-left: 250px;
+}
+
+
+@media (max-width: 768px) {
+  .nav-buttons {
+    display: none;
+  }
+
+  .menu-button {
+    display: block !important;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .space-buttons {
+    display: none;
+  }
+
+  .sidebar {
+    width: 100%;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+
+  .sidebar a,
+  .sidebar button[mat-button] {
+    justify-content: flex-start;
+  }
+} */
+

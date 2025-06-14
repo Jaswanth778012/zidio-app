@@ -46,4 +46,18 @@ export class StudentManagementComponent implements OnInit {
       this.newPassword = '';
     });
   }
+
+  deleteUser(userName: string) {
+  if (!confirm(`Are you sure you want to delete user '${userName}'?`)) return;
+
+  this.adminService.deleteUser(userName).subscribe({
+    next: () => {
+      this.snackBar.open(`✅ User ${userName} deleted successfully`, 'Close', { duration: 3000 });
+      this.loadStudents(); // Refresh user list
+    },
+    error: () => {
+      this.snackBar.open(`❌Failed to delete ${userName}`, 'Close', { duration: 3000 });
+    }
+  });
+  }
 }

@@ -25,6 +25,11 @@ export class AdminService {
     return this.http.put(`${this.baseUrl}/users/${userName}/reset-password?newPassword=${newPassword}`, {});
   }
 
+  deleteUser(userName: string): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/users/${userName}`,{responseType: 'text' as 'json' });
+}
+
+
   getAllEmployers() {
   return this.http.get<any[]>(`${this.baseUrl}/employers`);
 }
