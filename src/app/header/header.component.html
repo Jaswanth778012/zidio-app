@@ -95,7 +95,7 @@
   <button mat-raised-button color="primary" routerLink="/about" style="margin-right: 10px;">About</button>
   <button mat-raised-button color="primary" routerLink="/contact"style="margin-right: 10px;">Contact</button>
   <button *ngIf="isDesktop && !isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
-  <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
+  <!-- <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button> -->
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" class="sidenav">

@@ -28,6 +28,11 @@ import { SentComponent } from './employer/sent/sent.component';
 import { AdmincomposeComponent } from './admin/admincompose/admincompose.component';
 import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessage-dash.component';
 import { AdminsentComponent } from './admin/adminsent/adminsent.component';
+import { EmployerProfileComponent } from './employer/employer-profile/employer-profile.component';
+import { StudentProfileComponent } from './user/student-profile/student-profile.component';
+import { StudentcomposeComponent } from './user/studentcompose/studentcompose.component';
+import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
+import { StudentsentComponent } from './user/studentsent/studentsent.component';
 
 
 const routes: Routes = [
@@ -154,6 +159,26 @@ const routes: Routes = [
 {
   path: 'employer/sent',
   component: SentComponent
+},
+{
+  path: 'employer/employer-profile',
+  component: EmployerProfileComponent
+},
+{
+  path: 'student/student-profile',
+  component: StudentProfileComponent
+},
+{
+  path: 'student/student-compose',
+  component: StudentcomposeComponent
+},
+{
+  path: 'student/inbox',
+  component: StudentmessageComponent
+},
+{
+  path: 'student/sent',
+  component: StudentsentComponent
 }
 
 ];

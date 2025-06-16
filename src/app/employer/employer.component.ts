@@ -4,6 +4,7 @@ import { UserAuthService } from '../_services/user-auth.service';
 import { EmployerService } from '../_services/employer.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employer',
@@ -31,18 +32,35 @@ internshipPageSize: number = 3;
 totalInternships: number = 0;
   editJob: any = null;
   editInternship: any = null;
+  profilePictureUrl: string = 'assets/admin.png'; // Default image URL
 
 
-  constructor(private userService : UserService, private authService:UserAuthService, private employerService: EmployerService,private fb: FormBuilder,private snackBar: MatSnackBar) { }
+  constructor(private userService : UserService, private userAuthService:UserAuthService, private employerService: EmployerService,private fb: FormBuilder,private snackBar: MatSnackBar,private router: Router) { }
 
   ngOnInit(): void {
     // Initialization logic can go here
-    this.userName = this.authService.getUsername();
-    this.role = this.authService.getRoles();
+    this.userName = this.userAuthService.getUsername();
+    this.role = this.userAuthService.getRoles();
     this.forEmployer();
   this.initializeForms();
     this.loadJobs();
     this.loadInternships();
+
+    this.employerService.getProfile().subscribe(profile=>{
+      console.log('Profile:', profile);
+      if (profile.profilePictureUrl) {
+        this.profilePictureUrl = `http://localhost:8080${profile.profilePictureUrl}`;
+      }
+    })
+  }
+
+  async ngAfterViewInit() {
+    const Dropdown = (await import('bootstrap/js/dist/dropdown')).default;
+
+    const dropdownToggle = document.getElementById('dropdownMenuButton');
+    if (dropdownToggle) {
+      new Dropdown(dropdownToggle);
+    }
   }
   
 
@@ -223,6 +241,13 @@ totalInternshipPages(): number {
   deleteInternship(id: number) {
     this.employerService.deleteInternship(id).subscribe(() => this.loadInternships());
   }
+
+  public logout()
+  {
+    this.userAuthService.clear();
+    this.router.navigate(['/']);
+  }
+ 
 }
 
 

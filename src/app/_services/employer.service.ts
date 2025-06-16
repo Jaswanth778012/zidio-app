@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Message, PaginatedMessageResponse } from '../_model/message.model';
 import { SendMessageRequest } from '../_model/message.model';
+import { EmployerProfile } from '../_model/employer-profile.model';
 
 
 @Injectable({
@@ -141,6 +142,16 @@ export class EmployerService {
   markAllAsReadFromSender(userName: string): Observable<any> {
   return this.http.put<any>(`${this.baseUrl}/messages/sender/${userName}/read`, {});
 }
-
+//profile for employer
+getProfile(): Observable<EmployerProfile>{
+  return this.http.get<EmployerProfile>(`${this.baseUrl}/profile`);
+}
+updateProfile(formData: FormData): Observable<EmployerProfile> {
+  const token = localStorage.getItem('token'); 
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
+  return this.http.post<EmployerProfile>(`${this.baseUrl}/profile`, formData, { headers });
+}
 } 
 

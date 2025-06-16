@@ -68,6 +68,11 @@ import { AdmincomposeComponent } from './admin/admincompose/admincompose.compone
 import { AdminsentComponent } from './admin/adminsent/adminsent.component';
 import { AdminmessageDashComponent } from './admin/adminmessage-dash/adminmessage-dash.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { StudentProfileComponent } from './user/student-profile/student-profile.component';
+import { EmployerProfileComponent } from './employer/employer-profile/employer-profile.component';
+import { StudentcomposeComponent } from './user/studentcompose/studentcompose.component';
+import { StudentsentComponent } from './user/studentsent/studentsent.component';
+import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +108,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AdmincomposeComponent,
     AdminsentComponent,
     AdminmessageDashComponent,
+    StudentProfileComponent,
+    EmployerProfileComponent,
+    StudentcomposeComponent,
+    StudentsentComponent,
+    StudentmessageComponent,
 
 
 

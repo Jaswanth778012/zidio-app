@@ -22,8 +22,9 @@ export class AdminProfileComponent implements OnInit{
   ngOnInit(): void {
     this.adminService.getProfile().subscribe(data =>{
       this.profileForm.patchValue(data);
-      if (data.profilePictureUrl) {
-        this.profilePicturePreview = data.profilePictureUrl;
+      if ( data.profilePictureUrl) {
+        const baseurl = 'http://localhost:8080';
+        this.profilePicturePreview = baseurl + data.profilePictureUrl;
       }
     });
   }
@@ -50,15 +51,17 @@ export class AdminProfileComponent implements OnInit{
   this.adminService.updateProfile(formData).subscribe({
     next: (response) => {
       alert('Profile updated successfully!');
-      
+       
       // Reset the form to empty values:
-      
-
-      // Clear the image preview and selected file
-      
+      this.profileForm.reset();
+      this.profilePicturePreview = null; // Clear the image preview
+      this.selectedFile = null;
       console.log(this.profileForm.value);
+
+      
     },
-    error: () => {
+    error: (error) => {
+      console.error('Error updating profile:', error);
       alert('Failed to update profile');
     }
   });

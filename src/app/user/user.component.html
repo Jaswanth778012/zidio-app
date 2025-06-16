@@ -5,14 +5,15 @@
         <div class="card-body d-flex justify-content-between align-items-center">
           <h1 class="h3 mb-0">Student Dashboard</h1>
           <div class="d-flex align-items-center">
-            <span class="me-3">Welcome, {{userName}}</span>
+            <span class="me-3">Welcome</span>
             <div class="dropdown">
-              <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="assets/images/default-avatar.png" alt="Profile" class="rounded-circle me-2" width="32" height="32">
-                <span>My Profile</span>
+              <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="profileDropdown"
+              data-bs-toggle="dropdown" aria-expanded="false">
+                <img [src]="profilePictureUrl" alt="Admin" class="rounded-circle me-2" width="32" height="32" />
+                <span>{{userName}}</span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                <li><a class="dropdown-item" routerLink="/student/student-profile"><i class="bi bi-gear me-2"></i>Student Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
               </ul>
@@ -22,7 +23,27 @@
       </div>
     </div>
   </div>
-<br>
+
+  <div class="row">
+        <div class="col-md-4">
+        <!-- <h2>Student message</h2>
+        <p>Manage users, courses, and more.</p> -->
+        <button class="btn btn-primary" routerLink="/student/student-compose">student compose</button>
+        </div>
+    
+        <div class="col-md-4">
+        <!-- <h2>Student Dashboard</h2>
+        <p>Access your courses and track your progress.</p> -->
+        <button class="btn btn-primary" routerLink="/student/inbox">student inbox</button>
+        </div>
+    
+        <div class="col-md-4">
+        <!-- <h2>Employer Dashboard</h2>
+        <p>Find the right candidates for your job openings.</p> -->
+        <button class="btn btn-primary" routerLink="/student/sent">student sent</button>
+        </div>
+    </div>
+<!-- <br>
 <br>
   <div class="row mb-4">
     <div class="col-md-3 mb-4 mb-md-0">
@@ -89,7 +110,7 @@
 
   <div class="row">
     <div class="col-lg-8 mb-4 mb-lg-0">
-      <!-- My Courses Section -->
+    
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">My Courses</h5>
@@ -141,7 +162,7 @@
         </div>
       </div>
 
-      <!-- Assignments Section -->
+      
       <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Upcoming Assignments</h5>
@@ -197,7 +218,7 @@
     </div>
 
     <div class="col-lg-4">
-      <!-- Calendar Widget -->
+     
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Calendar</h5>
@@ -300,7 +321,7 @@
         </div>
       </div>
 
-      <!-- Announcements Widget -->
+      
       <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Announcements</h5>
@@ -327,5 +348,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
