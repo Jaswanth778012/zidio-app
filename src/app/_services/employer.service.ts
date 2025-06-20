@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Message, PaginatedMessageResponse } from '../_model/message.model';
 import { SendMessageRequest } from '../_model/message.model';
 import { EmployerProfile } from '../_model/employer-profile.model';
+import { Application } from '../_model/Application.model';
 
 
 @Injectable({
@@ -153,5 +154,31 @@ updateProfile(formData: FormData): Observable<EmployerProfile> {
   };
   return this.http.post<EmployerProfile>(`${this.baseUrl}/profile`, formData, { headers });
 }
+
+//Applications
+getAllApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/All`);
+  }
+
+  getApplicationsByJob(jobId: number): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/job/${jobId}`);
+  }
+
+  getApplicationsByInternship(internshipId: number): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/internship/${internshipId}`);
+  }
+
+  getApplicationsByStudent(username: string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/student/${username}`);
+  }
+
+  updateApplicationStatus(id: number, status: string): Observable<any> {
+    const params = new HttpParams().set('status', status);
+    return this.http.put(`${this.baseUrl}/${id}/status`, {}, { params });
+  }
+
+  deleteApplication(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 } 
 

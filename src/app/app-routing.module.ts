@@ -33,6 +33,8 @@ import { StudentProfileComponent } from './user/student-profile/student-profile.
 import { StudentcomposeComponent } from './user/studentcompose/studentcompose.component';
 import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
 import { StudentsentComponent } from './user/studentsent/studentsent.component';
+import { JobManagementComponent } from './employer/job-management/job-management.component';
+import { InternshipManagementComponent } from './employer/internship-management/internship-management.component';
 
 
 const routes: Routes = [
@@ -141,11 +143,11 @@ const routes: Routes = [
 },
 {
   path: 'employer/jobs',
-  component: JobModerationComponent
+  component: JobManagementComponent
 },
 {
   path: 'employer/internships',
-  component: InternshipModerationComponent
+  component: InternshipManagementComponent
 },
 {
   path: 'employer/messages',

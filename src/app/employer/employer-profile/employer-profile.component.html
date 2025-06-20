@@ -57,4 +57,42 @@
 
     <button type="submit" class="submit-btn">Update Profile</button>
   </form>
+
+  <!-- <div class="container">
+  <h2>Applications</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Job/Internship</th>
+        <th>Student</th>
+        <th>Status</th>
+        <th>Applied Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of applications">
+        <td>{{ app.id }}</td>
+        <td>{{ app.job?.title || app.internship?.title }}</td>
+        <td>{{ app.student?.userName }}</td>
+        <td>{{ app.status }}</td>
+        <td>{{ app.appliedDate | date }}</td>
+        <td>
+          <select [(ngModel)]="selectedStatus">
+            <option>APPROVED</option>
+            <option>PENDING</option>
+            <option>REJECTED</option>
+          </select>
+          <button (click)="updateStatus(app.id)">Update</button>
+          <button (click)="deleteApplication(app.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+
 </div>
+
+

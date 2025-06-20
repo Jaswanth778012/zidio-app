@@ -420,7 +420,7 @@
     </div>
   </div>
 
-  <h2>Job Postings</h2>
+  <!-- <h2>Job Postings</h2>
   <form [formGroup]="jobForm" (ngSubmit)="editJob ? updateJob(editJob.id) : createJob()" class="styled-form" enctype="multipart/form-data">
 
     <mat-form-field appearance="outline">
@@ -516,7 +516,7 @@
       </button>
     </div>
   </div>
-  <img [src]="job.companyLogo" alt="Company Logo" width="100" />
+  <img [src]="'http://localhost:8080'+job.companyLogo" alt="Company Logo" width="100" />
 
   <p><strong>Description:</strong> {{ job.description }}</p>
   <p><strong>Location:</strong> {{ job.location }}</p>
@@ -527,7 +527,7 @@
   <p><strong>Job Status: </strong>{{job.status}}</p>
 </div>
 
-<!-- Pagination Controls -->
+
 <div class="pagination-controls">
   <button mat-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
   <span>Page {{ currentPage }} of {{ totalPages() }}</span>
@@ -644,6 +644,20 @@
   <button mat-button (click)="goToInternshipPage(currentInternshipPage - 1)" [disabled]="currentInternshipPage === 1">Prev</button>
   <span>Page {{ currentInternshipPage }} of {{ totalInternshipPages() }}</span>
   <button mat-button (click)="goToInternshipPage(currentInternshipPage + 1)" [disabled]="currentInternshipPage === totalInternshipPages()">Next</button>
-</div>
+</div> -->
+<div class="row">
+        <div class="col-md-4">
+        <!-- <h2>Student message</h2>
+        <p>Manage users, courses, and more.</p> -->
+        <button class="btn btn-primary" routerLink="/employer/jobs">Jobs</button>
+        </div>
+    
+        <div class="col-md-4">
+        <!-- <h2>Student Dashboard</h2>
+        <p>Access your courses and track your progress.</p> -->
+        <button class="btn btn-primary" routerLink="/employer/internships">internships</button>
+        </div>
+    
+    </div>
 
 </div>

@@ -42,9 +42,9 @@ totalInternships: number = 0;
     this.userName = this.userAuthService.getUsername();
     this.role = this.userAuthService.getRoles();
     this.forEmployer();
-  this.initializeForms();
-    this.loadJobs();
-    this.loadInternships();
+  // this.initializeForms();
+    // this.loadJobs();
+    // this.loadInternships();
 
     this.employerService.getProfile().subscribe(profile=>{
       console.log('Profile:', profile);
@@ -78,169 +78,153 @@ totalInternships: number = 0;
 
 }
 
-initializeForms() {
-    this.jobForm = this.fb.group({
-      title: [''], description: [''], location: [''], skillsRequired: [''],
-      salary: [''], startDate: [''], applicationDeadline: [''], companyName: [''],
-      aboutCompany: [''], numberOfOpenings: [''], eligibility: [''], perks: ['']
-    });
+// initializeForms() {
+//     this.jobForm = this.fb.group({
+//       title: [''], description: [''], location: [''], skillsRequired: [''],
+//       salary: [''], startDate: [''], applicationDeadline: [''], companyName: [''],
+//       aboutCompany: [''], numberOfOpenings: [''], eligibility: [''], perks: ['']
+//     });
 
-    this.internshipForm = this.fb.group({
-      title: [''], description: [''], location: [''], duration: [''], stipend: [''],
-      applicationDeadline: [''], startDate: [''], companyName: [''], aboutCompany: [''],
-      numberOfOpenings: [''], eligibility: [''], perks: ['']
-    });
-  }
+//     this.internshipForm = this.fb.group({
+//       title: [''], description: [''], location: [''], duration: [''], stipend: [''],
+//       applicationDeadline: [''], startDate: [''], companyName: [''], aboutCompany: [''],
+//       numberOfOpenings: [''], eligibility: [''], perks: ['']
+//     });
+//   }
 
-  onJobFileChange(event: any) {
-    this.selectedJobFile = event.target.files[0];
-  }
+//   onJobFileChange(event: any) {
+//     this.selectedJobFile = event.target.files[0];
+//   }
 
-  onInternshipFileChange(event: any) {
-    this.selectedInternshipFile = event.target.files[0];
-  }
+//   onInternshipFileChange(event: any) {
+//     this.selectedInternshipFile = event.target.files[0];
+//   }
 
-  createJob() {
-    if (this.selectedJobFile) {
-      this.employerService.createJob(this.jobForm.value, this.selectedJobFile).subscribe(() => {
-        this.loadJobs();
-        this.jobForm.reset();
-        this.selectedJobFile = undefined!;
-      });
-    } else {
-      // Optionally, show an error or handle the case where no file is selected
-      alert('Please select a file before creating a job.');
-    }
-  }
+//   createJob() {
+//     if (this.selectedJobFile) {
+//       this.employerService.createJob(this.jobForm.value, this.selectedJobFile).subscribe(() => {
+//         this.loadJobs();
+//         this.jobForm.reset();
+//         this.selectedJobFile = undefined!;
+//       });
+//     } else {
+//       // Optionally, show an error or handle the case where no file is selected
+//       alert('Please select a file before creating a job.');
+//     }
+//   }
 
-  updateJob(id: number) {
-    this.employerService.updateJob(
-      id,
-      this.jobForm.value,
-      this.selectedJobFile === null ? undefined : this.selectedJobFile
-    ).subscribe(() => {
-      this.loadJobs();
-      this.jobForm.reset();
-      this.selectedJobFile = undefined!;
-      this.editJob = null;
-    });
-  }
+//   updateJob(id: number) {
+//     this.employerService.updateJob(
+//       id,
+//       this.jobForm.value,
+//       this.selectedJobFile === null ? undefined : this.selectedJobFile
+//     ).subscribe(() => {
+//       this.loadJobs();
+//       this.jobForm.reset();
+//       this.selectedJobFile = undefined!;
+//       this.editJob = null;
+//     });
+//   }
 
-  editJobForm(job: any) {
-    this.editJob = job;
-    this.jobForm.patchValue(job);
-  }
+//   editJobForm(job: any) {
+//     this.editJob = job;
+//     this.jobForm.patchValue(job);
+//   }
 
-  createInternship() {
-    if(this.selectedInternshipFile){
-    this.employerService.createInternship(this.internshipForm.value, this.selectedInternshipFile).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
-    });
-  }
-  else{
-    alert('Please select a file before creating a internship.');
+//   createInternship() {
+//     if(this.selectedInternshipFile){
+//     this.employerService.createInternship(this.internshipForm.value, this.selectedInternshipFile).subscribe(() => {
+//       this.loadInternships();
+//       this.internshipForm.reset();
+//       this.selectedInternshipFile = undefined!;
+//     });
+//   }
+//   else{
+//     alert('Please select a file before creating a internship.');
 
-  }
-  }
+//   }
+//   }
 
-  updateInternship(id: number) {
-    this.employerService.updateInternship(
-      id,
-      this.internshipForm.value,
-      this.selectedInternshipFile === null ? undefined : this.selectedInternshipFile
-    ).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
-      this.editInternship = null;
-    });
-  }
+//   updateInternship(id: number) {
+//     this.employerService.updateInternship(
+//       id,
+//       this.internshipForm.value,
+//       this.selectedInternshipFile === null ? undefined : this.selectedInternshipFile
+//     ).subscribe(() => {
+//       this.loadInternships();
+//       this.internshipForm.reset();
+//       this.selectedInternshipFile = undefined!;
+//       this.editInternship = null;
+//     });
+//   }
 
-  editInternshipForm(internship: any) {
-    this.editInternship = internship;
-    this.internshipForm.patchValue(internship);
-  }
+//   editInternshipForm(internship: any) {
+//     this.editInternship = internship;
+//     this.internshipForm.patchValue(internship);
+//   }
 
-  // loadJobs() {
-  //   this.employerService.getAllJobs().subscribe(data => {this.jobs = data,console.log('Loaded jobs:', this.jobs); });
-  // }
-//   loadJobs(page: number = 1): void {
+
+// loadJobs(page: number = 1): void {
 //   this.currentPage = page;
-//   this.employerService.getJobsPaged(this.currentPage - 1, this.pageSize).subscribe(response => {
-//     this.jobs = response.content;
-//     this.totalJobs = response.totalElements;
-//     console.log('Loaded paginated jobs:', this.jobs);
-//   });
+//   this.employerService.getFilteredJobs(this.currentPage - 1, this.pageSize, this.searchTerm)
+//     .subscribe(response => {
+//       this.jobs = response.content;
+//       this.totalJobs = response.totalElements;
+//       console.log('Loaded paginated jobs:', this.jobs);
+//     });
 // }
-loadJobs(page: number = 1): void {
-  this.currentPage = page;
-  this.employerService.getFilteredJobs(this.currentPage - 1, this.pageSize, this.searchTerm)
-    .subscribe(response => {
-      this.jobs = response.content;
-      this.totalJobs = response.totalElements;
-      console.log('Loaded paginated jobs:', this.jobs);
-    });
-}
 
-onSearchChange() {
-  this.loadJobs(1);
-}
+// onSearchChange() {
+//   this.loadJobs(1);
+// }
 
-goToPage(page: number): void {
-  if (page < 1 || page > this.totalPages()) return;
-  this.loadJobs(page);
-}
+// goToPage(page: number): void {
+//   if (page < 1 || page > this.totalPages()) return;
+//   this.loadJobs(page);
+// }
 
-totalPages(): number {
-  return Math.ceil(this.totalJobs / this.pageSize);
-}
+// totalPages(): number {
+//   return Math.ceil(this.totalJobs / this.pageSize);
+// }
 
 
-//  loadInternships(page: number = 1): void {
+
+// loadInternships(page: number = 1) {
 //   this.currentInternshipPage = page;
-//   this.employerService.getInternshipsPaged(this.currentInternshipPage - 1, this.internshipPageSize).subscribe(response => {
-//     this.internships = response.content;
-//     this.totalInternships = response.totalElements;
-//     console.log('Loaded paginated internships:', this.internships);
-//   });
+//   this.employerService.getFilteredInternships(this.currentInternshipPage - 1, this.pageSize, this.internshipSearchTerm)
+//     .subscribe(response => {
+//       this.internships = response.content;
+//       this.totalInternships = response.totalElements;
+//       console.log('Loaded paginated internships:', this.internships);
+//     });
 // }
-loadInternships(page: number = 1) {
-  this.currentInternshipPage = page;
-  this.employerService.getFilteredInternships(this.currentInternshipPage - 1, this.pageSize, this.internshipSearchTerm)
-    .subscribe(response => {
-      this.internships = response.content;
-      this.totalInternships = response.totalElements;
-    });
-}
-onInternshipSearchChange() {
-  this.loadInternships(1);
-}
+// onInternshipSearchChange() {
+//   this.loadInternships(1);
+// }
 
- goToInternshipPage(page: number): void {
-  if (page < 1 || page > this.totalInternshipPages()) return;
-  this.loadInternships(page);
-}
+//  goToInternshipPage(page: number): void {
+//   if (page < 1 || page > this.totalInternshipPages()) return;
+//   this.loadInternships(page);
+// }
 
-totalInternshipPages(): number {
-  return Math.ceil(this.totalInternships / this.internshipPageSize);
-}
+// totalInternshipPages(): number {
+//   return Math.ceil(this.totalInternships / this.internshipPageSize);
+// }
 
-  deleteJob(id: number) {
-    const confirmed = window.confirm('Are you sure you want to delete this job?');
+//   deleteJob(id: number) {
+//     const confirmed = window.confirm('Are you sure you want to delete this job?');
 
-  if (confirmed) {
-    this.employerService.deleteJob(id).subscribe(() => {
-      this.loadJobs();
-      this.snackBar.open('Job deleted successfully', 'Close', { duration: 3000 });
-    });
-  }
-  }
+//   if (confirmed) {
+//     this.employerService.deleteJob(id).subscribe(() => {
+//       this.loadJobs();
+//       this.snackBar.open('Job deleted successfully', 'Close', { duration: 3000 });
+//     });
+//   }
+//   }
 
-  deleteInternship(id: number) {
-    this.employerService.deleteInternship(id).subscribe(() => this.loadInternships());
-  }
+//   deleteInternship(id: number) {
+//     this.employerService.deleteInternship(id).subscribe(() => this.loadInternships());
+//   }
 
   public logout()
   {
