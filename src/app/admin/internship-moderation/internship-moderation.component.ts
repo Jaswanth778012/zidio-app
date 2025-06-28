@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class InternshipModerationComponent implements OnInit {
   internships: any[] = [];
-  displayedColumns = ['title','companyName','applicationDeadline', 'flagged', 'status', 'actions'];
+  displayedColumns = ['ID','title','companyName','applicationDeadline', 'flagged', 'status', 'actions'];
 
   constructor(private adminService: AdminService, private snackBar: MatSnackBar) {}
 

@@ -1,0 +1,78 @@
+<div class="container">
+  <h2>Create Interview</h2>
+
+  <form [formGroup]="interviewForm" (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label for="studentUserName">Student Username</label>
+      <input id="studentUserName" type="text" class="form-control" formControlName="studentUserName" />
+      <div *ngIf="submitted && interviewForm.get('studentUserName')?.invalid" class="text-danger">
+        Student username is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="jobId">Job ID (optional)</label>
+      <input id="jobId" type="number" class="form-control" formControlName="jobId" />
+    </div>
+
+    <div class="form-group">
+      <label for="internshipId">Internship ID (optional)</label>
+      <input id="internshipId" type="number" class="form-control" formControlName="internshipId" />
+    </div>
+
+    <div class="form-group">
+      <label for="interviewDate">Interview Date</label>
+      <input id="interviewDate" type="date" class="form-control" formControlName="interviewDate" />
+      <div *ngIf="submitted && interviewForm.get('interviewDate')?.invalid" class="text-danger">
+        Date is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="startTime">Start Time</label>
+      <input id="startTime" type="time" class="form-control" formControlName="startTime" />
+      <div *ngIf="submitted && interviewForm.get('startTime')?.invalid" class="text-danger">
+        Start time is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="endTime">End Time</label>
+      <input id="endTime" type="time" class="form-control" formControlName="endTime" />
+      <div *ngIf="submitted && interviewForm.get('endTime')?.invalid" class="text-danger">
+        End time is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="mode">Mode</label>
+      <select id="mode" class="form-control" formControlName="mode">
+        <option value="ONLINE">Online</option>
+        <option value="OFFLINE">Offline</option>
+      </select>
+      <div *ngIf="submitted && interviewForm.get('mode')?.invalid" class="text-danger">
+        Mode is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input id="location" type="text" class="form-control" formControlName="location" />
+      <div *ngIf="submitted && interviewForm.get('location')?.invalid" class="text-danger">
+        Location is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea id="notes" class="form-control" formControlName="notes" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Create Interview</button>
+  </form>
+
+  <div *ngIf="generatedMeetingLink" class="mt-4">
+    <strong>Meeting Link:</strong>
+    <a [href]="generatedMeetingLink" target="_blank">{{ generatedMeetingLink }}</a>
+  </div>
+</div>

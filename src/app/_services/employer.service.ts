@@ -5,6 +5,7 @@ import { Message, PaginatedMessageResponse } from '../_model/message.model';
 import { SendMessageRequest } from '../_model/message.model';
 import { EmployerProfile } from '../_model/employer-profile.model';
 import { Application } from '../_model/Application.model';
+import { Interview } from '../_model/Interview.model';
 
 
 @Injectable({
@@ -180,5 +181,36 @@ getAllApplications(): Observable<Application[]> {
   deleteApplication(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  downloadResume(id: number) {
+    return this.http.get(`${this.baseUrl}/resume/${id}`, {
+      responseType: 'blob' 
+    });
+  }
+  //Interviews Schedule
+   createInterview(interview: Interview): Observable<Interview> {
+    return this.http.post<Interview>(`${this.baseUrl}/interviews`, interview);
+  }
+
+  getAllInterviews(): Observable<Interview[]> {
+    return this.http.get<Interview[]>(`${this.baseUrl}/interviews`);
+  }
+
+  getInterviewsByEmployer(): Observable<Interview[]> {
+    return this.http.get<Interview[]>(`${this.baseUrl}/interviews/employer`);
+  }
+
+  getInterviewById(id: number): Observable<Interview> {
+    return this.http.get<Interview>(`${this.baseUrl}/interviews/${id}`);
+  }
+
+  updateInterview(id: number, interview: Interview): Observable<Interview> {
+    return this.http.put<Interview>(`${this.baseUrl}/interviews/${id}`, interview);
+  }
+
+  deleteInterview(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/interviews/${id}`, { responseType: 'text' });
+  }
+
 } 
 

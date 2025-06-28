@@ -1,9 +1,37 @@
-<!-- <div class="container-fluid py-4"> -->
-  
-  
+<div class="container-fluid py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h1 class="h3 mb-0">Employer Dashboard</h1>
+          <div class="d-flex align-items-center">
+            <span class="me-3">Welcome</span>
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="profileDropdown"
+                data-bs-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img [src]="profilePictureUrl" alt="Employer" class="rounded-circle me-2" width="32" height="32" />
+                <span>{{userName}}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <li><a class="dropdown-item" routerLink="/employer/employer-profile"><i
+                      class="bi bi-building me-2"></i>Company Settings</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Account Settings</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#" (click)="logout()"><i
+                      class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-  <!--<div class="row mb-4">
+
+  <!-- <div class="row mb-4">
     <div class="col-md-3 mb-4 mb-md-0">
       <div class="card bg-primary text-white shadow-sm h-100">
         <div class="card-body">
@@ -62,121 +90,258 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+        </div>
+        </div>
+        </div> -->
 
   <div class="row">
     <div class="col-lg-8 mb-4 mb-lg-0">
-      
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm mb-4 w-100">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Active Job Listings</h5>
-          <button class="btn btn-sm btn-success"><i class="bi bi-plus-lg me-1"></i>Post New Job</button>
+          <button class="btn btn-sm btn-success" routerLink="/employer/jobs"><i class="bi bi-plus-lg me-1"></i>Post New
+            Job</button>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
               <thead class="table-light">
                 <tr>
+                  <th scope="col">Job ID</th>
                   <th scope="col">Job Title</th>
-                  <th scope="col">Department</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Applications</th>
+                  <th scope="col">Company Name</th>
+                  <!-- <th scope="col">Status</th> -->
                   <th scope="col">Posted Date</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Applications</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Senior Software Engineer</td>
-                  <td>Engineering</td>
-                  <td>Remote</td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="me-2">24</span>
-                      <div class="progress flex-grow-1" style="height: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>May 10, 2023</td>
-                  <td><span class="badge bg-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary me-1" title="View Applications"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Edit"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" title="Remove"><i class="bi bi-trash"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>UX/UI Designer</td>
-                  <td>Design</td>
-                  <td>New York, NY</td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="me-2">18</span>
-                      <div class="progress flex-grow-1" style="height: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>May 12, 2023</td>
-                  <td><span class="badge bg-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary me-1" title="View Applications"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Edit"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" title="Remove"><i class="bi bi-trash"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Marketing Specialist</td>
-                  <td>Marketing</td>
-                  <td>Chicago, IL</td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="me-2">32</span>
-                      <div class="progress flex-grow-1" style="height: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>May 8, 2023</td>
-                  <td><span class="badge bg-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary me-1" title="View Applications"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Edit"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" title="Remove"><i class="bi bi-trash"></i></button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Data Analyst</td>
-                  <td>Analytics</td>
-                  <td>Remote</td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="me-2">13</span>
-                      <div class="progress flex-grow-1" style="height: 5px;">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>May 15, 2023</td>
-                  <td><span class="badge bg-warning">Draft</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-outline-primary me-1" title="View Applications"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-secondary me-1" title="Edit"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" title="Remove"><i class="bi bi-trash"></i></button>
-                  </td>
-                </tr>
+                <ng-container *ngFor="let jobId of groupedJobIds">
+                  <ng-container *ngIf="groupedApplications[jobId]?.applications?.length">
+                    <tr>
+                      <td>{{ jobId }}</td>
+                      <td>{{ groupedApplications[jobId].applications[0].job?.title }}</td>
+                      <td>{{ groupedApplications[jobId].applications[0].job?.companyName }}</td>
+                      <!-- <td>{{ groupedApplications[jobId].applications[0].status }}</td> -->
+                      <td>{{ groupedApplications[jobId].applications[0].timestamp | date }}</td>
+                      <td>{{ groupedApplications[jobId].applications.length }}</td>
+                      <td>
+                        <!-- <select [(ngModel)]="selectedStatus" class="form-select form-select-sm d-inline w-auto me-2">
+                                  <option>SHORTLISTED</option>
+                                  <option>PENDING</option>
+                                  <option>REJECTED</option>
+                                </select> -->
+                        <!-- <button class="btn btn-sm btn-outline-primary"
+                                  (click)="updateStatus(groupedApplications[jobId].applications[0].id)">
+                                  <i class="bi bi-arrow-repeat"></i>
+                                </button> -->
+                        <button class="btn btn-sm btn-outline-primary me-1" (click)="toggleJobApplications(jobId)">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger"
+                          (click)="deleteApplication(groupedApplications[jobId].applications[0].id)">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="expandedJobId === jobId">
+                      <td colspan="8" class="bg-light">
+                        <table class="table table-sm mb-0">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Student Username</th>
+                              <th>Status</th>
+                              <th>Applied Date</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let app of getPaginatedApplications(jobId)">
+                              <td>{{ app.student?.userName }}</td>
+                              <td>{{ app.status }}</td>
+                              <td>{{ app.appliedDate | date }}</td>
+                              <td>
+                                <select [(ngModel)]="selectedStatuses[app.id]"
+                                  class="form-select form-select-sm d-inline w-auto me-2">
+                                  <option>SHORTLISTED</option>
+                                  <option>PENDING</option>
+                                  <option>REJECTED</option>
+                                </select>
+                                <button class="btn btn-sm btn-outline-primary" (click)="updateStatus(app.id)">
+                                  <i class="bi bi-arrow-repeat"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-success ms-2" (click)="downloadResume(app.id)"
+                                  title="Download Resume">
+                                  <i class="bi bi-download"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteApplication(app.id)">
+                                  <i class="bi bi-trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-end align-items-center p-2">
+                          <button class="btn btn-sm btn-outline-secondary me-2" (click)="changePage(jobId, -1)"
+                            [disabled]="groupedApplications[jobId].currentPage === 1">
+                            Previous
+                          </button>
+                          <span class="small">
+                            Page {{ groupedApplications[jobId].currentPage }} of {{
+                            Math.ceil(groupedApplications[jobId].applications.length /
+                            groupedApplications[jobId].pageSize)
+                            }}
+                          </span>
+                          <button class="btn btn-sm btn-outline-secondary ms-2" (click)="changePage(jobId, 1)"
+                            [disabled]="groupedApplications[jobId].currentPage >=
+                        Math.ceil(groupedApplications[jobId].applications.length / groupedApplications[jobId].pageSize)">
+                            Next
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
               </tbody>
             </table>
+          </div>
+          <div class="d-flex justify-content-center align-items-center gap-3 p-3 border-top">
+            <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 1"
+              (click)="prevPage()">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === totalPages"
+              (click)="nextPage()">Next</button>
           </div>
         </div>
       </div>
 
-     
-      <div class="card shadow-sm">
+      <div class="col-lg-8 mb-4 mb-lg-0 w-100">
+        <div class="card shadow-sm w-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0">Active Internship Listings</h5>
+            <button class="btn btn-sm btn-success" routerLink="/employer/internships"><i
+                class="bi bi-plus-lg me-1"></i>Post New Internship</button>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">Internship ID</th>
+                    <th scope="col">Internship Title</th>
+                    <th scope="col">Company Name</th>
+                    <!-- <th scope="col">Status</th> -->
+                    <th scope="col">Posted Date</th>
+                    <th scope="col">Applications</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let internshipId of groupedInternshipIds">
+                    <ng-container *ngIf="groupedInternshipApplications[internshipId].applications?.length">
+                      <tr>
+                        <td>{{ internshipId }}</td>
+                        <td>{{ groupedInternshipApplications[internshipId].applications[0].internship?.title }}</td>
+                        <td>{{ groupedInternshipApplications[internshipId].applications[0].internship?.companyName }}
+                        </td>
+                        <!-- <td>{{ groupedInternshipApplications[internshipId].applications[0].status }}</td> -->
+                        <td>{{ groupedInternshipApplications[internshipId].applications[0].timestamp | date }}</td>
+                        <td>{{ groupedInternshipApplications[internshipId].applications.length }}</td>
+                        <td>
+                          <!--<select [(ngModel)]="selectedStatus" class="form-select form-select-sm d-inline w-auto me-2">
+                            <option>SHORTLISTED</option>
+                            <option>PENDING</option>
+                            <option>REJECTED</option>
+                          </select>
+                          <button class="btn btn-sm btn-outline-primary"
+                            (click)="updateStatus(groupedInternshipApplications[internshipId].applications[0].id)">
+                            <i class="bi bi-arrow-repeat"></i>
+                          </button> -->
+                          <button class="btn btn-sm btn-outline-primary me-1"
+                            (click)="toggleInternshipApplications(internshipId)">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger"
+                            (click)="deleteApplication(groupedInternshipApplications[internshipId].applications[0].id)">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="expandedinternshipId === internshipId">
+                        <td colspan="8" class="bg-light">
+                          <table class="table table-sm mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Student Username</th>
+                                <th>Status</th>
+                                <th>Applied Date</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let app of getPaginatedApplicationsi(internshipId)">
+                                <td>{{ app.student?.userName }}</td>
+                                <td>{{ app.status }}</td>
+                                <td>{{ app.appliedDate | date }}</td>
+                                <td>
+                                  <select [(ngModel)]="selectedStatuses[app.id]"
+                                    class="form-select form-select-sm d-inline w-auto me-2">
+                                    <option>SHORTLISTED</option>
+                                    <option>PENDING</option>
+                                    <option>REJECTED</option>
+                                  </select>
+                                  <button class="btn btn-sm btn-outline-primary" (click)="updateStatus(app.id)">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                  </button>
+                                  <button class="btn btn-sm btn-outline-success ms-2" (click)="downloadResume(app.id)"
+                                    title="Download Resume">
+                                    <i class="bi bi-download"></i>
+                                  </button>
+                                  <button class="btn btn-sm btn-outline-danger" (click)="deleteApplication(app.id)">
+                                    <i class="bi bi-trash"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div class="d-flex justify-content-end align-items-center p-2">
+                            <button class="btn btn-sm btn-outline-secondary me-2" (click)="changePage(internshipId, -1)"
+                              [disabled]="groupedInternshipApplications[internshipId].currentPage === 1">
+                              Previous
+                            </button>
+                            <span class="small">
+                              Page {{ groupedInternshipApplications[internshipId].currentPage }} of {{
+                              Math.ceil(groupedInternshipApplications[internshipId].applications.length /
+                              groupedInternshipApplications[internshipId].pageSize)
+                              }}
+                            </span>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" (click)="changePage(internshipId, 1)"
+                              [disabled]="groupedInternshipApplications[internshipId].currentPage >=
+                                          Math.ceil(groupedInternshipApplications[internshipId].applications.length / groupedInternshipApplications[internshipId].pageSize)">
+                              Next
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </tbody>
+              </table>
+              <div class="d-flex justify-content-center align-items-center gap-3 p-3 border-top">
+                <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 1"
+                  (click)="prevPage1()">Previous</button>
+                <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === totalPages"
+                  (click)="nextPage1()">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Recent Applications</h5>
           <button class="btn btn-sm btn-primary">View All Applications</button>
@@ -242,57 +407,92 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4">
-     
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-          <h5 class="mb-0">Upcoming Interviews</h5>
-          <button class="btn btn-sm btn-outline-primary">Schedule New</button>
         </div>
-        <div class="card-body p-0">
-          <div class="list-group list-group-flush">
-            <div class="list-group-item p-3">
-              <div class="d-flex">
-                <div class="bg-light rounded text-center p-2 me-3" style="min-width: 45px;">
-                  <div class="fw-bold">18</div>
-                  <div class="small text-muted">May</div>
-                </div>
-                <div>
-                  <h6 class="mb-1">Alex Johnson - Senior Software Engineer</h6>
-                  <p class="small text-muted mb-0"><i class="bi bi-clock me-1"></i> 10:00 AM - 11:00 AM</p>
-                  <p class="small text-muted mb-0"><i class="bi bi-people me-1"></i> Technical Interview with Dev Team</p>
-                  <div class="mt-2">
-                    <button class="btn btn-sm btn-outline-secondary me-1">Reschedule</button>
-                    <button class="btn btn-sm btn-outline-info">Join Meeting</button>
-                  </div>
-                </div>
-              </div>
+        </div>
+
+        
+        <div class="col-lg-4">
+          <div class="card shadow-sm mb-5">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+              <h5 class="mb-0">Upcoming Interviews</h5>
+              <button class="btn btn-sm btn-outline-primary" routerLink="/employer/interview">Schedule New</button>
             </div>
-            <div class="list-group-item p-3">
-              <div class="d-flex">
-                <div class="bg-light rounded text-center p-2 me-3" style="min-width: 45px;">
-                  <div class="fw-bold">19</div>
-                  <div class="small text-muted">May</div>
-                </div>
-                <div>
-                  <h6 class="mb-1">Maria Garcia - UX/UI Designer</h6>
-                  <p class="small text-muted mb-0"><i class="bi bi-clock me-1"></i> 2:00 PM - 3:00 PM</p>
-                  <p class="small text-muted mb-0"><i class="bi bi-people me-1"></i> Portfolio Review</p>
-                  <div class="mt-2">
-                    <button class="btn btn-sm btn-outline-secondary me-1">Reschedule</button>
-                    <button class="btn btn-sm btn-outline-info">Join Meeting</button>
+
+            <div class="card-body p-0">
+              <div class="list-group list-group-flush">
+                <div class="list-group-item p-3" *ngFor="let interview of interviews">
+                  <div class="d-flex">
+                    <!-- Left date box -->
+                    <div class="bg-light rounded text-center p-2 me-3" style="min-width: 45px;">
+                      <div class="fw-bold">{{ interview.interviewDate | date: 'dd' }}</div>
+                      <div class="small text-muted">{{ interview.interviewDate | date: 'MMM' }}</div>
+                    </div>
+
+                    <!-- Interview details -->
+                    <div>
+                      <h6 class="mb-1">{{ interview.student.userName }}
+                        <span *ngIf="interview.job">- {{ interview.job.title }}</span>
+
+                      </h6>
+                      <p class="small text-muted mb-0">
+                        <i class="bi bi-clock me-1"></i>
+                        {{ interview.startTime }} - {{ interview.endTime }}
+                      </p>
+                      <p class="small text-muted mb-0">
+                        <i class="bi bi-people me-1"></i>
+                        {{ interview.notes || 'No notes provided' }}
+                      </p>
+                       <p class="small text-muted mb-0">
+                        <i class="bi bi-check-circle me-1"></i>
+                        {{ interview.status || 'No status provided' }}
+                      </p>
+
+                      <!-- Action buttons -->
+                      <div class="mt-2">
+                        <button class="btn btn-sm btn-outline-secondary me-1"
+                          [routerLink]="['/employer/interview-update', interview.id]">Reschedule</button>
+                        <a *ngIf="interview.meetingLink" class="btn btn-sm btn-outline-info"
+                          [href]="interview.meetingLink" target="_blank">Join Meeting</a>
+                        <button class="btn btn-sm btn-outline-danger ms-1"
+                          (click)="deleteInterview(interview.id!)">Cancel</button>
+                        <button class="btn btn-sm btn-outline-dark ms-1" (click)="getInterviewById(interview.id!)"><i
+                            class="bi bi-eye"></i></button>
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                <div *ngIf="interviews.length === 0" class="list-group-item text-center p-4 text-muted">
+                  No upcoming interviews scheduled.
                 </div>
               </div>
             </div>
           </div>
+          <!-- Selected interview display -->
+          <div *ngIf="selectedinterview" class="card mt-3 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Interview Details</h5>
+                <button class="btn btn-sm btn-outline-danger" (click)="selectedinterview = undefined">Close</button>
+              </div>
+              <hr>
+              <p><strong>Student:</strong> {{ selectedinterview.student.userName }}</p>
+              <p><strong>Date:</strong> {{ selectedinterview.interviewDate }}</p>
+              <p><strong>Time:</strong> {{ selectedinterview.startTime }} - {{ selectedinterview.endTime }}</p>
+              <p><strong>Mode:</strong> {{ selectedinterview.mode }}</p>
+              <p><strong>Location:</strong> {{ selectedinterview.location }}</p>
+              <p><strong>Notes:</strong> {{ selectedinterview.notes }}</p>
+              <p *ngIf="selectedinterview.meetingLink">
+                <strong>Meeting Link:</strong>
+                <a [href]="selectedinterview.meetingLink" target="_blank">{{ selectedinterview.meetingLink }}</a>
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
 
-     
+
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-white py-3">
           <h5 class="mb-0">Quick Actions</h5>
@@ -300,7 +500,8 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-6">
-              <a href="#" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3">
+              <a href="#" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3"
+                routerLink="/employer/jobs">
                 <i class="bi bi-briefcase fs-4 mb-2"></i>
                 <span>Post Job</span>
               </a>
@@ -308,11 +509,12 @@
             <div class="col-6">
               <a href="#" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3">
                 <i class="bi bi-search fs-4 mb-2"></i>
-                <span>Search Candidates</span>
+                <span>Post Internship</span>
               </a>
             </div>
             <div class="col-6">
-              <a href="#" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3">
+              <a href="#" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3"
+                routerLink="/employer/interview">
                 <i class="bi bi-calendar-plus fs-4 mb-2"></i>
                 <span>Schedule Interview</span>
               </a>
@@ -327,8 +529,8 @@
         </div>
       </div>
 
-      
-      <div class="card shadow-sm">
+
+             <div class="card shadow-sm">
         <div class="card-header bg-white py-3">
           <h5 class="mb-0">Hiring Pipeline</h5>
         </div>
@@ -389,275 +591,6 @@
           </div>
         </div>
       </div>
+
+
     </div>
-  </div>
-</div> -->
-<div class="container-fluid py-4">
-
-  <div class="row mb-4">
-    <div class="col-12">
-      <div class="card shadow-sm">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <h1 class="h3 mb-0">Employer Dashboard</h1>
-          <div class="d-flex align-items-center">
-            <span class="me-3">Welcome</span>
-            <div class="dropdown">
-              <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="profileDropdown" data-bs-toggle="dropdown"
-               data-bs-toggle="dropdown" aria-expanded="false">
-                <img [src]="profilePictureUrl" alt="Employer" class="rounded-circle me-2" width="32" height="32" />
-                <span>{{userName}}</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item" routerLink="/employer/employer-profile"><i class="bi bi-building me-2"></i>Company Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Account Settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- <h2>Job Postings</h2>
-  <form [formGroup]="jobForm" (ngSubmit)="editJob ? updateJob(editJob.id) : createJob()" class="styled-form" enctype="multipart/form-data">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" required></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Location</mat-label>
-      <input matInput formControlName="location" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Skills Required</mat-label>
-      <input matInput formControlName="skillsRequired" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Salary</mat-label>
-      <input matInput formControlName="salary" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Start Date</mat-label>
-      <input matInput formControlName="startDate" type="date" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Application Deadline</mat-label>
-      <input matInput formControlName="applicationDeadline" type="datetime-local" />
-      <mat-hint>Format: DD-MM-YYYY HH:MM</mat-hint>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Company Name</mat-label>
-      <input matInput formControlName="companyName" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>About Company</mat-label>
-      <textarea matInput formControlName="aboutCompany"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Number of Openings</mat-label>
-      <input matInput formControlName="numberOfOpenings" type="number" min="1" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Eligibility</mat-label>
-      <input matInput formControlName="eligibility" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Perks</mat-label>
-      <input matInput formControlName="perks" />
-    </mat-form-field>
-
-    <input type="file" (change)="onJobFileChange($event)" accept="image/*" />
-    <button mat-raised-button color="primary" type="submit">
-      {{ editJob ? 'Update Job' : 'Add Job' }}
-    </button>
-    <button *ngIf="editJob" mat-button type="button" (click)="editJob = null; jobForm.reset(); selectedJobFile = null;">
-      Cancel Edit
-    </button>
-  </form>
-
-
-
-
-    <h3>Current Jobs</h3>
-     <input
-  type="text"
-  placeholder="Search jobs..."
-  [(ngModel)]="searchTerm"
-  (input)="onSearchChange()"
-  class="search-input"
-/>
-<div *ngFor="let job of jobs" class="job-card">
-  <div class="job-header">
-    <h4>{{ job.title }}</h4>
-    <div class="job-actions">
-      <button mat-icon-button color="primary" (click)="editJobForm(job)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="deleteJob(job.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </div>
-  <img [src]="'http://localhost:8080'+job.companyLogo" alt="Company Logo" width="100" />
-
-  <p><strong>Description:</strong> {{ job.description }}</p>
-  <p><strong>Location:</strong> {{ job.location }}</p>
-  <p><strong>Company:</strong> {{ job.companyName }}</p>
-  <p><strong>Start Date:</strong> {{ job.startDate | date }}</p>
-  <p><strong>Application Deadline:</strong> {{ job.applicationDeadline | date:'short' }}</p>
-  <p><strong>Number of Openings:</strong> {{ job.numberOfOpenings }}</p>
-  <p><strong>Job Status: </strong>{{job.status}}</p>
-</div>
-
-
-<div class="pagination-controls">
-  <button mat-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
-  <span>Page {{ currentPage }} of {{ totalPages() }}</span>
-  <button mat-button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages()">Next</button>
-</div>
-
-  <hr />
-
-  <h2>Internship Postings</h2>
-  <form [formGroup]="internshipForm" (ngSubmit)="editInternship ? updateInternship(editInternship.id) : createInternship()" class="styled-form" enctype="multipart/form-data">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" required></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Location</mat-label>
-      <input matInput formControlName="location" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Duration</mat-label>
-      <input matInput formControlName="duration" placeholder="e.g. 3 months" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Stipend</mat-label>
-      <input matInput formControlName="stipend" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Application Deadline</mat-label>
-      <input matInput formControlName="applicationDeadline" type="datetime-local" />
-      <mat-hint>Format: DD-MM-YYYY HH:MM</mat-hint>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Start Date</mat-label>
-      <input matInput formControlName="startDate" type="date" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Company Name</mat-label>
-      <input matInput formControlName="companyName" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>About Company</mat-label>
-      <textarea matInput formControlName="aboutCompany"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Number of Openings</mat-label>
-      <input matInput formControlName="numberOfOpenings" type="number" min="1" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Eligibility</mat-label>
-      <input matInput formControlName="eligibility" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Perks</mat-label>
-      <input matInput formControlName="perks" />
-    </mat-form-field>
-
-    <input type="file" (change)="onInternshipFileChange($event)" accept="image/*" />
-    <button mat-raised-button color="primary" type="submit">
-      {{ editInternship ? 'Update Internship' : 'Add Internship' }}
-    </button>
-    <button *ngIf="editInternship" mat-button type="button" (click)="editInternship = null; internshipForm.reset(); selectedInternshipFile = null;">
-      Cancel Edit
-    </button>
-  </form>
-
-  <h3 class="section-heading">Current Internships</h3>
-  <input
-  type="text"
-  placeholder="Search internships..."
-  [(ngModel)]="internshipSearchTerm"
-  (input)="onInternshipSearchChange()"
-  class="search-input"
-/>
-<div *ngFor="let internship of internships" class="job-card mat-elevation-z2">
-  <div class="job-header">
-    <h4>{{ internship.title }}</h4>
-    <div class="job-actions">
-      <button mat-icon-button color="primary" (click)="editInternshipForm(internship)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="deleteInternship(internship.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </div>
-  <img [src]="'http://localhost:8080'+internship.companyLogo" alt="Company Logo" width="100" />
-  <p><strong>Description:</strong> {{ internship.description }}</p>
-  <p><strong>Location:</strong> {{ internship.location }}</p>
-  <p><strong>Company:</strong> {{ internship.companyName }}</p>
-  <p><strong>Duration:</strong> {{ internship.duration }}</p>
-  <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
-  <p><strong>Start Date:</strong> {{ internship.startDate | date }}</p>
-  <p><strong>Internship status:</strong>{{internship.status}}</p>
-</div>
-
-
-<div class="pagination-controls">
-  <button mat-button (click)="goToInternshipPage(currentInternshipPage - 1)" [disabled]="currentInternshipPage === 1">Prev</button>
-  <span>Page {{ currentInternshipPage }} of {{ totalInternshipPages() }}</span>
-  <button mat-button (click)="goToInternshipPage(currentInternshipPage + 1)" [disabled]="currentInternshipPage === totalInternshipPages()">Next</button>
-</div> -->
-<div class="row">
-        <div class="col-md-4">
-        <!-- <h2>Student message</h2>
-        <p>Manage users, courses, and more.</p> -->
-        <button class="btn btn-primary" routerLink="/employer/jobs">Jobs</button>
-        </div>
-    
-        <div class="col-md-4">
-        <!-- <h2>Student Dashboard</h2>
-        <p>Access your courses and track your progress.</p> -->
-        <button class="btn btn-primary" routerLink="/employer/internships">internships</button>
-        </div>
-    
-    </div>
-
-</div>

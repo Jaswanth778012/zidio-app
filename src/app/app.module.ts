@@ -73,6 +73,10 @@ import { EmployerProfileComponent } from './employer/employer-profile/employer-p
 import { StudentcomposeComponent } from './user/studentcompose/studentcompose.component';
 import { StudentsentComponent } from './user/studentsent/studentsent.component';
 import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
+import { InterviewComponent } from './employer/interview/interview.component';
+import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
+
+
 
 @NgModule({
   declarations: [
@@ -113,6 +117,9 @@ import { StudentmessageComponent } from './user/studentmessage/studentmessage.co
     StudentcomposeComponent,
     StudentsentComponent,
     StudentmessageComponent,
+    InterviewComponent,
+    InterviewUpdateComponent,
+   
 
 
 
@@ -150,8 +157,6 @@ import { StudentmessageComponent } from './user/studentmessage/studentmessage.co
     MatDialogModule,
     MatMenuModule,
     MatTooltipModule
-    
-    
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { UserAuthService } from '../_services/user-auth.service';
@@ -14,10 +14,14 @@ export class LoginComponent implements OnInit {
     loginError: string = '';
   isLoading: boolean = false;
   showPassword = false;
-  constructor(public userService: UserService, private userAuthService: UserAuthService, private router: Router) { }
+
+  private clientId = '181632395519-odqfq1ej324o6knjpms32sug8mlm2tcg.apps.googleusercontent.com';
+
+  constructor(public userService: UserService, private userAuthService: UserAuthService, private router: Router,private ngZone: NgZone) { }
 
   ngOnInit(): void {
     // Initialization logic here
+    // this.initializeGoogleSignIn();
   }
 
 
@@ -86,4 +90,38 @@ export class LoginComponent implements OnInit {
   toggleShowPassword(): void {
   this.showPassword = !this.showPassword;
 }
+
+// initializeGoogleSignIn() {
+//     // Wait for the Google API to load
+//     window.onload = () => {
+//       // @ts-ignore
+//       google.accounts.id.initialize({
+//         client_id: this.clientId,
+//         callback: (response: any) => this.handleCredentialResponse(response),
+//       });
+
+//       // Render the Google Sign-In button
+//       // @ts-ignore
+//       google.accounts.id.renderButton(
+//         document.getElementById('google-signin-button'),
+//         { theme: 'outline', size: 'large' }  // customization
+//       );
+
+//       // Optionally prompt the user to select account
+//       // @ts-ignore
+//       google.accounts.id.prompt();
+//     };
+//   }
+
+//   handleCredentialResponse(response: any) {
+//     // This function is called after the user signs in successfully
+//     // response.credential is the JWT token you can send to your backend
+//     this.ngZone.run(() => {
+//       console.log('Encoded JWT ID token: ' + response.credential);
+
+//       // Decode token or send it to backend for verification and user login
+//       // Example: send token to your API
+//       this.router.navigate(['/student'])
+//     });
+//   }
 }

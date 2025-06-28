@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="navbar">
+<!-- <mat-toolbar color="primary" class="navbar">
   <button mat-icon-button (click)="sidenav.toggle()" class="menu-button" *ngIf="!isDesktop &&!isLoggedIn()"> 
     <mat-icon>menu</mat-icon>
     </button>
@@ -7,6 +7,14 @@
     <mat-icon>menu</mat-icon>
   </button>
 </div>
+<button
+  *ngIf="userService.roleMatch(['Employer']) && isDesktop"
+  mat-icon-button
+  (click)="employerSidenav.toggle()"
+>
+  <mat-icon>menu</mat-icon>
+</button>
+
 <div class="overlay" *ngIf="!isDesktop && sidebarOpen" (click)="toggleSidebar()"></div>
  
 <nav class="sidebar" [@sidebarState]="sidebarOpen ? 'open' : 'closed'"*ngIf="userService.roleMatch(['Admin'])">
@@ -95,15 +103,17 @@
   <button mat-raised-button color="primary" routerLink="/about" style="margin-right: 10px;">About</button>
   <button mat-raised-button color="primary" routerLink="/contact"style="margin-right: 10px;">Contact</button>
   <button *ngIf="isDesktop && !isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
-  <!-- <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button> -->
+  <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
 </mat-toolbar>
+
+
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="side" class="sidenav">
     <button mat-button routerLink="/">Home</button>
     <button mat-button routerLink="/internships">Internships</button>
     <button mat-button routerLink="/jobs">Jobs</button>
-    <!-- <button mat-button routerLink="/about">About</button>
-    <button mat-button routerLink="/contact">Contact</button>-->
+    <button mat-button routerLink="/about">About</button>
+    <button mat-button routerLink="/contact">Contact</button>
     <button *ngIf="!isLoggedIn()" routerLink="/login" mat-button>Login</button>
     <button *ngIf="isLoggedIn()" (click)="logout()" mat-button>Logout</button>
     <button mat-button *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>
@@ -113,8 +123,173 @@
     <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer/sent">Employer Message</button>
     <button mat-button *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer/messages">Employer Message</button>
   </mat-sidenav>
+
+    <mat-sidenav
+    #employerSidenav
+    *ngIf="userService.roleMatch(['Employer']) && isDesktop"
+    mode="side"
+    [(opened)]="sidebarOpen"
+    class="sidenav"
+  >
+    <button mat-button routerLink="/employer">Dashboard</button>
+    <button mat-button routerLink="/employer/compose">Compose Message</button>
+    <button mat-button routerLink="/employer/messages">Messages</button>
+    <button mat-button routerLink="/employer/sent">Sent</button>
+    <button mat-button routerLink="/employer/jobs">Manage Jobs</button>
+    <button mat-button routerLink="/employer/internships">Manage Internships</button>
+    <button mat-button routerLink="/submit-report">Submit Report</button>
+  </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+ -->
 
+ <mat-toolbar color="primary" class="navbar">
+  <!-- Hamburger (Mobile only) -->
+  <button mat-icon-button (click)="toggleSidebar()" class="menu-button" *ngIf="!isDesktop && !isLoggedIn()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Admin Toggle (Desktop) -->
+  <button *ngIf="isDesktop && userService.roleMatch(['Admin'])" mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Employer Toggle (Desktop) -->
+  <button *ngIf="isDesktop && userService.roleMatch(['Employer'])" mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Logo -->
+  <span style="margin-left: 10px;" class="logo">
+    <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+    Zidio-Connect
+  </span>
+
+  <!-- Top nav links (optional desktop only) -->
+  <div class="topbar" *ngIf="isDesktop && !isSmallScreen">
+    <button mat-raised-button routerLink="/" color="primary">Home</button>
+    <button mat-raised-button color="primary" routerLink="/internships">Internships</button>
+    <button mat-raised-button color="primary" routerLink="/jobs">Jobs</button>
+    <button mat-raised-button color="accent" *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>
+    <button mat-raised-button color="accent" *ngIf="userService.roleMatch(['Student'])" routerLink="/student">Student Dashboard</button>
+    <button mat-raised-button color="accent" *ngIf="userService.roleMatch(['Employer'])" routerLink="/employer">Employer Dashboard</button>
+  </div>
+
+  <span class="space-buttons"></span>
+
+  <!-- Right-side buttons -->
+  <button mat-raised-button color="primary" routerLink="/about">About</button>
+  <button mat-raised-button color="primary" routerLink="/contact">Contact</button>
+  <button *ngIf="isDesktop && !isLoggedIn()" routerLink="/login" mat-raised-button color="accent">Login</button>
+  <button *ngIf="isDesktop && isLoggedIn()" (click)="logout()" mat-raised-button color="warn">Logout</button>
+</mat-toolbar>
+
+<!-- Sidenav Container -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    class="sidenav"
+    [(opened)]="sidebarOpen"
+  >
+    <!-- Common Links -->
+    
+    <button mat-button routerLink="/"><mat-icon>home</mat-icon>Home</button>
+    <button mat-button routerLink="/internships"><mat-icon>school</mat-icon>Internships</button>
+    <button mat-button routerLink="/jobs"><mat-icon>work</mat-icon>Jobs</button>
+
+   
+    <button *ngIf="!isLoggedIn()" routerLink="/login" mat-button><mat-icon>login</mat-icon>Login</button>
+    <button *ngIf="isLoggedIn()" (click)="logout()" mat-button><mat-icon>logout</mat-icon>Logout</button>
+      
+    <!-- Admin Links -->
+    <ng-container *ngIf="userService.roleMatch(['Admin'])">
+      <button mat-button routerLink="/admin"><mat-icon>dashboard</mat-icon>Dashboard</button>
+      <button mat-button routerLink="/admin/users">
+        <mat-icon>supervisor_account</mat-icon>User Management
+      </button>
+      <button mat-button routerLink="/admin/employers">
+        <mat-icon>business_center</mat-icon>Employer Management
+      </button>
+      <button mat-button routerLink="/admin/students">
+        <mat-icon>school</mat-icon>Student Management
+      </button>
+      <button mat-button routerLink="/admin/courses">
+        <mat-icon>book</mat-icon>Manage Courses
+      </button>
+      <button mat-button routerLink="/admin/internships">
+        <mat-icon>school</mat-icon>Internship Moderation
+      </button>
+      <button mat-button routerLink="/admin/jobs">
+        <mat-icon>work</mat-icon>Job Moderation
+      </button>
+      <button mat-button routerLink="/admin/notifications">
+        <mat-icon
+          matBadge="{{ unreadCount }}"
+          matBadgeColor="warn"
+          [matBadgeHidden]="unreadCount === 0"
+          matBadgeOverlap="false"
+        >
+          notifications
+        </mat-icon>
+        <span>Notifications</span>
+      </button>
+
+      <!-- Messages Menu -->
+      <button mat-button [matMenuTriggerFor]="messagesMenu">
+        <mat-icon>mail</mat-icon>Messages<mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #messagesMenu="matMenu">
+        <button mat-menu-item routerLink="/admin/compose">
+          <mat-icon>edit</mat-icon>Compose
+        </button>
+        <button mat-menu-item routerLink="/admin/inbox">
+          <mat-icon>inbox</mat-icon>Inbox
+        </button>
+        <button mat-menu-item routerLink="/admin/sent">
+          <mat-icon>send</mat-icon>Sent
+        </button>
+      </mat-menu>
+
+      <button mat-button routerLink="/admin/reports">
+        <mat-icon>report</mat-icon>Reports & Feedback
+      </button>
+      <button mat-button routerLink="/submit-report">
+        <mat-icon>feedback</mat-icon>Submit Report
+      </button>
+    </ng-container>
+
+    <!-- Employer Links -->
+    <ng-container *ngIf="userService.roleMatch(['Employer'])">
+      <button mat-button routerLink="/employer"><mat-icon>dashboard</mat-icon>Dashboard</button>
+      <button mat-button [matMenuTriggerFor]="messagesMenu">
+        <mat-icon>mail</mat-icon>Messages<mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #messagesMenu="matMenu">
+        <button mat-menu-item routerLink="/employer/compose">
+          <mat-icon>edit</mat-icon>Compose
+        </button>
+        <button mat-menu-item routerLink="/employer/inbox">
+          <mat-icon>inbox</mat-icon>Inbox
+        </button>
+        <button mat-menu-item routerLink="/employer/sent">
+          <mat-icon>send</mat-icon>Sent
+        </button>
+      </mat-menu>
+      <button mat-button routerLink="/employer/jobs"><mat-icon>work</mat-icon>Manage Jobs</button>
+      <button mat-button routerLink="/employer/internships"><mat-icon>school</mat-icon>Manage Internships</button>
+      <button mat-button routerLink="/submit-report"><mat-icon>feedback</mat-icon>Submit Report</button>
+    </ng-container>
+
+    <!-- Student Links -->
+    <ng-container *ngIf="userService.roleMatch(['Student'])">
+      <button mat-button routerLink="/student">Dashboard</button>
+    </ng-container>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

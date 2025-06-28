@@ -6,4 +6,5 @@ export interface Application {
   status: string;
   appliedDate: string;
   resumeUrl: string;
+  timestamp: string;
 }

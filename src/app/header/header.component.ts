@@ -24,7 +24,8 @@ export class HeaderComponent implements OnInit {
   isDesktop = true;
    unreadCount: number = 0;
      @ViewChild('sidenav') sidenav!: MatSidenav;
-  
+    @ViewChild('employerSidenav') employerSidenav!: MatSidenav;
+
     @HostListener('window:resize', [])
     onResize() {
       this.isDesktop = window.innerWidth > 768;

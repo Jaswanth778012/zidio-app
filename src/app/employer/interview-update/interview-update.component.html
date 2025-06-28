@@ -1,0 +1,65 @@
+<div class="container">
+  <h2>Update Interview</h2>
+
+  <form [formGroup]="interviewForm" (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label>Student Username</label>
+      <input class="form-control" formControlName="studentUserName" />
+      <div *ngIf="submitted && interviewForm.get('studentUserName')?.invalid" class="text-danger">
+        Student username is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Job ID</label>
+      <input type="number" class="form-control" formControlName="jobId" />
+    </div>
+
+    <div class="form-group">
+      <label>Internship ID</label>
+      <input type="number" class="form-control" formControlName="internshipId" />
+    </div>
+
+    <div class="form-group">
+      <label>Interview Date</label>
+      <input type="date" class="form-control" formControlName="interviewDate" />
+    </div>
+
+    <div class="form-group">
+      <label>Start Time</label>
+      <input type="time" class="form-control" formControlName="startTime" />
+    </div>
+
+    <div class="form-group">
+      <label>End Time</label>
+      <input type="time" class="form-control" formControlName="endTime" />
+    </div>
+
+    <div class="form-group">
+      <label>Mode</label>
+      <select class="form-control" formControlName="mode">
+        <option value="ONLINE">Online</option>
+        <option value="OFFLINE">Offline</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Location</label>
+      <input class="form-control" formControlName="location" />
+    </div>
+
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea class="form-control" rows="3" formControlName="notes"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Update Interview</button>
+  </form>
+
+
+  <div *ngIf="generatedMeetingLink" class="mt-4">
+    <strong>Meeting Link:</strong> 
+    <a [href]="generatedMeetingLink" target="_blank">{{ generatedMeetingLink }}</a>
+  </div>
+</div>
+
