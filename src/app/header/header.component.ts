@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
 
     @HostListener('window:resize', [])
     onResize() {
-      this.isDesktop = window.innerWidth > 768;
+      this.isDesktop = window.innerWidth > 600;
       if (!this.isDesktop) {
         this.sidebarOpen = false;
       }

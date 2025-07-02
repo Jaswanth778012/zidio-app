@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployerService } from '../../_services/employer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -28,13 +28,16 @@ searchTerm: string='';
     this.jobForm = this.fb.group({
       title: [''], description: [''], location: [''], skillsRequired: [''],
       salary: [''], startDate: [''], applicationDeadline: [''], companyName: [''],
-      aboutCompany: [''], numberOfOpenings: [''], eligibility: [''], perks: ['']
+      aboutCompany: [''], numberOfOpenings: [''], eligibility: [''], perks: [''],jobType: ['FULL_TIME', Validators.required],   // default value
+  jobMode: ['ONSITE', Validators.required],  
     });
   }
 
   onJobFileChange(event: any) {
     this.selectedJobFile = event.target.files[0];
   }
+
+  
 
   createJob() {
     if (this.selectedJobFile) {

@@ -195,15 +195,17 @@
     [(opened)]="sidebarOpen"
   >
     <!-- Common Links -->
-    
-    <button mat-button routerLink="/"><mat-icon>home</mat-icon>Home</button>
+    <ng-container *ngIf="isSmallScreen">
+    <button mat-button routerLink="/" routerLinkActive="active-link"><mat-icon>home</mat-icon>Home</button>
     <button mat-button routerLink="/internships"><mat-icon>school</mat-icon>Internships</button>
     <button mat-button routerLink="/jobs"><mat-icon>work</mat-icon>Jobs</button>
 
    
     <button *ngIf="!isLoggedIn()" routerLink="/login" mat-button><mat-icon>login</mat-icon>Login</button>
     <button *ngIf="isLoggedIn()" (click)="logout()" mat-button><mat-icon>logout</mat-icon>Logout</button>
-      
+    </ng-container>
+
+
     <!-- Admin Links -->
     <ng-container *ngIf="userService.roleMatch(['Admin'])">
       <button mat-button routerLink="/admin"><mat-icon>dashboard</mat-icon>Dashboard</button>
@@ -252,7 +254,6 @@
           <mat-icon>send</mat-icon>Sent
         </button>
       </mat-menu>
-
       <button mat-button routerLink="/admin/reports">
         <mat-icon>report</mat-icon>Reports & Feedback
       </button>
@@ -271,7 +272,7 @@
         <button mat-menu-item routerLink="/employer/compose">
           <mat-icon>edit</mat-icon>Compose
         </button>
-        <button mat-menu-item routerLink="/employer/inbox">
+        <button mat-menu-item routerLink="/employer/messages">
           <mat-icon>inbox</mat-icon>Inbox
         </button>
         <button mat-menu-item routerLink="/employer/sent">
@@ -280,6 +281,8 @@
       </mat-menu>
       <button mat-button routerLink="/employer/jobs"><mat-icon>work</mat-icon>Manage Jobs</button>
       <button mat-button routerLink="/employer/internships"><mat-icon>school</mat-icon>Manage Internships</button>
+      <button mat-button routerLink="/employer/interviews"><mat-icon>video_call</mat-icon>Manage Interviews</button>
+      <button mat-button routerLink="/employer/applications"><mat-icon>assignment</mat-icon>Manage Applications</button>
       <button mat-button routerLink="/submit-report"><mat-icon>feedback</mat-icon>Submit Report</button>
     </ng-container>
 

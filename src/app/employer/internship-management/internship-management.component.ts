@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployerService } from '../../_services/employer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -32,7 +32,8 @@ internshipSearchTerm: string = '';
     this.internshipForm = this.fb.group({
       title: [''], description: [''], location: [''], duration: [''], stipend: [''],
       applicationDeadline: [''], startDate: [''], companyName: [''], aboutCompany: [''],
-      numberOfOpenings: [''], eligibility: [''], perks: ['']
+      numberOfOpenings: [''], eligibility: [''], perks: [''], internshipType: ['FULL_TIME', Validators.required],
+      internshipMode: ['ONSITE', Validators.required] // default value
     });
   }
 

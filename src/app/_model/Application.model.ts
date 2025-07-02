@@ -1,5 +1,5 @@
 export interface Application {
-    id: number;
+  id: number;
   job?: any;
   internship?: any;
   student?: any;
@@ -7,4 +7,13 @@ export interface Application {
   appliedDate: string;
   resumeUrl: string;
   timestamp: string;
+  studentProfilePicture?: StudentProfilePicture;
 }
+
+export interface StudentProfilePicture{
+  profilePictureUrl?: string;
+  userFirstName: string;
+  userLastName: string;
+  username: string;
+}
+

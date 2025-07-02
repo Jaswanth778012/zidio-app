@@ -161,6 +161,10 @@ getAllApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.baseUrl}/All`);
   }
 
+  getRecentApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/recent`);
+  }
+
   getApplicationsByJob(jobId: number): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.baseUrl}/job/${jobId}`);
   }

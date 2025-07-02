@@ -75,7 +75,9 @@ import { StudentsentComponent } from './user/studentsent/studentsent.component';
 import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
 import { InterviewComponent } from './employer/interview/interview.component';
 import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
-
+import { ApplicationsComponent } from './employer/applications/applications.component';
+import { InterviewsComponent } from './employer/interviews/interviews.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -119,6 +121,8 @@ import { InterviewUpdateComponent } from './employer/interview-update/interview-
     StudentmessageComponent,
     InterviewComponent,
     InterviewUpdateComponent,
+    ApplicationsComponent,
+    InterviewsComponent,
    
 
 
@@ -156,7 +160,8 @@ import { InterviewUpdateComponent } from './employer/interview-update/interview-
     MatProgressSpinnerModule,
     MatDialogModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatChipsModule
   ],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider

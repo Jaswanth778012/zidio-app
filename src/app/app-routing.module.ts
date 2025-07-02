@@ -37,6 +37,8 @@ import { JobManagementComponent } from './employer/job-management/job-management
 import { InternshipManagementComponent } from './employer/internship-management/internship-management.component';
 import { InterviewComponent } from './employer/interview/interview.component';
 import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
+import { ApplicationsComponent } from './employer/applications/applications.component';
+import { InterviewsComponent } from './employer/interviews/interviews.component';
 
 
 const routes: Routes = [
@@ -175,6 +177,14 @@ const routes: Routes = [
 {
   path: 'employer/interview-update/:id',
   component: InterviewUpdateComponent
+},
+{
+  path: 'employer/applications',
+  component: ApplicationsComponent
+},
+{
+  path: 'employer/interviews',
+  component: InterviewsComponent
 },
 {
   path: 'student/student-profile',

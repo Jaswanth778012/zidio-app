@@ -28,6 +28,7 @@ currentPage: number = 1;
   groupedApplications: { [jobId: number]:{ applications:Application[], currentPage:number,pageSize: number }} = {};
   groupedJobIds: number[] = [];
   expandedJobId: number | null = null;
+
   selectedStatus: string = 'PENDING';
   selectedStatuses: { [applicationId: number]: string } = {};
 
@@ -82,7 +83,9 @@ currentPage: number = 1;
 }
 loadAll() {
     this.employerService.getAllApplications().subscribe(data =>{ this.applications = data;this.jobApplications = data.filter(app => app.job);
-    this.internshipApplications = data.filter(app => app.internship);this.groupApplicationsByJobId();this.groupInternshipApplicationsByInternshipId()});
+    this.internshipApplications = data.filter(app => app.internship);this.setDefaultStatuses();this.groupApplicationsByJobId();this.groupInternshipApplicationsByInternshipId()
+      
+});
   }
 
   downloadResume(id: number) {
@@ -105,6 +108,13 @@ loadAll() {
   );
 }
 
+setDefaultStatuses(): void {
+    this.applications.forEach(app => {
+      // Set to current status if exists, otherwise default to 'PENDING'
+      this.selectedStatus = app.status || 'PENDING';
+    });
+  }
+
   groupApplicationsByJobId() {
     this.groupedApplications = {};
     this.groupedJobIds = [];
@@ -117,7 +127,7 @@ loadAll() {
         this.groupedJobIds.push(jobId);
       }
       this.groupedApplications[jobId].applications.push(app);
-      this.selectedStatuses[app.id] = app.status;
+      this.selectedStatus = app.status || 'PENDING'; // Initialize status
     }
   }
   updatePaginatedJobIds(): void {
@@ -167,6 +177,7 @@ prevPage(): void {
       }
       
       this.groupedInternshipApplications[internshipId].applications.push(app);
+      this.selectedStatuses[app.id] = app.status || 'PENDING'; // Initialize status
     }
   }
    updatePaginatedInternshipIds(): void {
@@ -216,6 +227,77 @@ prevPage1(): void {
     this.employerService.updateApplicationStatus(id, newStatus).subscribe(() => this.loadAll());
   }
 
+//   getRecentApplications(): any[] {
+//   if (!this.applications || this.applications.length === 0) {
+//     return [];
+//   }
+//   const sortedApplications = [...this.applications].sort((a, b) => {
+//       const dateA = new Date(a.appliedDate || a.timestamp || 0).getTime();
+//       const dateB = new Date(b.appliedDate || b.timestamp || 0).getTime();
+//       return dateB - dateA; // Descending order (newest first)
+//     });
+    
+//     return sortedApplications.slice(0, 5);
+
+// }
+// Updated method to get recent applications sorted by ID (most recent first)
+// getRecentApplications(): any[] {
+//   if (!this.applications || this.applications.length === 0) {
+//     return [];
+//   }
+  
+//   // Since all applications have the same date, sort by ID (higher ID = more recent)
+//   const sortedApplications = [...this.applications].sort((a, b) => {
+//     // First try to sort by date if they're different
+//     const dateA = new Date(a.appliedDate).getTime();
+//     const dateB = new Date(b.appliedDate).getTime();
+    
+//     // If dates are the same, sort by ID (higher ID = more recent)
+//     if (dateA === dateB) {
+//       return b.id - a.id; // Descending order by ID
+//     }
+    
+//     // If dates are different, sort by date (more recent first)
+//     return dateB - dateA;
+//   });
+  
+//   console.log('Applications sorted by ID (most recent first):', sortedApplications.map(app => ({
+//     id: app.id,
+//     appliedDate: app.appliedDate,
+//     studentName: app.student?.userFirstName + ' ' + app.student?.userLastName
+//   })));
+  
+//   // Return only the first 5 most recent applications
+//   return sortedApplications.slice(0, 5);
+// }
+getRecentApplications(): any[] {
+    if (!this.applications || this.applications.length === 0) {
+      return [];
+    }
+    const sortedApplications = [...this.applications].sort((a, b) => b.id - a.id);
+    
+    console.log('Applications sorted by ID (most recent first):', sortedApplications.map(app => ({
+      id: app.id,
+      appliedDate: app.appliedDate,
+      studentName: app.student?.userFirstName + ' ' + app.student?.userLastName
+    })));
+        return sortedApplications.slice(0, 5);
+  }
+
+
+
+// Method to shortlist an application
+shortlistApplication(id: number): void {
+  this.selectedStatuses[id] = 'SHORTLISTED';
+  this.updateStatus(id);
+}
+
+
+rejectApplication(id: number): void {
+  this.selectedStatuses[id] = 'REJECTED';
+  this.updateStatus(id);
+}
+
   deleteApplication(id: number) {
     if (confirm('Are you sure to delete this application?')) {
       this.employerService.deleteApplication(id).subscribe(() => this.loadAll());
@@ -248,6 +330,45 @@ prevPage1(): void {
       this.interviews = this.interviews.filter(i => i.id !== id);
     });
   }
+  // Method to get only the first 3 interviews (sorted by date)
+getRecentInterviews(): Interview[] {
+  if (!this.interviews || this.interviews.length === 0) {
+    return [];
+  }
+  
+  // Sort interviews by date (most recent/upcoming first)
+  const sortedInterviews = [...this.interviews].sort((a, b) => {
+    const dateA = new Date(a.interviewDate).getTime();
+    const dateB = new Date(b.interviewDate).getTime();
+    return dateA - dateB; // Ascending order (upcoming first)
+  });
+  
+  // Return only the first 3 interviews
+  return sortedInterviews.slice(0, 3);
+}
+
+// Method to navigate to all interviews page
+viewAllInterviews(): void {
+  this.router.navigate(['/employer/interviews']);
+}
+
+
+  viewAllApplications() {
+  this.router.navigate(['/employer/applications']);
+}
+
+getRelativeDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+  if (diff === 0) return 'today';
+  if (diff === 1) return '1 day ago';
+  return `${diff} days ago`;
+
+  
+}
+
+
 }
 
 
