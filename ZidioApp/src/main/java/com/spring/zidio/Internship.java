@@ -48,6 +48,7 @@ public class Internship {
     @Column(length=2000)
     private String aboutCompany;        // ✅ New: About Company
     private Integer numberOfOpenings;   // ✅ New: Number of Openings
+    @Column(length=2000)
     private String eligibility;         // ✅ New: Eligibility
     private String perks;
     @Enumerated(EnumType.STRING)
