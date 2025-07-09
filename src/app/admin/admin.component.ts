@@ -39,7 +39,7 @@ export class AdminComponent implements OnInit{
   this.adminService.getProfile().subscribe(profile => {
     console.log('Profile:', profile);
     if (profile.profilePictureUrl) {
-      this.profilePictureUrl = `http://localhost:8080${profile.profilePictureUrl}`;
+      this.profilePictureUrl = profile.profilePictureUrl;
     }
   });
   }

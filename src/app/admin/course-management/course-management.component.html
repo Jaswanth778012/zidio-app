@@ -146,10 +146,11 @@
     <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef> Image </th>
     <td mat-cell *matCellDef="let course">
-      <ng-container *ngIf="course.courseImages?.length && getImageUrl(course.courseImages[0].imageName); else noImage">
-      <img [src]="getImageUrl(course.courseImages[0].imageName)" 
-           alt="Course Image"
-           width="100" height="100">
+      <ng-container *ngIf="course.courseImages?.length ; else noImage">
+       <img *ngIf="course.courseImages?.length"
+       [src]="course.courseImages[0]?.url"
+       [alt]="course.courseName"
+       width="100" height="100" />
     </ng-container>
     <ng-template #noImage>
       No Image

@@ -79,49 +79,12 @@ export class CourseManagementComponent implements OnInit {
   });
   }
 
-  imageUrls: { [courseId: number]: SafeUrl } = {};
-  
-  baseUrl: string = 'http://localhost:8080/admin';
-  getImageUrl(imageName: string): string { // Adjust this to your actual base URL
-    console.log('imageName', imageName); // 🔍 Debug this
-  const url = `${this.baseUrl}/courses/image/${encodeURIComponent(imageName)}`;
-  console.log('Constructed Image URL:', url); // 🔍 Debug thi
-  return url;
-  }
-
-  // Call this once courses data is loaded
- loadImagesForCourses(courses: any[]) {
-  courses.forEach(course => {
-    if (course.courseImages?.length > 0) {
-      const imageName = course.courseImages[0].imageName;
-      this.http.get(`${this.baseUrl}/courses/image/${imageName}`, {
-        responseType: 'blob',
-        withCredentials: false, // in case you're using cookies for session
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + this.userAuthService.getToken()  // Inject token
-        })
-      }).subscribe({
-        next: (blob) => {
-          const objectURL = URL.createObjectURL(blob);
-          this.imageUrls[course.id] = this.sanitizer.bypassSecurityTrustUrl(objectURL) as string;
-        },
-        error: (err) => {
-          console.error(`Error loading image for course ${course.id}:`, err);
-        }
-      });
-    }
-  });
-}
-
-
-
   loadCourses() {
   this.adminService.getAllCourses().subscribe({
     next: (res) => {
       console.log('Courses loaded:', res); // 🔍 Debug this
       this.courses = res;
       this.filteredCourses = res;
-      this.loadImagesForCourses(this.filteredCourses);
     },
     error: (err) => {
       console.error('Error loading courses:', err);
@@ -221,27 +184,6 @@ onFileSelected(event: any) {
       reader.readAsDataURL(this.selectedFile);
   }
 }
-
-//  onFileSelected(event: any): void {
-//     const files: FileList = event.target.files;
-//     if (files && files.length > 0) {
-//       const file = files[0];
-//       const url = this.sanitizer.bypassSecurityTrustUrl(
-//         window.URL.createObjectURL(file)
-//       );
-
-//       this.selectedFileHandle = {
-//         file: file,
-//         url: url
-//       };
-//       // Optional: For preview
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imagePreview = reader.result as string;
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   }
 
 
  startEdit(course: any): void {

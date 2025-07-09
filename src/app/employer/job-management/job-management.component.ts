@@ -33,22 +33,21 @@ searchTerm: string='';
     });
   }
 
-  onJobFileChange(event: any) {
-    this.selectedJobFile = event.target.files[0];
-  }
 
-  
+  onJobFileChange(event: any) {
+    const file = event.target.files[0];
+    this.selectedJobFile = file ? file : null;
+  }
 
   createJob() {
     if (this.selectedJobFile) {
       this.employerService.createJob(this.jobForm.value, this.selectedJobFile).subscribe(() => {
-        this.loadJobs();
-        this.jobForm.reset();
-        this.selectedJobFile = undefined!;
+        this.afterJobSaved('Job created successfully');
       });
     } else {
       // Optionally, show an error or handle the case where no file is selected
-      alert('Please select a file before creating a job.');
+      this.snackBar.open('Please select a logo file.', 'Close', { duration: 3000 });
+      return;
     }
   }
   updateJob(id: number) {
@@ -56,12 +55,21 @@ searchTerm: string='';
       id,
       this.jobForm.value,
       this.selectedJobFile === null ? undefined : this.selectedJobFile
-    ).subscribe(() => {
-      this.loadJobs();
-      this.jobForm.reset();
-      this.selectedJobFile = undefined!;
-      this.editJob = null;
+    ).subscribe({
+      next: () => {
+        this.afterJobSaved('Job updated successfully');
+      },
+      error: ()=>{
+        this.snackBar.open('Failed to update job', 'Close', { duration: 3000 });
+      }
     });
+  }
+  afterJobSaved(message: string) {
+    this.loadJobs();
+    this.jobForm.reset();
+    this.selectedJobFile = null;
+    this.editJob = null; // Reset edit job
+    this.snackBar.open(message, 'Close', { duration: 3000 });
   }
   editJobForm(job: any) {
     this.editJob = job;

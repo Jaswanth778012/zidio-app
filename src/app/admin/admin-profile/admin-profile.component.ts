@@ -23,8 +23,7 @@ export class AdminProfileComponent implements OnInit{
     this.adminService.getProfile().subscribe(data =>{
       this.profileForm.patchValue(data);
       if ( data.profilePictureUrl) {
-        const baseurl = 'http://localhost:8080';
-        this.profilePicturePreview = baseurl + data.profilePictureUrl;
+        this.profilePicturePreview =  data.profilePictureUrl;
       }
     });
   }

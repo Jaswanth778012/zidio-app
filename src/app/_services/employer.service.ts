@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Message, PaginatedMessageResponse } from '../_model/message.model';
@@ -186,10 +186,8 @@ getAllApplications(): Observable<Application[]> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  downloadResume(id: number) {
-    return this.http.get(`${this.baseUrl}/resume/${id}`, {
-      responseType: 'blob' 
-    });
+  downloadResume(id: number, options: any={}): Observable<any> {
+    return this.http.get(`${this.baseUrl}/resume/${id}`, options);
   }
   //Interviews Schedule
    createInterview(interview: Interview): Observable<Interview> {

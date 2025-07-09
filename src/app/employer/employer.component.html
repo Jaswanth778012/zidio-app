@@ -137,7 +137,7 @@
                       </td>
                       <td class="py-3">{{groupedApplications[jobId].applications[0].job?.companyName}}</td>
                       <td class="py-3">
-                        <small class="text-muted">{{groupedApplications[jobId].applications[0].timestamp | date}}</small>
+                        <small class="text-muted">{{groupedApplications[jobId].applications[0].job?.postedAt | date}}</small>
                       </td>
                       <td class="py-3">
                         <span class="badge bg-info-subtle text-info">
@@ -161,7 +161,9 @@
                             <table class="table table-sm mb-0 bg-white rounded">
                               <thead class="bg-primary text-white">
                                 <tr>
+                                  <th class="border-0 py-2">Profile Picture</th>
                                   <th class="border-0 py-2">Student</th>
+                                  <th class="border-0 py-2">Email</th>
                                   <th class="border-0 py-2">Status</th>
                                   <th class="border-0 py-2">Applied Date</th>
                                   <th class="border-0 py-2">Actions</th>
@@ -169,8 +171,16 @@
                               </thead>
                               <tbody>
                                 <tr *ngFor="let app of getPaginatedApplications(jobId)" class="border-bottom">
+                                <td class="py-2 d-flex justify-content-center align-items-center">
+                                <img [src]="app.studentProfilePicture?.profilePictureUrl || 'assets/images/default-profile.png'" 
+                                  alt="Profile Picture" class="rounded-circle" width="50" height="50">
+                                </td>
                                   <td class="py-2">
                                     <div class="fw-medium">{{app.student?.userName}}</div>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted
+                                      ">{{app.studentProfilePicture?.email}}</small>
                                   </td>
                                   <td class="py-2">
                                     <span class="badge" [ngClass]="{
@@ -290,7 +300,7 @@
                       </td>
                       <td class="py-3">{{groupedInternshipApplications[internshipId].applications[0].internship?.companyName}}</td>
                       <td class="py-3">
-                        <small class="text-muted">{{groupedInternshipApplications[internshipId].applications[0].timestamp | date}}</small>
+                        <small class="text-muted">{{groupedInternshipApplications[internshipId].applications[0].internship?.postedAt | date}}</small>
                       </td>
                       <td class="py-3">
                         <span class="badge bg-info-subtle text-info">
@@ -314,7 +324,9 @@
                             <table class="table table-sm mb-0 bg-white rounded">
                               <thead class="bg-success text-white">
                                 <tr>
+                                  <th class="border-0 py-2">Profile Picture</th>
                                   <th class="border-0 py-2">Student</th>
+                                  <th class="border-0 py-2">Email</th>
                                   <th class="border-0 py-2">Status</th>
                                   <th class="border-0 py-2">Applied Date</th>
                                   <th class="border-0 py-2">Actions</th>
@@ -322,8 +334,16 @@
                               </thead>
                               <tbody>
                                 <tr *ngFor="let app of getPaginatedApplicationsi(internshipId)" class="border-bottom">
+                                <td class="py-2 d-flex justify-content-center align-items-center">
+                                <img [src]="app.studentProfilePicture?.profilePictureUrl || 'assets/images/default-profile.png'"
+                                  alt="Profile Picture" class="rounded-circle" width="50" height="50">
+                                </td>
                                   <td class="py-2">
                                     <div class="fw-medium">{{app.student?.userName}}</div>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted
+                                      ">{{app.studentProfilePicture?.email}}</small>
                                   </td>
                                   <td class="py-2">
                                     <span class="badge" [ngClass]="{
@@ -566,7 +586,7 @@
       <div class="list-group-item border-0 p-3" *ngFor="let app of getRecentApplications()">
         <div class="d-flex align-items-center">
           <div class="position-relative me-3">
-            <img [src]="'http://localhost:8080' + app.studentProfilePicture?.profilePictureUrl"
+            <img [src]="app.studentProfilePicture?.profilePictureUrl"
               class="rounded-circle border shadow-sm" width="50" height="50" alt="Candidate" />
             <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle"
               style="width: 12px; height: 12px;"></span>
@@ -685,6 +705,9 @@
                     <span *ngIf="interview.job" class="badge bg-primary-subtle text-primary ms-2">
                       {{interview.job.title}}
                     </span>
+                     <span *ngIf="interview.job" class="badge bg-primary-subtle text-primary ms-2">
+                      {{interview.job.companyName}}
+                    </span>
                   </h6>
                   <p class="small text-muted mb-1">
                     <i class="bi bi-clock me-1"></i>
@@ -694,15 +717,28 @@
                     <i class="bi bi-geo-alt me-1"></i>
                     {{interview.notes || 'No notes provided'}}
                   </p>
+                  <p class="small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>
+                    {{interview.status || 'No status provided'}}
+                    <span class="badge" [ngClass]="{
+                      'bg-success-subtle text-success': isUpcoming(interview.interviewDate),
+                      'bg-secondary-subtle text-secondary': isPast(interview.interviewDate)
+                    }">
+                      {{isUpcoming(interview.interviewDate) ? 'Upcoming' : 'Completed'}}
+                    </span>
+                  </p>
+
                   <div class="d-flex gap-1 flex-wrap">
                     <button class="btn btn-outline-secondary btn-sm" 
                       [routerLink]="['/employer/interview-update', interview.id]">
                       <i class="bi bi-pencil me-1"></i>Reschedule
                     </button>
-                    <a *ngIf="interview.meetingLink" class="btn btn-outline-info btn-sm" 
-                      [href]="interview.meetingLink" target="_blank">
-                      <i class="bi bi-camera-video me-1"></i>Join
-                    </a>
+                    <a *ngIf="interview.meetingLink && isUpcoming(interview.interviewDate)" 
+                      class="btn btn-outline-info btn-sm"
+                      [href]="interview.meetingLink" target="_blank"
+                      title="Join Meeting">
+                      <i class="bi bi-camera-video"></i>
+                      </a>
                     <button class="btn btn-outline-primary btn-sm" (click)="getInterviewById(interview.id!)">
                       <i class="bi bi-eye"></i>
                     </button>

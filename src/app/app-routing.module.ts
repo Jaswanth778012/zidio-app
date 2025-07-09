@@ -39,6 +39,8 @@ import { InterviewComponent } from './employer/interview/interview.component';
 import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
 import { ApplicationsComponent } from './employer/applications/applications.component';
 import { InterviewsComponent } from './employer/interviews/interviews.component';
+import { InternshipsComponent } from './internships/internships.component';
+import { JobsComponent } from './jobs/jobs.component';
 
 
 const routes: Routes = [
@@ -80,6 +82,22 @@ const routes: Routes = [
   {
     path: 'updatepassword',
     component: UpdatePasswordComponent
+  },
+  {
+  path: 'about',
+  component: AboutComponent
+  },
+  {
+  path: 'contact',
+  component: ContactComponent
+  },
+  {
+  path: 'internships',
+  component: InternshipsComponent
+  },
+  {
+  path: 'jobs',
+  component: JobsComponent
   },
   {
     path: 'admin/users', 
@@ -136,14 +154,6 @@ const routes: Routes = [
 },
 { path: 'admin/notifications', 
   component: NotificationsComponent
-},
-{
-  path: 'about',
-  component: AboutComponent
-},
-{
-  path: 'contact',
-  component: ContactComponent
 },
 {
   path: 'employer/jobs',

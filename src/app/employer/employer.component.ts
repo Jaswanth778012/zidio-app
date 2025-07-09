@@ -50,7 +50,7 @@ currentPage: number = 1;
     this.employerService.getProfile().subscribe(profile=>{
       console.log('Profile:', profile);
       if (profile.profilePictureUrl) {
-        this.profilePictureUrl = `http://localhost:8080${profile.profilePictureUrl}`;
+        this.profilePictureUrl = profile.profilePictureUrl;
       }
     })
     this.loadAll();
@@ -88,10 +88,41 @@ loadAll() {
 });
   }
 
-  downloadResume(id: number) {
-  this.employerService.downloadResume(id).subscribe(
-    (blob) => {
-      const fileName = `resume_${id}.pdf`; // Or use a better name if you can get from headers
+//   downloadResume(id: number) {
+//   this.employerService.downloadResume(id).subscribe(
+//     (blob) => {
+//       const fileName = `resume_${id}.pdf`; // Or use a better name if you can get from headers
+//       const url = window.URL.createObjectURL(blob);
+//       const a = document.createElement('a');
+//       a.href = url;
+//       a.download = fileName;
+//       a.click();
+//       window.URL.revokeObjectURL(url);
+//     },
+//     (error) => {
+//       console.error('Failed to download resume:', error);
+//       this.snackBar.open('Failed to download resume', 'Close', {
+//         duration: 3000
+//       });
+//     }
+//   );
+// }
+downloadResume(id: number) {
+  this.employerService.downloadResume(id, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
+    next: (response: any) => {
+      const blob = new Blob([response.body], { type: response.headers.get('Content-Type') || 'application/octet-stream' });
+
+      // Extract filename from Content-Disposition header
+      const contentDisposition = response.headers.get('Content-Disposition');
+      let fileName = `resume_${id}.pdf`;
+      if (contentDisposition) {
+        const matches = /filename="(.+)"/.exec(contentDisposition);
+        if (matches && matches[1]) {
+          fileName = matches[1];
+        }
+      }
+
+      // Trigger download
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -99,13 +130,11 @@ loadAll() {
       a.click();
       window.URL.revokeObjectURL(url);
     },
-    (error) => {
+    error: (error) => {
       console.error('Failed to download resume:', error);
-      this.snackBar.open('Failed to download resume', 'Close', {
-        duration: 3000
-      });
+      this.snackBar.open('Failed to download resume', 'Close', { duration: 3000 });
     }
-  );
+  });
 }
 
 setDefaultStatuses(): void {
@@ -368,7 +397,17 @@ getRelativeDate(dateStr: string): string {
   
 }
 
+ isUpcoming(dateStr: string): boolean {
+    const date = new Date(dateStr);
+    const now = new Date();
+    return date >= now;
+  }
 
+  isPast(dateStr: string): boolean {
+    const date = new Date(dateStr);
+    const now = new Date();
+    return date < now;
+  }
 }
 
 

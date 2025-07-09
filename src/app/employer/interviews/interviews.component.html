@@ -93,6 +93,7 @@
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Date & Time</th>
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Student</th>
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Position</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Company</th>
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Mode</th>
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Status</th>
                   <th scope="col" class="fw-semibold text-dark border-0 py-3">Actions</th>
@@ -132,6 +133,14 @@
                     </span>
                   </td>
                   <td class="py-3">
+                    <span *ngIf="interview.job" class="badge bg-primary-subtle text-primary">
+                      {{interview.job.companyName}}
+                    </span>
+                    <span *ngIf="interview.internship" class="badge bg-success-subtle text-success">
+                      {{interview.internship.companyName}}
+                    </span>
+                  </td>
+                  <td class="py-3">
                     <span class="badge bg-light text-dark border">
                       <i class="bi bi-laptop me-1"></i>{{interview.mode}}
                     </span>
@@ -151,10 +160,11 @@
                         title="Reschedule">
                         <i class="bi bi-pencil"></i>
                       </button>
-                      <a *ngIf="interview.meetingLink" class="btn btn-outline-info btn-sm"
-                        [href]="interview.meetingLink" target="_blank"
-                        title="Join Meeting">
-                        <i class="bi bi-camera-video"></i>
+                      <a *ngIf="interview.meetingLink && isUpcoming(interview.interviewDate)" 
+                      class="btn btn-outline-info btn-sm"
+                      [href]="interview.meetingLink" target="_blank"
+                      title="Join Meeting">
+                      <i class="bi bi-camera-video"></i>
                       </a>
                       <button class="btn btn-outline-primary btn-sm" 
                         (click)="getInterviewById(interview.id!)"

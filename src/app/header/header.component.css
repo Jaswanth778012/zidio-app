@@ -468,6 +468,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 }
 
 .topbar {
@@ -550,4 +551,5 @@ mat-sidenav-content {
   .menu-button {
     margin-bottom: 8px;
   }
+
 }

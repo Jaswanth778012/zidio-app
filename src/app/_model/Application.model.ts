@@ -15,5 +15,6 @@ export interface StudentProfilePicture{
   userFirstName: string;
   userLastName: string;
   username: string;
+  email: string;
 }
 

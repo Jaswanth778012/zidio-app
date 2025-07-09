@@ -28,8 +28,7 @@ export class StudentProfileComponent {
       this.studentService.getProfile().subscribe(data=>{
         this.profileForm.patchValue(data);
         if(data.profilePictureUrl){
-          const baseUrl = 'http://localhost:8080';
-          this.profilePicturePreview = baseUrl +data.profilePictureUrl;
+          this.profilePicturePreview = data.profilePictureUrl;
         }
       });
     }

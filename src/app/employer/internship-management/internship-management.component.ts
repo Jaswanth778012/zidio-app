@@ -38,19 +38,18 @@ internshipSearchTerm: string = '';
   }
 
   onInternshipFileChange(event: any) {
-    this.selectedInternshipFile = event.target.files[0];
+    const file = event.target.files[0];
+    this.selectedInternshipFile = file ? file : null;
   }
 
   createInternship() {
     if(this.selectedInternshipFile){
     this.employerService.createInternship(this.internshipForm.value, this.selectedInternshipFile).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
+      this.afterInternshipSaved('Internship created successfully');
     });
   }
   else{
-    alert('Please select a file before creating a internship.');
+    alert('Please select a company logo before creating a internship.');
 
   }
   }
@@ -60,12 +59,22 @@ internshipSearchTerm: string = '';
       id,
       this.internshipForm.value,
       this.selectedInternshipFile === null ? undefined : this.selectedInternshipFile
-    ).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
-      this.editInternship = null;
+    ).subscribe({
+      next: () => {
+        this.afterInternshipSaved('Internship updated successfully');
+      },
+      error: () => {
+        this.snackBar.open('Failed to update internship', 'Close', { duration: 3000 });
+      }
     });
+  }
+
+  afterInternshipSaved(message: string) {
+    this.loadInternships();
+    this.internshipForm.reset();
+    this.selectedInternshipFile = null;
+    this.editInternship = null; // Reset edit internship
+    this.snackBar.open(message, 'Close', { duration: 3000 }); 
   }
 
    editInternshipForm(internship: any) {

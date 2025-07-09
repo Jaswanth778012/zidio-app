@@ -78,6 +78,9 @@ import { InterviewUpdateComponent } from './employer/interview-update/interview-
 import { ApplicationsComponent } from './employer/applications/applications.component';
 import { InterviewsComponent } from './employer/interviews/interviews.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { FooterComponent } from './footer/footer.component';
+import { InternshipsComponent } from './internships/internships.component';
+import { JobsComponent } from './jobs/jobs.component';
 
 
 @NgModule({
@@ -123,6 +126,9 @@ import { MatChipsModule } from '@angular/material/chips';
     InterviewUpdateComponent,
     ApplicationsComponent,
     InterviewsComponent,
+    FooterComponent,
+    InternshipsComponent,
+    JobsComponent,
    
 
 
