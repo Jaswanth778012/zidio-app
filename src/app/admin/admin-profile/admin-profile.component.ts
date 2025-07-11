@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminProfile } from '../../_model/admin-profile.model';
 import { AdminService } from '../../_services/admin.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-profile',
@@ -13,7 +14,7 @@ export class AdminProfileComponent implements OnInit{
   profilePicturePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
 
-  constructor(private adminService: AdminService,private fb: FormBuilder) {this.profileForm = this.fb.group({
+  constructor(private adminService: AdminService,private fb: FormBuilder,private router: Router) {this.profileForm = this.fb.group({
       userFirstName: [''],
       userLastName: [''],
       email: [''],
@@ -55,9 +56,7 @@ export class AdminProfileComponent implements OnInit{
       this.profileForm.reset();
       this.profilePicturePreview = null; // Clear the image preview
       this.selectedFile = null;
-      console.log(this.profileForm.value);
-
-      
+      this.router.navigate(['/admin']); // Navigate to the profile page
     },
     error: (error) => {
       console.error('Error updating profile:', error);

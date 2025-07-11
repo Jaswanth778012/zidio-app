@@ -35,7 +35,7 @@
   <!-- Statistics Cards -->
   <!-- <div class="row mb-4">
     <div class="col-md-3 mb-3">
-      <div class="card bg-gradient-primary text-white shadow-sm border-0 h-100">
+      <div class="card bg-primary text-white shadow-sm border-0 h-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
@@ -50,7 +50,22 @@
       </div>
     </div>
     <div class="col-md-3 mb-3">
-      <div class="card bg-gradient-success text-white shadow-sm border-0 h-100">
+      <div class="card bg-primary text-white shadow-sm border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
+              <i class="bi bi-briefcase fs-4"></i>
+            </div>
+            <div>
+              <h3 class="h2 mb-0 fw-bold">{{groupedInternshipIds.length || 0}}</h3>
+              <p class="mb-0 opacity-75">Active Internship Postings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-success text-white shadow-sm border-0 h-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
@@ -65,7 +80,7 @@
       </div>
     </div>
     <div class="col-md-3 mb-3">
-      <div class="card bg-gradient-info text-white shadow-sm border-0 h-100">
+      <div class="card bg-info text-white shadow-sm border-0 h-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
@@ -80,14 +95,14 @@
       </div>
     </div>
     <div class="col-md-3 mb-3">
-      <div class="card bg-gradient-warning text-white shadow-sm border-0 h-100">
+      <div class="card bg-warning text-white shadow-sm border-0 h-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
               <i class="bi bi-person-check fs-4"></i>
             </div>
             <div>
-              <h3 class="h2 mb-0 fw-bold">8</h3>
+              <h3 class="h2 mb-0 fw-bold">{{counts.OFFER_EXTENDED || 0}}</h3>
               <p class="mb-0 opacity-75">Positions Filled</p>
             </div>
           </div>
@@ -95,6 +110,97 @@
       </div>
     </div>
   </div> -->
+  <div class="container-fluid">
+  <div class="row mb-4 justify-content-between">
+
+    <!-- Active Job Postings -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-primary text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-briefcase fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ groupedJobIds.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Job Postings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Internship Postings -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-dark text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-briefcase fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ groupedInternshipIds.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Internship Postings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Applications -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-success text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-person-lines-fill fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ applications.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Total Applications</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interviews Scheduled -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-info text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-calendar-check fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ interviews.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Interviews Scheduled</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Positions Filled -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-warning text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-person-check fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ counts.OFFER_EXTENDED || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Positions Filled</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
   <div class="row">
     <!-- Main Content -->
@@ -184,8 +290,13 @@
                                   </td>
                                   <td class="py-2">
                                     <span class="badge" [ngClass]="{
-                                      'bg-success-subtle text-success': app.status === 'SHORTLISTED',
-                                      'bg-warning-subtle text-warning': app.status === 'PENDING',
+                                      'bg-success-subtle text-success': app.status === 'APPLICATIONS_RECEIVED',
+                                      'bg-warning-subtle text-warning': app.status === 'RESUME_SCREENING',
+                                      'bg-gradient-info text-dark':app.status === 'SHORTLISTED',
+                                      'bg-gradient-primary text-white':app.status === 'PHONE_INTERVIEW',
+                                      'bg-primary-subtle text-muted': app.status === 'TECHNICAL_ASSESSMENT',
+                                      'bg-secondary-subtle text-secondary':app.status ==='FINAL_INTERVIEW',
+                                      'bg-gradient-success text-success':app.status ==='OFFER_EXTENDED',
                                       'bg-danger-subtle text-danger': app.status === 'REJECTED'
                                     }">{{app.status}}</span>
                                   </td>
@@ -196,8 +307,12 @@
                                     <div class="d-flex gap-1 align-items-center">
                                       <select [(ngModel)]="selectedStatuses[app.id]" 
                                         class="form-select form-select-sm" style="width: auto;">
-                                        <option value="SHORTLISTED">Shortlisted</option>
-                                        <option value="PENDING">Pending</option>
+                                        <option value="APPLICATIONS_RECEIVED">APPLICATIONS_RECEIVED</option>
+                                        <option value="RESUME_SCREENING">RESUME_SCREENING</option>
+                                        <option value="SHORTLISTED">SHORTLISTED</option>
+                                        <option value="TECHNICAL_ASSESSMENT">TECHNICAL_ASSESSMENT</option>
+                                        <option value="FINAL_INTERVIEW">FINAL_INTERVIEW</option>
+                                        <option value="OFFER_EXTENDED">OFFER_EXTENDED</option>
                                         <option value="REJECTED">Rejected</option>
                                       </select>
                                       <button class="btn btn-outline-primary btn-sm" (click)="updateStatus(app.id)" 
@@ -347,8 +462,13 @@
                                   </td>
                                   <td class="py-2">
                                     <span class="badge" [ngClass]="{
-                                      'bg-success-subtle text-success': app.status === 'SHORTLISTED',
-                                      'bg-warning-subtle text-warning': app.status === 'PENDING',
+                                      'bg-success-subtle text-success': app.status === 'APPLICATIONS_RECEIVED',
+                                      'bg-warning-subtle text-warning': app.status === 'RESUME_SCREENING',
+                                      'bg-gradient-info text-dark':app.status === 'SHORTLISTED',
+                                      'bg-gradient-primary text-white':app.status === 'PHONE_INTERVIEW',
+                                      'bg-primary-subtle text-muted': app.status === 'TECHNICAL_ASSESSMENT',
+                                      'bg-secondary-subtle text-secondary':app.status ==='FINAL_INTERVIEW',
+                                      'bg-gradient-success text-success':app.status ==='OFFER_EXTENDED',
                                       'bg-danger-subtle text-danger': app.status === 'REJECTED'
                                     }">{{app.status}}</span>
                                   </td>
@@ -359,8 +479,12 @@
                                     <div class="d-flex gap-1 align-items-center">
                                       <select [(ngModel)]="selectedStatuses[app.id]" 
                                         class="form-select form-select-sm" style="width: auto;">
-                                        <option value="SHORTLISTED">Shortlisted</option>
-                                        <option value="PENDING">Pending</option>
+                                         <option value="APPLICATIONS_RECEIVED">APPLICATIONS_RECEIVED</option>
+                                        <option value="RESUME_SCREENING">RESUME_SCREENING</option>
+                                        <option value="SHORTLISTED">SHORTLISTED</option>
+                                        <option value="TECHNICAL_ASSESSMENT">TECHNICAL_ASSESSMENT</option>
+                                        <option value="FINAL_INTERVIEW">FINAL_INTERVIEW</option>
+                                        <option value="OFFER_EXTENDED">OFFER_EXTENDED</option>
                                         <option value="REJECTED">Rejected</option>
                                       </select>
                                       <button class="btn btn-outline-primary btn-sm" (click)="updateStatus(app.id)" 
@@ -425,147 +549,6 @@
         </div>
       </div>
 
-      <!-- Recent Applications -->
-      <!-- <div class="card shadow-sm border-0 rounded-3 mb-4">
-        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
-          <div>
-            <h5 class="mb-0 fw-bold text-dark">
-              <i class="bi bi-clock-history text-info me-2"></i>Recent Applications
-            </h5>
-            <small class="text-muted">Latest candidate applications</small>
-          </div>
-          <button class="btn btn-outline-primary btn-sm" (click)="viewAllApplications()">
-            View All Applications
-          </button>
-        </div>
-        <div class="card-body p-0">
-          <div class="list-group list-group-flush" *ngIf="applications && applications.length > 0">
-            <div class="list-group-item border-0 p-3" *ngFor="let app of applications">
-              <div class="d-flex align-items-center">
-                <div class="position-relative me-3">
-                  <img [src]="'http://localhost:8080' + app.studentProfilePicture?.profilePictureUrl" 
-                    class="rounded-circle border shadow-sm" width="50" height="50" alt="Candidate" />
-                  <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle" 
-                    style="width: 12px; height: 12px;"></span>
-                </div>
-                <div class="flex-grow-1">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <h6 class="mb-0 fw-medium">
-                      {{app.student?.userFirstName}} {{app.student?.userLastName}}
-                    </h6>
-                  </div>
-                  <p class="text-muted small mb-0">
-                    Applied {{getRelativeDate(app.appliedDate)}}
-                  </p>
-                </div>
-                <div class="ms-3">
-                  <div class="btn-group">
-                    <button class="btn btn-outline-success btn-sm">
-                      <i class="bi bi-check-lg me-1"></i>Shortlist
-                    </button>
-                    <button class="btn btn-outline-danger btn-sm">
-                      <i class="bi bi-x-lg me-1"></i>Reject
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="applications?.length === 0" class="p-4 text-center text-muted">
-            <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
-            <p class="mb-0">No applications found.</p>
-          </div>
-        </div>
-      </div>
-    </div> --> 
-    <!-- Recent Applications -->
- <!-- <div class="card shadow-sm border-0 rounded-3 mb-4">
-  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
-    <div>
-      <h5 class="mb-0 fw-bold text-dark">
-        <i class="bi bi-clock-history text-info me-2"></i>Recent Applications
-      </h5>
-      <small class="text-muted">Latest candidate applications</small>
-    </div>
-    <button class="btn btn-outline-primary btn-sm" (click)="viewAllApplications()">
-      View All Applications
-    </button>
-  </div>
-  <div class="card-body p-0">
-    <div class="list-group list-group-flush" *ngIf="applications && applications.length > 0">
-      <div class="list-group-item border-0 p-3" *ngFor="let app of applications">
-        <div class="d-flex align-items-center">
-          <div class="position-relative me-3">
-            <img [src]="'http://localhost:8080' + app.studentProfilePicture?.profilePictureUrl"
-              class="rounded-circle border shadow-sm" width="50" height="50" alt="Candidate" />
-            <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle"
-              style="width: 12px; height: 12px;"></span>
-          </div>
-          <div class="flex-grow-1">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <h6 class="mb-0 fw-medium">
-                {{app.student?.userFirstName}} {{app.student?.userLastName}}
-              </h6>
-            
-              <span class="badge" [ngClass]="{
-                'bg-primary-subtle text-primary': app.job,
-                'bg-success-subtle text-success': app.internship
-              }">
-                <i class="bi" [ngClass]="{
-                  'bi-briefcase': app.job,
-                  'bi-mortarboard': app.internship
-                }" class="me-1"></i>
-                {{app.job ? 'Job' : 'Internship'}}
-              </span>
-            </div>
-        
-            <div class="mb-1">
-              <span class="fw-medium text-dark" *ngIf="app.job">
-                <i class="bi bi-briefcase text-primary me-1"></i>
-                {{app.job.title}}
-              </span>
-              <span class="fw-medium text-dark" *ngIf="app.internship">
-                <i class="bi bi-mortarboard text-success me-1"></i>
-                {{app.internship.title}}
-              </span>
-            </div>
-            
-            <div class="mb-1" *ngIf="app.job?.companyName || app.internship?.companyName">
-              <small class="text-muted">
-                <i class="bi bi-building me-1"></i>
-                {{app.job?.companyName || app.internship?.companyName}}
-              </small>
-            </div>
-           
-            <p class="text-muted small mb-0">
-              <i class="bi bi-calendar me-1"></i>
-              Applied {{getRelativeDate(app.appliedDate)}}
-            </p>
-          </div>
-          <div class="ms-3">
-            <div class="btn-group">
-              <button class="btn btn-outline-success btn-sm" 
-                (click)="updateStatus(app.id)"
-                title="Shortlist Application">
-                <i class="bi bi-check-lg me-1"></i>Shortlist
-              </button>
-              <button class="btn btn-outline-danger btn-sm" 
-                (click)="updateStatus(app.id)"
-                title="Reject Application">
-                <i class="bi bi-x-lg me-1"></i>Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="applications?.length === 0" class="p-4 text-center text-muted">
-      <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
-      <p class="mb-0">No applications found.</p>
-    </div>
-  </div>
-</div>
-</div> -->
     <div class="card shadow-sm border-0 rounded-3 mb-4">
   <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
     <div>
@@ -671,7 +654,82 @@
 
     <!-- Sidebar -->
     <div class="col-lg-4">
-      <!-- Upcoming Interviews -->
+      
+       <!-- Calendar Section -->
+<div class="card shadow-sm border-0 rounded-3 mb-4">
+  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+    <div>
+      <h5 class="mb-0 fw-bold text-dark">
+        <i class="bi bi-calendar3 text-primary me-2"></i>Event Calendar
+      </h5>
+      <small class="text-muted">Create Events to memorize</small>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="calendar-container">
+      <div class="header d-flex justify-content-between align-items-center mb-3">
+        <button class="btn btn-sm btn-outline-primary" (click)="prevMonth()">&lt;</button>
+        <h2 class="h5 mb-0">{{ currentMonth | date:'MMMM yyyy' }}</h2>
+        <button class="btn btn-sm btn-outline-primary" (click)="nextMonth()">&gt;</button>
+      </div>
+
+      <div class="weekdays d-flex text-center mb-2">
+        <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="flex-fill fw-semibold">
+          {{ day }}
+        </div>
+      </div>
+
+      <div class="weeks">
+        <div *ngFor="let week of weeks" class="d-flex mb-1">
+          <div *ngFor="let day of week" class="flex-fill border rounded p-2 text-center"
+               [class.bg-light]="!day" [class.bg-warning]="isToday(day)"
+     [class.text-dark]="isToday(day)" (click)="day && onDateClick(day)">
+            <div class="date-number">{{ day?.getDate() }}</div>
+            <div class="dots mt-1">
+              <span *ngFor="let ev of getEventsForDate(day)" class="dot bg-primary rounded-circle d-inline-block"
+                    style="width:6px; height:6px;" title="{{ ev.title }}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for events -->
+<div class="modal-backdrop fade show" *ngIf="showEventModal"></div>
+<div class="modal d-block" tabindex="-1" *ngIf="showEventModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Events on {{ selectedDate | date:'fullDate' }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-unstyled mb-3">
+          <li *ngFor="let event of selectedDateEvents" class="mb-2 border-bottom pb-2">
+            <strong>{{ event.title }}</strong><br />
+            <small>{{ event.description }}</small><br />
+            <small>{{ event.dateTime | date:'shortTime' }}</small><br />
+            <button class="btn btn-sm btn-warning me-2" (click)="onEditEvent(event)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="onDeleteEvent(event)">Delete</button>
+          </li>
+        </ul>
+
+        <form [formGroup]="eventForm" (ngSubmit)="onSaveEvent()">
+          <input formControlName="title" class="form-control mb-2" placeholder="Title" required />
+          <input formControlName="description" class="form-control mb-2" placeholder="Description" />
+          <input formControlName="dateTime" type="datetime-local" class="form-control mb-3" required />
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">{{ editingEvent ? 'Update' : 'Add' }}</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Upcoming Interviews -->
       <div class="card shadow-sm border-0 rounded-3 mb-4">
         <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
           <div>
@@ -721,27 +779,24 @@
                     <i class="bi bi-geo-alt me-1"></i>
                     {{interview.status || 'No status provided'}}
                     <span class="badge" [ngClass]="{
-                      'bg-success-subtle text-success': isUpcoming(interview.interviewDate),
-                      'bg-secondary-subtle text-secondary': isPast(interview.interviewDate)
-                    }">
-                      {{isUpcoming(interview.interviewDate) ? 'Upcoming' : 'Completed'}}
-                    </span>
-                  </p>
-
-                  <div class="d-flex gap-1 flex-wrap">
-                    <button class="btn btn-outline-secondary btn-sm" 
-                      [routerLink]="['/employer/interview-update', interview.id]">
-                      <i class="bi bi-pencil me-1"></i>Reschedule
-                    </button>
-                    <a *ngIf="interview.meetingLink && isUpcoming(interview.interviewDate)" 
-                      class="btn btn-outline-info btn-sm"
-                      [href]="interview.meetingLink" target="_blank"
-                      title="Join Meeting">
-                      <i class="bi bi-camera-video"></i>
-                      </a>
-                    <button class="btn btn-outline-primary btn-sm" (click)="getInterviewById(interview.id!)">
-                      <i class="bi bi-eye"></i>
-                    </button>
+                    'bg-success-subtle text-success': !isPast(interview.interviewDate, interview.endTime),
+                    'bg-secondary-subtle text-secondary': isPast(interview.interviewDate, interview.endTime)
+                  }">
+                      {{ isPast(interview.interviewDate, interview.endTime) ? 'Completed' : 'Upcoming' }}
+                      </span>
+                      
+                      <div class="d-flex gap-1 flex-wrap">
+                        <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/employer/interview-update', interview.id]">
+                          <i class="bi bi-pencil me-1"></i>Reschedule
+                        </button>
+                        <a *ngIf="interview.meetingLink && !isPast(interview.interviewDate, interview.endTime)"
+                          class="btn btn-outline-info btn-sm" [href]="interview.meetingLink" target="_blank" title="Join Meeting">
+                          <i class="bi bi-camera-video"></i>
+                        </a>
+                      
+                        <button class="btn btn-outline-primary btn-sm" (click)="getInterviewById(interview.id!)">
+                          <i class="bi bi-eye"></i>
+                        </button>
                     <button class="btn btn-outline-danger btn-sm" (click)="deleteInterview(interview.id!)">
                       <i class="bi bi-trash"></i>
                     </button>
@@ -843,61 +898,81 @@
           <div class="mb-4">
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Applications Received</span>
-              <span class="badge bg-primary">87</span>
+              <span class="badge bg-primary">{{counts.APPLICATIONS_RECEIVED || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" 
-                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-primary" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.APPLICATIONS_RECEIVED)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div class="mb-4">
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Resume Screening</span>
-              <span class="badge bg-info">42</span>
+              <span class="badge bg-info">{{counts.RESUME_SCREENING || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-info" role="progressbar" style="width: 48%;" 
-                aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-info" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.RESUME_SCREENING)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Shortlisted</span>
+              <span class="badge bg-primary-subtle">{{counts.SHORTLISTED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-primary-subtle" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.SHORTLISTED)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div class="mb-4">
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Phone Interview</span>
-              <span class="badge bg-warning">28</span>
+              <span class="badge bg-warning">{{counts.PHONE_INTERVIEW || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-warning" role="progressbar" style="width: 32%;" 
-                aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-warning" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.PHONE_INTERVIEW)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div class="mb-4">
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Technical Assessment</span>
-              <span class="badge bg-secondary">18</span>
+              <span class="badge bg-secondary">{{counts.TECHNICAL_ASSESSMENT || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-secondary" role="progressbar" style="width: 21%;" 
-                aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-secondary" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.TECHNICAL_ASSESSMENT)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Rejected</span>
+              <span class="badge bg-danger">{{counts.REJECTED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-danger" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.REJECTED)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div class="mb-4">
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Final Interview</span>
-              <span class="badge bg-dark">12</span>
+              <span class="badge bg-dark">{{counts[ApplicationStage.FINAL_INTERVIEW] || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-dark" role="progressbar" style="width: 14%;" 
-                aria-valuenow="14" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-dark" role="progressbar"
+                [style.width.%]="getStagePercentage(ApplicationStage.FINAL_INTERVIEW)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div>
             <div class="d-flex justify-content-between mb-2">
               <span class="fw-medium">Offer Extended</span>
-              <span class="badge bg-success">8</span>
+              <span class="badge bg-success">{{counts.OFFER_EXTENDED || 0}}</span>
             </div>
             <div class="progress" style="height: 10px;">
-              <div class="progress-bar bg-success" role="progressbar" style="width: 9%;" 
-                aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
+              <div class="progress-bar bg-success" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.OFFER_EXTENDED)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
         </div>

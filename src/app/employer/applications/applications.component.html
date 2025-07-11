@@ -39,9 +39,14 @@
               <label class="form-label fw-medium">Status</label>
               <select class="form-select" [(ngModel)]="statusFilter" (change)="filterApplications()">
                 <option value="">All Status</option>
-                <option value="PENDING">Pending</option>
-                <option value="SHORTLISTED">Shortlisted</option>
-                <option value="REJECTED">Rejected</option>
+                <option value="APPLICATIONS_RECEIVED">RECEIVED</option>
+                <option value="RESUME_SCREENING">SCREENING</option>
+                <option value="SHORTLISTED">SHORTLISTED</option>
+                <option Value="PHONE_INTERVIEW">PHONE_INTERVIEW</option>
+                <option value="TECHNICAL_ASSESSMENT">ASSESSMENT</option>
+                <option value="FINAL_INTERVIEW">INTERVIEW</option>
+                <option value="OFFER_EXTENDED">OFFERED</option>
+                <option value="REJECTED">REJECTED</option>
               </select>
             </div>
             <div class="col-md-2">
@@ -158,12 +163,23 @@
                       (change)="updateStatus(app.id)"
                       [ngClass]="{
                         'border-success': selectedStatuses[app.id] === 'SHORTLISTED',
-                        'border-warning': selectedStatuses[app.id] === 'PENDING',
-                        'border-danger': selectedStatuses[app.id] === 'REJECTED'
+                        'border-warning': selectedStatuses[app.id] === 'APPLICATIONS_RECEIVED',
+                        'border-danger': selectedStatuses[app.id] === 'REJECTED',
+                        'border-white': selectedStatuses[app.id] === 'PHONE_INTERVIEW',
+                        'border-0':selectedStatuses[app.id] === 'TECHNICAL_ASSESSMENT',
+                        'border-end-0':selectedStatuses[app.id] === 'FINAL_INTERVIEW',
+                        'border-start-0':selectedStatuses[app.id] === 'OFFER_EXTENDED'
                       }">
-                      <option value="PENDING">Pending</option>
-                      <option value="SHORTLISTED">Shortlisted</option>
+                     
+                      <option value="APPLICATIONS_RECEIVED">RECEIVED</option>
+                      <option value="RESUME_SCREENING">SCREENING</option>
+                      <option value="SHORTLISTED">SHORTLISTED</option>
+                      <option value="PHONE_INTERVIEW">PHONE_INTERVIEW</option>
+                      <option value="TECHNICAL_ASSESSMENT">ASSESSMENT</option>
+                      <option value="FINAL_INTERVIEW">INTERVIEW</option>
+                      <option value="OFFER_EXTENDED">OFFERED</option>
                       <option value="REJECTED">Rejected</option>
+
                     </select>
                   </td>
                   <td class="py-3">

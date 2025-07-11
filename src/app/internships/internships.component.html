@@ -1,1 +1,47 @@
-<p>internships works!</p>
+<div class="calendar-container">
+  <div class="header">
+    <button (click)="prevMonth()">&lt;</button>
+    <h2>{{ currentMonth | date:'MMMM yyyy' }}</h2>
+    <button (click)="nextMonth()">&gt;</button>
+  </div>
+
+  <div class="weekdays">
+    <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="weekday">{{ day }}</div>
+  </div>
+
+  <div class="weeks">
+    <div *ngFor="let week of weeks" class="week">
+      <div *ngFor="let day of week" class="day" [class.empty]="!day" [class.today]="isToday(day)" (click)="day && onDateClick(day)">
+        <div class="date-number">{{ day?.getDate() }}</div>
+        <div class="dots">
+          <span *ngFor="let ev of getEventsForDate(day)" class="dot" title="{{ ev.title }}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for events on selected date -->
+<div class="modal" *ngIf="showEventModal">
+  <div class="modal-content">
+    <h3>Events on {{ selectedDate | date:'fullDate' }}</h3>
+    <ul>
+      <li *ngFor="let event of selectedDateEvents">
+        <strong>{{ event.title }}</strong><br>
+        <small>{{ event.description }}</small><br>
+        <small>{{ event.dateTime | date:'shortTime' }}</small>
+        <button (click)="onEditEvent(event)">Edit</button>
+        <button (click)="onDeleteEvent(event)">Delete</button>
+      </li>
+    </ul>
+
+    <h4>{{ editingEvent ? 'Edit Event' : 'Add Event' }}</h4>
+    <form [formGroup]="eventForm" (ngSubmit)="onSaveEvent()">
+      <input formControlName="title" placeholder="Title" required />
+      <input formControlName="description" placeholder="Description" />
+      <input formControlName="dateTime" type="datetime-local" required />
+      <button type="submit">{{ editingEvent ? 'Update' : 'Add' }}</button>
+      <button type="button" (click)="closeModal()">Close</button>
+    </form>
+  </div>
+</div>

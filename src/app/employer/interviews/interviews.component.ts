@@ -3,6 +3,7 @@ import { EmployerService } from '../../_services/employer.service';
 import { Interview } from '../../_model/Interview.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Application, ApplicationStage } from '../../_model/Application.model';
 
 @Component({
   selector: 'app-interviews',
@@ -13,6 +14,9 @@ export class InterviewsComponent implements OnInit {
   interviews: Interview[] = [];
   filteredInterviews: Interview[] = [];
   selectedInterview?: Interview;
+   applications: Application[] = [];
+    jobApplications: Application[] = [];
+  internshipApplications: Application[] = [];
   Math = Math;
   // Filter properties
   searchTerm: string = '';
@@ -172,10 +176,16 @@ export class InterviewsComponent implements OnInit {
     return date >= now;
   }
 
-  isPast(dateStr: string): boolean {
-    const date = new Date(dateStr);
-    const now = new Date();
-    return date < now;
-  }
+   isPast(dateStr: string, endTimeStr: string): boolean {
+  if (!dateStr || !endTimeStr) return false;
+
+  const [hours, minutes] = endTimeStr.split(':').map(Number);
+  const endDateTime = new Date(dateStr);
+  endDateTime.setHours(hours, minutes, 0, 0);
+
+  const now = new Date();
+  return endDateTime < now;
+}
+
 }
 

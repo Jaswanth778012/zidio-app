@@ -1,4 +1,4 @@
-<div class="profile-container">
+<!-- <div class="profile-container">
   <h2>Employer Profile</h2>
 
   <div class="profile-picture">
@@ -58,41 +58,98 @@
     <button type="submit" class="submit-btn">Update Profile</button>
   </form>
 
-  <!-- <div class="container">
-  <h2>Applications</h2>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Job/Internship</th>
-        <th>Student</th>
-        <th>Status</th>
-        <th>Applied Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let app of applications">
-        <td>{{ app.id }}</td>
-        <td>{{ app.job?.title || app.internship?.title }}</td>
-        <td>{{ app.student?.userName }}</td>
-        <td>{{ app.status }}</td>
-        <td>{{ app.appliedDate | date }}</td>
-        <td>
-          <select [(ngModel)]="selectedStatus">
-            <option>APPROVED</option>
-            <option>PENDING</option>
-            <option>REJECTED</option>
-          </select>
-          <button (click)="updateStatus(app.id)">Update</button>
-          <button (click)="deleteApplication(app.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div> -->
+<div class="container py-5">
+  <mat-card class="profile-card shadow-lg p-4">
+    <div class="text-center mb-4">
+      <div class="profile-picture mx-auto mb-2">
+        <img *ngIf="profilePicturePreview" [src]="profilePicturePreview" alt="Profile Picture" />
+      </div>
+      <label class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-upload me-1"></i> Change Picture
+        <input type="file" (change)="onFileSelected($event)" hidden />
+      </label>
+    </div>
 
+    <h4 class="text-center text-primary mb-4 fw-bold">Employer Profile</h4>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="row g-4">
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-person me-2"></i>First Name</mat-label>
+          <input matInput formControlName="userFirstName" />
+        </mat-form-field>
+      </div>
+
+     
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-person me-2"></i>Last Name</mat-label>
+          <input matInput formControlName="userLastName" />
+        </mat-form-field>
+      </div>
+
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-envelope me-2"></i>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+        </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-telephone me-2"></i>Phone</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+      </div>
+
+     
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-briefcase me-2"></i>Position</mat-label>
+          <input matInput formControlName="position" />
+        </mat-form-field>
+      </div>
+
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-building me-2"></i>Company Name</mat-label>
+          <input matInput formControlName="companyName" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-globe me-2"></i>Website</mat-label>
+          <input matInput formControlName="companyWebsiteURL" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-bar-chart me-2"></i>Industry</mat-label>
+          <input matInput formControlName="industry" />
+        </mat-form-field>
+      </div>
+
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label><i class="bi bi-diagram-3 me-2"></i>Company Type</mat-label>
+          <input matInput formControlName="companyType" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 text-end">
+        <button mat-raised-button color="primary" type="submit">
+          <i class="bi bi-save me-2"></i>Update Profile
+        </button>
+      </div>
+    </form>
+  </mat-card>
 </div>
+
+
 
 

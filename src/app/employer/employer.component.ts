@@ -5,8 +5,9 @@ import { EmployerService } from '../_services/employer.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Application } from '../_model/Application.model';
+import { Application, ApplicationStage } from '../_model/Application.model';
 import { Interview } from '../_model/Interview.model';
+import { CalendarEvent } from '../_model/CalendarEvent.model';
 
 @Component({
   selector: 'app-employer',
@@ -14,6 +15,7 @@ import { Interview } from '../_model/Interview.model';
   styleUrl: './employer.component.css'
 })
 export class EmployerComponent implements OnInit {
+  public ApplicationStage = ApplicationStage;
   Math = Math
   message: any;
   role: any;
@@ -29,8 +31,8 @@ currentPage: number = 1;
   groupedJobIds: number[] = [];
   expandedJobId: number | null = null;
 
-  selectedStatus: string = 'PENDING';
-  selectedStatuses: { [applicationId: number]: string } = {};
+  selectedStatus: ApplicationStage = ApplicationStage.APPLICATIONS_RECEIVED;
+  selectedStatuses: { [applicationId: number]: ApplicationStage } = {};
 
   groupedInternshipApplications: { [internshipId: number]: {applications:Application[], currentPage:number, pageSize:number }} = {};
   groupedInternshipIds: number[] = [];
@@ -38,8 +40,25 @@ currentPage: number = 1;
 
   interviews: Interview[] = [];
   selectedinterview?: Interview;
+  counts: { [stage in ApplicationStage]?: number } = {};
+  totalApplicationsCount: number = this.applications.length;
 
-  constructor(private userService : UserService, private userAuthService:UserAuthService, private employerService: EmployerService,private fb: FormBuilder,private snackBar: MatSnackBar,private router: Router) { }
+  currentMonth: Date = new Date();
+    weeks: (Date | null)[][] = [];
+    events: CalendarEvent[] = [];
+  
+    selectedDateEvents: CalendarEvent[] = [];
+    selectedDate: Date | null = null;
+  
+    showEventModal = false;
+    eventForm: FormGroup;
+    editingEvent: CalendarEvent | null = null;
+    
+  constructor(private userService : UserService, private userAuthService:UserAuthService, private employerService: EmployerService,private fb: FormBuilder,private snackBar: MatSnackBar,private router: Router) { this.eventForm = this.fb.group({
+      title: [''],
+      description: [''],
+      dateTime: ['']
+    });}
   get totalPages(): number {
   return Math.ceil(this.groupedJobIds.length / this.pageSize);
 }
@@ -48,7 +67,6 @@ currentPage: number = 1;
     this.role = this.userAuthService.getRoles();
     this.forEmployer();
     this.employerService.getProfile().subscribe(profile=>{
-      console.log('Profile:', profile);
       if (profile.profilePictureUrl) {
         this.profilePictureUrl = profile.profilePictureUrl;
       }
@@ -57,6 +75,8 @@ currentPage: number = 1;
     this.updatePaginatedJobIds();
     this.updatePaginatedInternshipIds();
     this.fetchAllInterviews();
+    this.generateCalendar(this.currentMonth);
+    this.loadEvents();
   }
 
   async ngAfterViewInit() {
@@ -82,31 +102,22 @@ currentPage: number = 1;
 
 }
 loadAll() {
-    this.employerService.getAllApplications().subscribe(data =>{ this.applications = data;this.jobApplications = data.filter(app => app.job);
-    this.internshipApplications = data.filter(app => app.internship);this.setDefaultStatuses();this.groupApplicationsByJobId();this.groupInternshipApplicationsByInternshipId()
-      
-});
-  }
+  this.employerService.getAllApplications().subscribe({
+    next: (data) => {
+      this.applications = data;
+      this.jobApplications = data.filter(app => !!app.job);
+      this.internshipApplications = data.filter(app => !!app.internship);
+      this.setDefaultStatuses();
+      this.groupApplicationsByJobId();
+      this.groupInternshipApplicationsByInternshipId();
+      this.getApplicationCounts();
+    },
+    error: (err) => {
+      console.error('Failed to load applications', err);
+    }
+  });
+}
 
-//   downloadResume(id: number) {
-//   this.employerService.downloadResume(id).subscribe(
-//     (blob) => {
-//       const fileName = `resume_${id}.pdf`; // Or use a better name if you can get from headers
-//       const url = window.URL.createObjectURL(blob);
-//       const a = document.createElement('a');
-//       a.href = url;
-//       a.download = fileName;
-//       a.click();
-//       window.URL.revokeObjectURL(url);
-//     },
-//     (error) => {
-//       console.error('Failed to download resume:', error);
-//       this.snackBar.open('Failed to download resume', 'Close', {
-//         duration: 3000
-//       });
-//     }
-//   );
-// }
 downloadResume(id: number) {
   this.employerService.downloadResume(id, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
     next: (response: any) => {
@@ -140,7 +151,7 @@ downloadResume(id: number) {
 setDefaultStatuses(): void {
     this.applications.forEach(app => {
       // Set to current status if exists, otherwise default to 'PENDING'
-      this.selectedStatus = app.status || 'PENDING';
+      this.selectedStatus = app.status ? app.status as ApplicationStage : ApplicationStage.APPLICATIONS_RECEIVED;
     });
   }
 
@@ -156,7 +167,7 @@ setDefaultStatuses(): void {
         this.groupedJobIds.push(jobId);
       }
       this.groupedApplications[jobId].applications.push(app);
-      this.selectedStatus = app.status || 'PENDING'; // Initialize status
+      this.selectedStatuses[app.id] = app.status ? app.status as ApplicationStage : ApplicationStage.APPLICATIONS_RECEIVED; // Initialize status
     }
   }
   updatePaginatedJobIds(): void {
@@ -206,7 +217,7 @@ prevPage(): void {
       }
       
       this.groupedInternshipApplications[internshipId].applications.push(app);
-      this.selectedStatuses[app.id] = app.status || 'PENDING'; // Initialize status
+      this.selectedStatuses[app.id] = app.status ? app.status as ApplicationStage : ApplicationStage.APPLICATIONS_RECEIVED;
     }
   }
    updatePaginatedInternshipIds(): void {
@@ -305,11 +316,6 @@ getRecentApplications(): any[] {
     }
     const sortedApplications = [...this.applications].sort((a, b) => b.id - a.id);
     
-    console.log('Applications sorted by ID (most recent first):', sortedApplications.map(app => ({
-      id: app.id,
-      appliedDate: app.appliedDate,
-      studentName: app.student?.userFirstName + ' ' + app.student?.userLastName
-    })));
         return sortedApplications.slice(0, 5);
   }
 
@@ -317,15 +323,55 @@ getRecentApplications(): any[] {
 
 // Method to shortlist an application
 shortlistApplication(id: number): void {
-  this.selectedStatuses[id] = 'SHORTLISTED';
+  this.selectedStatuses[id] = ApplicationStage.SHORTLISTED;
   this.updateStatus(id);
 }
 
 
 rejectApplication(id: number): void {
-  this.selectedStatuses[id] = 'REJECTED';
+  this.selectedStatuses[id] = ApplicationStage.REJECTED;
   this.updateStatus(id);
 }
+
+getApplicationCountByStage(stage: ApplicationStage): void {
+    this.employerService.countApplicationsByStage(stage).subscribe(count => {
+      console.log(`Count of applications in stage ${stage}:`, count);
+      // You can store this count in a variable if needed for UI display
+    });
+  }
+
+  getApplicationCounts(): void {
+    const stages = Object.values(ApplicationStage);
+    this.totalApplicationsCount = this.applications.length;
+    stages.forEach(stage => {
+      this.employerService.countApplicationsByStage(stage).subscribe(count => {
+        this.counts[stage] = count;
+        this.totalApplicationsCount += count;
+      });
+    });
+  }
+
+ getStagePercentage(stage: ApplicationStage): number {
+  const count = this.counts[stage] || 0;
+  const percentage = this.totalApplicationsCount > 0
+    ? (count / this.totalApplicationsCount) * 100
+    : 0;
+  return Math.round(percentage * 100) / 100; // rounds to 2 decimal places
+}
+
+
+
+  // Get applications filtered by stage
+  getApplicationsByStage(stage: ApplicationStage): void {
+    this.employerService.getApplicationsByStage(stage).subscribe(apps => {
+      this.applications = apps;
+      this.jobApplications = apps.filter(app => !!app.job);
+      this.internshipApplications = apps.filter(app => !!app.internship);
+      this.setDefaultStatuses();
+      this.groupApplicationsByJobId();
+      this.groupInternshipApplicationsByInternshipId();
+    });
+  }
 
   deleteApplication(id: number) {
     if (confirm('Are you sure to delete this application?')) {
@@ -403,11 +449,195 @@ getRelativeDate(dateStr: string): string {
     return date >= now;
   }
 
-  isPast(dateStr: string): boolean {
-    const date = new Date(dateStr);
-    const now = new Date();
-    return date < now;
+  isPast(dateStr: string, endTimeStr: string): boolean {
+  if (!dateStr || !endTimeStr) return false;
+
+  const [hours, minutes] = endTimeStr.split(':').map(Number);
+  const endDateTime = new Date(dateStr);
+  endDateTime.setHours(hours, minutes, 0, 0);
+
+  const now = new Date();
+  return endDateTime < now;
+}
+
+
+
+  generateCalendar(date: Date) {
+    this.weeks = [];
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    let day = start;
+    let week: (Date | null)[] = [];
+
+    for (let i = 0; i < day.getDay(); i++) {
+      week.push(null);
+    }
+
+    while (day <= end) {
+      week.push(new Date(day));
+      if (week.length === 7) {
+        this.weeks.push(week);
+        week = [];
+      }
+      day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
+    }
+
+    while (week.length < 7) {
+      week.push(null);
+    }
+    this.weeks.push(week);
   }
+
+  loadEvents() {
+    this.employerService.getEvents().subscribe(events => {
+      this.events = events;
+    });
+  }
+
+  getEventsForDate(date: Date | null): CalendarEvent[] {
+    if (!date) return [];
+    return this.events.filter(ev => {
+      const evDate = new Date(ev.dateTime);
+      return evDate.getFullYear() === date.getFullYear() &&
+        evDate.getMonth() === date.getMonth() &&
+        evDate.getDate() === date.getDate();
+    });
+  }
+
+  onDateClick(date: Date) {
+    if (!date) return;
+    this.selectedDate = date;
+    this.selectedDateEvents = this.getEventsForDate(date);
+    this.showEventModal = true;
+    this.editingEvent = null;
+    this.eventForm.reset({
+      dateTime: date.toISOString().substring(0, 16)
+    });
+  }
+
+  onEditEvent(event: CalendarEvent) {
+    this.editingEvent = event;
+    this.eventForm.setValue({
+      title: event.title,
+      description: event.description,
+      dateTime: event.dateTime.substring(0, 16)
+    });
+  }
+
+  onDeleteEvent(event: CalendarEvent) {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+
+    this.employerService.deleteEvent(event.id!).subscribe({
+      next: () => {
+        this.snackBar.open('Event deleted successfully!', 'Close', {
+          duration: 3000,
+           horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snack-success'],
+        });
+
+        this.events = this.events.filter(e => e.id !== event.id);
+        this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
+      },
+      error: () => {
+        this.snackBar.open('Failed to delete event.', 'Close', {
+          duration: 3000,
+           horizontalPosition: 'right',
+            verticalPosition: 'top',
+          panelClass: ['snack-error'],
+        });
+      }
+    });
+  }
+
+  onSaveEvent() {
+    const formValue = this.eventForm.value;
+    const formDateTime: string = formValue.dateTime;
+    const dateTimeWithSeconds = formDateTime.length === 16 ? formDateTime + ":00" : formDateTime;
+
+    const newEvent: CalendarEvent = {
+      title: formValue.title,
+      description: formValue.description,
+      dateTime: dateTimeWithSeconds
+    };
+
+    if (this.editingEvent) {
+      this.employerService.updateEvent(this.editingEvent.id!, newEvent).subscribe({
+        next: () => {
+          this.snackBar.open('Event updated successfully!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',panelClass: ['snack-success'],
+
+          });
+
+          this.loadEvents();
+          this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
+          this.editingEvent = null;
+          this.eventForm.reset();
+        },
+        error: () => {
+          this.snackBar.open('Failed to update event.', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snack-error'],
+          });
+        }
+      });
+    } else {
+      this.employerService.createEvent(newEvent).subscribe({
+        next: () => {
+          this.snackBar.open('Event created successfully!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snack-success'],
+          });
+
+          this.loadEvents();
+          this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
+          this.eventForm.reset();
+        },
+        error: () => {
+          this.snackBar.open('Failed to create event.', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snack-error'],
+          });
+        }
+      });
+    }
+  }
+
+  closeModal() {
+    this.showEventModal = false;
+    this.selectedDate = null;
+    this.selectedDateEvents = [];
+    this.editingEvent = null;
+    this.eventForm.reset();
+  }
+
+  prevMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
+    this.generateCalendar(this.currentMonth);
+  }
+
+  nextMonth() {
+    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
+    this.generateCalendar(this.currentMonth);
+  }
+
+  isToday(date: Date | null): boolean {
+  if (!date) return false;
+  const today = new Date();
+  return date.getFullYear() === today.getFullYear() &&
+         date.getMonth() === today.getMonth() &&
+         date.getDate() === today.getDate();
+}
+
 }
 
 

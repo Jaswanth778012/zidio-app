@@ -23,7 +23,6 @@ export class UserComponent implements OnInit {
     this.forUser();
 
     this.studentService.getProfile().subscribe(profile =>{
-      console.log('Profile:', profile);
       if(profile.profilePictureUrl){
         this.profilePictureUrl = profile.profilePictureUrl;
       }

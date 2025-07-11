@@ -106,8 +106,8 @@
                       <div class="rounded text-center p-2 me-3" 
                         [ngClass]="{
                           'bg-primary-subtle text-primary': isUpcoming(interview.interviewDate),
-                          'bg-secondary-subtle text-secondary': isPast(interview.interviewDate)
-                        }" 
+                          'bg-secondary-subtle text-secondary': isPast(interview.interviewDate, interview.endTime)
+                        }"
                         style="min-width: 50px;">
                         <div class="fw-bold">{{interview.interviewDate | date: 'dd'}}</div>
                         <div class="small">{{interview.interviewDate | date: 'MMM'}}</div>
@@ -147,11 +147,11 @@
                   </td>
                   <td class="py-3">
                     <span class="badge" [ngClass]="{
-                      'bg-success-subtle text-success': isUpcoming(interview.interviewDate),
-                      'bg-secondary-subtle text-secondary': isPast(interview.interviewDate)
-                    }">
-                      {{isUpcoming(interview.interviewDate) ? 'Upcoming' : 'Completed'}}
-                    </span>
+                    'bg-success-subtle text-success': !isPast(interview.interviewDate, interview.endTime),
+                    'bg-secondary-subtle text-secondary': isPast(interview.interviewDate, interview.endTime)
+                  }">
+                      {{ isPast(interview.interviewDate, interview.endTime) ? 'Completed' : 'Upcoming' }}
+                      </span>
                   </td>
                   <td class="py-3">
                     <div class="d-flex gap-1">
@@ -160,12 +160,10 @@
                         title="Reschedule">
                         <i class="bi bi-pencil"></i>
                       </button>
-                      <a *ngIf="interview.meetingLink && isUpcoming(interview.interviewDate)" 
-                      class="btn btn-outline-info btn-sm"
-                      [href]="interview.meetingLink" target="_blank"
-                      title="Join Meeting">
-                      <i class="bi bi-camera-video"></i>
-                      </a>
+                      <a *ngIf="interview.meetingLink && !isPast(interview.interviewDate, interview.endTime)"
+                          class="btn btn-outline-info btn-sm" [href]="interview.meetingLink" target="_blank" title="Join Meeting">
+                          <i class="bi bi-camera-video"></i>
+                        </a>
                       <button class="btn btn-outline-primary btn-sm" 
                         (click)="getInterviewById(interview.id!)"
                         title="View Details">

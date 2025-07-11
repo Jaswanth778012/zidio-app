@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployerService } from '../../_services/employer.service';
-import { Application } from '../../_model/Application.model';
+import { Application, ApplicationStage } from '../../_model/Application.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class ApplicationsComponent implements OnInit {
   applications: Application[] = [];
   filteredApplications: Application[] = [];
-  selectedStatuses: { [applicationId: number]: string } = {};
+  selectedStatuses: { [applicationId: number]: ApplicationStage } = {};
    Math = Math
   // Filter properties
   searchTerm: string = '';
