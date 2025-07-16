@@ -41,6 +41,11 @@ import { ApplicationsComponent } from './employer/applications/applications.comp
 import { InterviewsComponent } from './employer/interviews/interviews.component';
 import { InternshipsComponent } from './internships/internships.component';
 import { JobsComponent } from './jobs/jobs.component';
+import { CourseEnrollmentManagementComponent } from './admin/course-enrollment-management/course-enrollment-management.component';
+import path from 'path';
+import { CoursesComponent } from './courses/courses.component';
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { StudentreviewComponent } from './user/studentreview/studentreview.component';
 
 
 const routes: Routes = [
@@ -92,6 +97,14 @@ const routes: Routes = [
   component: ContactComponent
   },
   {
+    path: 'courses',
+    component: CoursesComponent
+  },
+  {
+    path: 'courses/:id',
+    component: CourseDetailsComponent
+  },
+  {
   path: 'internships',
   component: InternshipsComponent
   },
@@ -115,6 +128,10 @@ const routes: Routes = [
      path: 'admin/courses', 
     component: CourseManagementComponent
      
+  },
+  {
+    path: 'admin/course/enroll',
+    component: CourseEnrollmentManagementComponent
   },
   {
     path: 'admin/internships',

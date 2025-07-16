@@ -11,6 +11,13 @@
   padding: 10px;
   font-weight: bold;
 }
+.blue-card { background-color: #3f51b5; }
+.green-card { background-color: #4caf50; }
+.amber-card { background-color: #ffc107; color: black; }
+.teal-card { background-color: #009688; }
+.orange-card { background-color: #ff5722; }
+.purple-card { background-color: #9c27b0; }
+.red-card { background-color: #f44336; }
 .chart-container {
   display: flex;
   justify-content: space-around;

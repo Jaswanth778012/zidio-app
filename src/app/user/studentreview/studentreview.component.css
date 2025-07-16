@@ -1,0 +1,139 @@
+.review-container {
+  max-width: 760px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.review-card {
+  display: flex;
+  align-items: flex-start;
+  background: #ffffff;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  gap: 1rem;
+}
+
+.review-icon-area {
+  flex-shrink: 0;
+}
+
+.review-icon {
+  font-size: 48px;
+  color: #1976d2;
+}
+
+.review-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.review-username {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.review-rating .star {
+  font-size: 22px;
+  margin: 0 1px;
+}
+
+.review-comment {
+  font-style: italic;
+  margin: 0.4rem 0;
+  color: #555;
+}
+
+.review-footer {
+  align-self: flex-end;
+}
+
+.review-date {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.no-reviews-text {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  margin: 2rem 0;
+  font-size: 1rem;
+}
+
+/* Review Form */
+.review-form {
+  max-width: 760px;
+  margin: 3rem auto 2rem;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rating-field {
+  flex: 1 1 120px;
+  min-width: 120px;
+}
+
+.comment-field {
+  flex: 2 1 400px;
+}
+
+.submit-btn {
+  align-self: flex-end;
+  margin-left: auto;
+  min-width: 140px;
+  padding: 0.6rem 1.6rem;
+  font-weight: 600;
+}
+
+/* Focus effect */
+.mat-form-field.mat-focused .mat-form-field-outline {
+  border-color: #1976d2 !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .review-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .review-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .review-form {
+    flex-direction: column;
+  }
+
+  .rating-field,
+  .comment-field,
+  .submit-btn {
+    flex: 1 1 100%;
+    min-width: auto;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+}

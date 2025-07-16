@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Application, ApplicationStage } from '../_model/Application.model';
 import { Interview } from '../_model/Interview.model';
 import { CalendarEvent } from '../_model/CalendarEvent.model';
+import { RemainderSnackbarComponent } from '../remainder-snackbar/remainder-snackbar.component';
 
 @Component({
   selector: 'app-employer',
@@ -53,6 +54,10 @@ currentPage: number = 1;
     showEventModal = false;
     eventForm: FormGroup;
     editingEvent: CalendarEvent | null = null;
+
+      reminderCheckInterval: any;
+ remindedEventIds = new Set<number>() ;
+  remindersEnabled: boolean = true;
     
   constructor(private userService : UserService, private userAuthService:UserAuthService, private employerService: EmployerService,private fb: FormBuilder,private snackBar: MatSnackBar,private router: Router) { this.eventForm = this.fb.group({
       title: [''],
@@ -492,6 +497,7 @@ getRelativeDate(dateStr: string): string {
   loadEvents() {
     this.employerService.getEvents().subscribe(events => {
       this.events = events;
+      this.startReminderCheck();
     });
   }
 
@@ -637,7 +643,80 @@ getRelativeDate(dateStr: string): string {
          date.getMonth() === today.getMonth() &&
          date.getDate() === today.getDate();
 }
+  startReminderCheck() {
+  this.reminderCheckInterval = setInterval(() => {
+    console.log('Checking reminders...', new Date());
+    if (!this.remindersEnabled) return;
 
+    const now = new Date();
+    const nowRounded = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes(),
+      0, 0
+    );
+
+    this.events.forEach(event => {
+      if (!event.dateTime || !event.id) return;
+        const eventId = event.id; 
+      const isoDateTime = event.dateTime.replace(' ', 'T');
+      const eventDate = new Date(isoDateTime);
+      if (isNaN(eventDate.getTime())) return;
+
+      const eventRounded = new Date(
+        eventDate.getFullYear(),
+        eventDate.getMonth(),
+        eventDate.getDate(),
+        eventDate.getHours(),
+        eventDate.getMinutes(),
+        0, 0
+      );
+
+      console.log(`Comparing now ${nowRounded.getTime()} with event ${eventRounded.getTime()}`);
+
+      if (nowRounded.getTime() === eventRounded.getTime() && !this.remindedEventIds.has(eventId)) {
+    console.log('✅ Triggering reminder for:', event.title);
+    this.showReminder(event);
+    this.remindedEventIds.add(eventId);
+  }
+    });
+  }, 1000);
+}
+
+
+ showReminder(event: CalendarEvent) {
+  const formattedTime = new Date(event.dateTime).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  this.snackBar.openFromComponent(RemainderSnackbarComponent, {
+    data: {
+      title: event.title,
+      time: formattedTime,
+      description: event.description
+    },
+    duration: 60000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    panelClass: ['snack-success'],
+  });
+}
+
+
+
+  toggleReminders() {
+    this.remindersEnabled = !this.remindersEnabled;
+    const message = this.remindersEnabled ? 'Reminders Enabled' : 'Reminders Disabled';
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: [this.remindersEnabled ? 'snack-success' : 'snack-error'],
+    });
+  }
 }
 
 

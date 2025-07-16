@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudentProfile } from '../_model/student-profile.model';
 import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model/message.model';
+import { CourseReview } from '../_model/reviewes.model';
+import { UserAuthService } from './user-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model
 export class StudentService {
    private baseUrl = 'http://localhost:8080/student';
   
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private userAuthService: UserAuthService) {}
   //profile for student
     getProfile(): Observable<StudentProfile> {
         return this.http.get<StudentProfile>(`${this.baseUrl}/profile`);
@@ -74,4 +76,40 @@ export class StudentService {
       markAllAsReadFromSender(userName: string): Observable<any> {
       return this.http.put<any>(`${this.baseUrl}/messages/sender/${userName}/read`, {});
     }
+
+    //for courses
+    getCourses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/courses`);
+  }
+
+  enrollInFreeCourse(courseId: number): Observable<string> {
+    return this.http.post(`${this.baseUrl}/apply/course/${courseId}`, {}, { responseType: 'text' });
+  }
+
+  enrollInPaidCourse(courseId: number): Observable<string> {
+    return this.http.post(`${this.baseUrl}/apply/course/paid/${courseId}`, {}, { responseType: 'text' });
+  }
+
+  verifyPayment(orderId: string, paymentId: string, signature: string) {
+  const token = this.userAuthService.getToken();
+  console.log('Token sent to backend:', token); // <-- Add this
+  const params = { orderId, paymentId, signature };
+  return this.http.post(`${this.baseUrl}/verify-payment`, null, {
+    params,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    responseType: 'text'
+  });
+}
+
+
+  //reviewsa
+  submitReview(courseId: number, rating: number, comment: string): Observable<CourseReview> {
+    const params = new HttpParams()
+      .set('rating', rating)
+      .set('comment', comment);
+    return this.http.post<CourseReview>(`${this.baseUrl}/course/${courseId}`, null, { params });
+  }
+
 }

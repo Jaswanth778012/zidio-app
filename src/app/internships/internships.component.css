@@ -136,3 +136,21 @@
   box-shadow: inset 0 0 0 2px #00000033; /* Optional: subtle inner border */
 }
 
+
+
+
+.reminder-toggle {
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+.snack-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.snack-error {
+  background-color: #e53935;
+  color: white;
+}
+

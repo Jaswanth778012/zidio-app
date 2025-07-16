@@ -1,0 +1,49 @@
+<div *ngIf="reviews.length > 0; else noReviews" class="review-container">
+  <h3 class="section-title">Course Reviews</h3>
+
+  <div class="review-card" *ngFor="let review of reviews">
+    <div class="review-icon-area">
+      <mat-icon class="review-icon" color="accent">account_circle</mat-icon>
+    </div>
+    <div class="review-main-content">
+      <div class="review-header">
+        <span class="review-username">{{ review.reviewerUsername }}</span>
+        <div class="review-rating">
+          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+            <mat-icon class="star" [color]="i < review.rating ? 'warn' : 'disabled'">star</mat-icon>
+          </ng-container>
+        </div>
+      </div>
+      <p class="review-comment">“{{ review.comment }}”</p>
+      <div class="review-footer">
+        <small class="review-date">{{ review.createdAt | date: 'mediumDate' }}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noReviews>
+  <p class="no-reviews-text">No reviews yet for this course.</p>
+</ng-template>
+
+<!-- Review Submission Form -->
+<div class="review-form">
+  <h3 class="section-title">Leave a Review</h3>
+  <form (ngSubmit)="submitReview()" #reviewForm="ngForm" class="form-fields">
+    <mat-form-field appearance="outline" class="rating-field">
+      <mat-label>Rating</mat-label>
+      <mat-select [(ngModel)]="newRating" name="rating" required>
+        <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="comment-field">
+      <mat-label>Comment</mat-label>
+      <textarea matInput [(ngModel)]="newComment" name="comment" required rows="4"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="!reviewForm.form.valid">
+      Submit Review
+    </button>
+  </form>
+</div>

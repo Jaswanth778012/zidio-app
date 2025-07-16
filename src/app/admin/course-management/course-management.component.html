@@ -223,9 +223,6 @@
       <button mat-icon-button (click)="getAuditLogs(course.id)">
         <mat-icon>history</mat-icon>
       </button>
-      <button mat-icon-button (click)="getCourseReviews(course.id)">
-        <mat-icon>rate_review</mat-icon>
-      </button>
     </div>
   </td>
 </ng-container>
@@ -256,35 +253,22 @@
     </mat-list>
   </div>
 
-  <!-- ⭐ Course Reviews -->
-  <div *ngIf="selectedCourseReviews.length > 0">
-    <h3>Course Reviews</h3>
-    <mat-list>
-      <mat-list-item *ngFor="let review of selectedCourseReviews">
-        <span>{{ review.comment }}</span>
-        <button mat-icon-button (click)="flagReview(review.id)">
-          <mat-icon>flag</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteReview(review.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
-  </div>
 
   <!-- 🚩 Flagged Reviews -->
   <div *ngIf="flaggedReviews.length > 0">
     <h3>Flagged Reviews</h3>
     <mat-list>
       <mat-list-item *ngFor="let review of flaggedReviews">
-        {{ review.comment }} - flagged by {{ review.flaggedBy }}
-        <button mat-icon-button color="warn" (click)="deleteReview(review.id)">
+        <strong>{{ review.reviewerUsername }}</strong> on <em>{{ review.course.courseName }}</em><br/>
+         ⭐ {{ review.rating }} — {{ review.comment }}
+    <br />
+        <button mat-icon-button color="warn" (click)="deleteReview(review.id!)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-list-item>
     </mat-list>
   </div>
-
+  <p *ngIf="flaggedReviews.length === 0">No flagged reviews.</p>
   <hr />
 
    <!-- 🧩 Category Management -->

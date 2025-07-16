@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CalendarEvent } from '../_model/CalendarEvent.model';
 import { EmployerService } from '../_services/employer.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ interface CalendarDay {
   templateUrl: './internships.component.html',
   styleUrl: './internships.component.css'
 })
-export class InternshipsComponent implements OnInit{
+export class InternshipsComponent implements OnInit,OnDestroy{
 currentMonth: Date = new Date();
   weeks: (Date | null)[][] = [];
   events: CalendarEvent[] = [];
@@ -27,6 +27,10 @@ currentMonth: Date = new Date();
   showEventModal = false;
   eventForm: FormGroup;
   editingEvent: CalendarEvent | null = null;
+
+  reminderCheckInterval: any;
+ remindedEventIds = new Set<number>() ;
+  remindersEnabled: boolean = true;
 
   constructor(
     private employerService: EmployerService,
@@ -44,6 +48,13 @@ currentMonth: Date = new Date();
     this.generateCalendar(this.currentMonth);
     this.loadEvents();
   }
+
+  ngOnDestroy() {
+   if (this.reminderCheckInterval) {
+      clearInterval(this.reminderCheckInterval);
+    }
+  }
+
 
   generateCalendar(date: Date) {
     this.weeks = [];
@@ -75,6 +86,7 @@ currentMonth: Date = new Date();
   loadEvents() {
     this.employerService.getEvents().subscribe(events => {
       this.events = events;
+      this.startReminderCheck();
     });
   }
 
@@ -180,7 +192,8 @@ currentMonth: Date = new Date();
       });
     } else {
       this.employerService.createEvent(newEvent).subscribe({
-        next: () => {
+        next: (createdEvent) => {
+          console.log("Event Created",createdEvent)
           this.snackBar.open('Event created successfully!', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
@@ -220,5 +233,69 @@ currentMonth: Date = new Date();
   nextMonth() {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
     this.generateCalendar(this.currentMonth);
+  }
+
+startReminderCheck() {
+  this.reminderCheckInterval = setInterval(() => {
+    console.log('Checking reminders...', new Date());
+    if (!this.remindersEnabled) return;
+
+    const now = new Date();
+    const nowRounded = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes(),
+      0, 0
+    );
+
+    this.events.forEach(event => {
+      if (!event.dateTime || !event.id) return;
+        const eventId = event.id; 
+      const isoDateTime = event.dateTime.replace(' ', 'T');
+      const eventDate = new Date(isoDateTime);
+      if (isNaN(eventDate.getTime())) return;
+
+      const eventRounded = new Date(
+        eventDate.getFullYear(),
+        eventDate.getMonth(),
+        eventDate.getDate(),
+        eventDate.getHours(),
+        eventDate.getMinutes(),
+        0, 0
+      );
+
+      console.log(`Comparing now ${nowRounded.getTime()} with event ${eventRounded.getTime()}`);
+
+      if (nowRounded.getTime() === eventRounded.getTime() && !this.remindedEventIds.has(eventId)) {
+    console.log('✅ Triggering reminder for:', event.title);
+    this.showReminder(event);
+    this.remindedEventIds.add(eventId);
+  }
+    });
+  }, 1000);
+}
+
+
+  showReminder(event: CalendarEvent) {
+  this.snackBar.open(`🔔 Reminder: "${event.title}" description: ${event.description} at ${event.dateTime}`, 'Dismiss', {
+    duration: 60000,
+    horizontalPosition: 'right',
+    verticalPosition: 'top',
+    panelClass: ['snack-success'],
+  });
+}
+
+
+  toggleReminders() {
+    this.remindersEnabled = !this.remindersEnabled;
+    const message = this.remindersEnabled ? 'Reminders Enabled' : 'Reminders Disabled';
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: [this.remindersEnabled ? 'snack-success' : 'snack-error'],
+    });
   }
 }

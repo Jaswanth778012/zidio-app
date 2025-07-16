@@ -1,3 +1,8 @@
+<div class="reminder-toggle">
+  <button mat-raised-button color="primary" (click)="toggleReminders()">
+    {{ remindersEnabled ? 'Disable Reminders' : 'Enable Reminders' }}
+  </button>
+</div>
 <div class="calendar-container">
   <div class="header">
     <button (click)="prevMonth()">&lt;</button>

@@ -161,6 +161,10 @@
     <mat-icon>menu</mat-icon>
   </button>
 
+  <button *ngIf="isDesktop && userService.roleMatch(['Student'])" mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <!-- Logo -->
   <span style="margin-left: 10px;" class="logo" routerLink="/">
     <img src="assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" >
@@ -170,6 +174,7 @@
   <!-- Top nav links (optional desktop only) -->
   <div class="topbar" *ngIf="isDesktop && !isSmallScreen">
     <button mat-raised-button routerLink="/" color="primary">Home</button>
+    <button mat-raised-button color="primary" routerLink="/courses">Courses</button>
     <button mat-raised-button color="primary" routerLink="/internships">Internships</button>
     <button mat-raised-button color="primary" routerLink="/jobs">Jobs</button>
     <button mat-raised-button color="accent" *ngIf="userService.roleMatch(['Admin'])" routerLink="/admin">Admin Dashboard</button>
@@ -238,6 +243,9 @@
         </mat-icon>
         <span>Notifications</span>
       </button>
+      <button mat-button routerLink="admin/course/enroll">
+        <mat-icon>assignment</mat-icon>Course Enrollments
+      </button>
 
       <!-- Messages Menu -->
       <button mat-button [matMenuTriggerFor]="messagesMenu">
@@ -288,7 +296,7 @@
 
     <!-- Student Links -->
     <ng-container *ngIf="userService.roleMatch(['Student'])">
-      <button mat-button routerLink="/student">Dashboard</button>
+      <button mat-button routerLink="/student"><mat-icon>dashboard</mat-icon>Dashboard</button>
     </ng-container>
   </mat-sidenav>
 

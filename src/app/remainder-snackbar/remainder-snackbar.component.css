@@ -1,0 +1,25 @@
+/* for everything */
+
+.reminder-snackbar {
+  display: flex;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #fff;
+}
+
+.reminder-snackbar .icon {
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 2px;
+}
+
+.reminder-snackbar .content .title {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.reminder-snackbar .content .datetime,
+.reminder-snackbar .content .description {
+  font-size: 13px;
+  margin-top: 2px;
+}

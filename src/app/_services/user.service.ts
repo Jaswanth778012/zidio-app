@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAuthService } from './user-auth.service';
+import { Observable } from 'rxjs';
+import { CourseReview } from '../_model/reviewes.model';
 
 
 @Injectable({
@@ -42,6 +44,10 @@ export class UserService {
   });
 }
 
+  getCourses(): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${this.PATH_VARIABLE_API}/auth/courses`);
+  }
+
 
   public forStudent(){
     return this.httpClient.get(this.PATH_VARIABLE_API+'/forStudent', {
@@ -66,6 +72,18 @@ export class UserService {
     }
 
     return allowedRoles.some(role => userRoles.includes(role));
+  }
+
+  getCourseReviews(id: number): Observable<CourseReview[]> {
+    return this.httpClient.get<CourseReview[]>(`${this.PATH_VARIABLE_API}/auth/${id}`);
+  }
+
+  getAverageRating(id: number): Observable<number> {
+    return this.httpClient.get<number>(`${this.PATH_VARIABLE_API}/auth/${id}/averageRating`);
+  }
+
+  getCourseById(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.PATH_VARIABLE_API}/auth/courses/${id}`);
   }
 
 }

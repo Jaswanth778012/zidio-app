@@ -7,6 +7,7 @@ import { TagContentType } from '@angular/compiler';
 import { FileHandle } from '../../_model/file-handle.model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CourseReview } from '../../_model/reviewes.model';
 
 @Component({
   selector: 'app-course-management',
@@ -17,8 +18,8 @@ export class CourseManagementComponent implements OnInit {
   courses: any[] = [];
   filteredCourses: any[] = [];
   categories: any[] = [];
-  flaggedReviews: any[] = [];
-  selectedCourseReviews: any[] = [];
+  flaggedReviews: CourseReview[] = [];
+
   auditLogs: any[] = [];
   selectedFile: File | null = null;
   imagePreview: string | null = null; 
@@ -307,25 +308,16 @@ unarchiveCourse(courseId: number): void {
     console.log('Audit Logs:', this.auditLogs);
   });
 }
-  getCourseReviews(courseId: number): void {
-     this.selectedCourseId = courseId;
-    this.adminService.getCourseReviews(courseId).subscribe(reviews => this.selectedCourseReviews = reviews);
-  }
 
   loadFlaggedReviews(): void {
     this.adminService.getFlaggedReviews().subscribe(data => this.flaggedReviews = data);
   }
 
-  flagReview(id: number): void {
-    this.adminService.flagReview(id).subscribe(() => {
-      this.loadFlaggedReviews();
-      if (this.selectedCourseId) this.getCourseReviews(this.selectedCourseId);
-    });
-  }
 
   deleteReview(id: number): void {
-   
-    this.adminService.deleteReview(id).subscribe(() => this.loadFlaggedReviews());
+    if (confirm('Delete this review?')) {
+      this.adminService.deleteReview(id).subscribe(() => this.loadFlaggedReviews());
+    }
   }
 
   // Category management

@@ -81,6 +81,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FooterComponent } from './footer/footer.component';
 import { InternshipsComponent } from './internships/internships.component';
 import { JobsComponent } from './jobs/jobs.component';
+import { CourseEnrollmentManagementComponent } from './admin/course-enrollment-management/course-enrollment-management.component';
+import { RemainderSnackbarComponent } from './remainder-snackbar/remainder-snackbar.component';
+import { CoursesComponent } from './courses/courses.component';
+import { StudentreviewComponent } from './user/studentreview/studentreview.component';
+import { CourseDetailsComponent } from './course-details/course-details.component';
 
 
 @NgModule({
@@ -129,6 +134,11 @@ import { JobsComponent } from './jobs/jobs.component';
     FooterComponent,
     InternshipsComponent,
     JobsComponent,
+    CourseEnrollmentManagementComponent,
+    RemainderSnackbarComponent,
+    CoursesComponent,
+    StudentreviewComponent,
+    CourseDetailsComponent,
    
 
 

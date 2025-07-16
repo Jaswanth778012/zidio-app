@@ -9,7 +9,7 @@
             <p class="text-muted mb-0">Manage your job postings and applications</p>
           </div>
           <div class="d-flex align-items-center">
-            <span class="me-3 text-muted">Welcome back,</span>
+            <span class="me-3 text-muted">Welcome</span>
             <div class="dropdown">
               <button class="btn btn-light dropdown-toggle d-flex align-items-center border-0 shadow-sm" type="button" 
                 id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -652,83 +652,87 @@
 </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="col-lg-4">
-      
-       <!-- Calendar Section -->
-<div class="card shadow-sm border-0 rounded-3 mb-4">
-  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
-    <div>
-      <h5 class="mb-0 fw-bold text-dark">
-        <i class="bi bi-calendar3 text-primary me-2"></i>Event Calendar
-      </h5>
-      <small class="text-muted">Create Events to memorize</small>
+   <div class="col-lg-4">
+    
+  <!-- Calendar Section -->
+  <div class="card shadow-sm border-0 rounded-3 mb-4">
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+      <div>
+        <h5 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-calendar3 text-primary me-2"></i>Event Calendar
+        </h5>
+        <small class="text-muted">Create Events to memorize</small>
+      </div>
     </div>
-  </div>
-  <div class="card-body">
-    <div class="calendar-container">
-      <div class="header d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-sm btn-outline-primary" (click)="prevMonth()">&lt;</button>
-        <h2 class="h5 mb-0">{{ currentMonth | date:'MMMM yyyy' }}</h2>
-        <button class="btn btn-sm btn-outline-primary" (click)="nextMonth()">&gt;</button>
-      </div>
-
-      <div class="weekdays d-flex text-center mb-2">
-        <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="flex-fill fw-semibold">
-          {{ day }}
+    <div class="card-body">
+      <div class="calendar-container">
+        <div class="header d-flex justify-content-between align-items-center mb-3">
+          <button class="btn btn-sm btn-outline-primary" (click)="prevMonth()">&lt;</button>
+          <h2 class="h5 mb-0">{{ currentMonth | date:'MMMM yyyy' }}</h2>
+          <button class="btn btn-sm btn-outline-primary" (click)="nextMonth()">&gt;</button>
         </div>
-      </div>
 
-      <div class="weeks">
-        <div *ngFor="let week of weeks" class="d-flex mb-1">
-          <div *ngFor="let day of week" class="flex-fill border rounded p-2 text-center"
-               [class.bg-light]="!day" [class.bg-warning]="isToday(day)"
-     [class.text-dark]="isToday(day)" (click)="day && onDateClick(day)">
-            <div class="date-number">{{ day?.getDate() }}</div>
-            <div class="dots mt-1">
-              <span *ngFor="let ev of getEventsForDate(day)" class="dot bg-primary rounded-circle d-inline-block"
-                    style="width:6px; height:6px;" title="{{ ev.title }}"></span>
+        <div class="weekdays d-flex text-center mb-2">
+          <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="flex-fill fw-semibold">
+            {{ day }}
+          </div>
+        </div>
+
+        <div class="weeks">
+          <div *ngFor="let week of weeks" class="d-flex mb-1">
+            <div *ngFor="let day of week" class="flex-fill border rounded p-2 text-center"
+                 [class.bg-light]="!day" [class.bg-warning]="isToday(day)"
+                 [class.text-dark]="isToday(day)" (click)="day && onDateClick(day)">
+              <div class="date-number">{{ day?.getDate() }}</div>
+              <div class="dots mt-1">
+                <span *ngFor="let ev of getEventsForDate(day)" class="dot bg-primary rounded-circle d-inline-block"
+                      style="width:6px; height:6px;" title="{{ ev.title }}"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal for events -->
-<div class="modal-backdrop fade show" *ngIf="showEventModal"></div>
-<div class="modal d-block" tabindex="-1" *ngIf="showEventModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Events on {{ selectedDate | date:'fullDate' }}</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
-      </div>
-      <div class="modal-body">
-        <ul class="list-unstyled mb-3">
-          <li *ngFor="let event of selectedDateEvents" class="mb-2 border-bottom pb-2">
-            <strong>{{ event.title }}</strong><br />
-            <small>{{ event.description }}</small><br />
-            <small>{{ event.dateTime | date:'shortTime' }}</small><br />
-            <button class="btn btn-sm btn-warning me-2" (click)="onEditEvent(event)">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="onDeleteEvent(event)">Delete</button>
-          </li>
-        </ul>
-
-        <form [formGroup]="eventForm" (ngSubmit)="onSaveEvent()">
-          <input formControlName="title" class="form-control mb-2" placeholder="Title" required />
-          <input formControlName="description" class="form-control mb-2" placeholder="Description" />
-          <input formControlName="dateTime" type="datetime-local" class="form-control mb-3" required />
-          <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">{{ editingEvent ? 'Update' : 'Add' }}</button>
-            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+  <!-- Modal for events -->
+  <div class="modal-backdrop fade show" *ngIf="showEventModal"></div>
+  <div class="modal d-block" tabindex="-1" *ngIf="showEventModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <h5 class="modal-title">Events on {{ selectedDate | date:'fullDate' }}</h5>
+          <div class="d-flex align-items-center gap-2">
+            <button mat-raised-button color="primary" (click)="toggleReminders()">
+              {{ remindersEnabled ? 'Disable Reminders' : 'Enable Reminders' }}
+            </button>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
           </div>
-        </form>
+        </div>
+        <div class="modal-body">
+          <ul class="list-unstyled mb-3">
+            <li *ngFor="let event of selectedDateEvents" class="mb-2 border-bottom pb-2">
+              <strong>{{ event.title }}</strong><br />
+              <small>{{ event.description }}</small><br />
+              <small>{{ event.dateTime | date:'shortTime' }}</small><br />
+              <button class="btn btn-sm btn-warning me-2" (click)="onEditEvent(event)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="onDeleteEvent(event)">Delete</button>
+            </li>
+          </ul>
+
+          <form [formGroup]="eventForm" (ngSubmit)="onSaveEvent()">
+            <input formControlName="title" class="form-control mb-2" placeholder="Title" required />
+            <input formControlName="description" class="form-control mb-2" placeholder="Description" />
+            <input formControlName="dateTime" type="datetime-local" class="form-control mb-3" required />
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary">{{ editingEvent ? 'Update' : 'Add' }}</button>
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
   <!-- Upcoming Interviews -->
       <div class="card shadow-sm border-0 rounded-3 mb-4">
         <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">

@@ -113,29 +113,34 @@
 
     
     <div class="dashboard-grid">
-      <mat-card class="stat-card">
+      <mat-card class="stat-card red-card">
         <mat-icon>group</mat-icon> Users: {{ stats.totalUsers }}
       </mat-card>
 
-      <mat-card class="stat-card">
+      <mat-card class="stat-card blue-card">
         <mat-icon>business_center</mat-icon> Employers: {{ stats.employersCount }}
       </mat-card>
 
-      <mat-card class="stat-card">
+      <mat-card class="stat-card green-card">
         <mat-icon>school</mat-icon> Students: {{ stats.studentsCount }}
       </mat-card>
 
-      <mat-card class="stat-card">
+      <mat-card class="stat-card amber-card">
         <mat-icon>work</mat-icon> Jobs: {{ stats.jobsCount }}
       </mat-card>
 
-      <mat-card class="stat-card">
+      <mat-card class="stat-card teal-card">
         <mat-icon>assignment</mat-icon> Internships: {{ stats.internshipsCount }}
       </mat-card>
 
-      <mat-card class="stat-card">
+      <mat-card class="stat-card orange-card">
         <mat-icon>menu_book</mat-icon> Courses: {{ stats.coursesCount }}
       </mat-card>
+
+      <mat-card class="stat-card purple-card">
+        <mat-icon>event</mat-icon> Course Enrolled Students: {{ stats.courseEnrollmentCount }}
+      </mat-card>
+
     </div>
 
    

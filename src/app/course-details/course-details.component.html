@@ -1,0 +1,6 @@
+<h2>{{ course.courseName }}</h2>
+<p>{{ course.description }}</p>
+
+<!-- Include review component and pass course.id -->
+<app-studentreview [id]="course.id"></app-studentreview>
+
