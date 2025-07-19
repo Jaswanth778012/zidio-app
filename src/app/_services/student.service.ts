@@ -1,10 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { StudentProfile } from '../_model/student-profile.model';
 import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model/message.model';
 import { CourseReview } from '../_model/reviewes.model';
 import { UserAuthService } from './user-auth.service';
+import { Application } from '../_model/Application.model';
+import { ApplicationQuestion } from '../_model/applicationQuestion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +78,15 @@ export class StudentService {
       markAllAsReadFromSender(userName: string): Observable<any> {
       return this.http.put<any>(`${this.baseUrl}/messages/sender/${userName}/read`, {});
     }
+    getJobById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/jobs/${id}`);
+    }
+
+    getInternshipById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/internships/${id}`);
+}
+
+
 
     //for courses
     getCourses(): Observable<any[]> {
@@ -111,5 +122,44 @@ export class StudentService {
       .set('comment', comment);
     return this.http.post<CourseReview>(`${this.baseUrl}/course/${courseId}`, null, { params });
   }
+
+  //Apply
+   applyForJob(jobId: number, formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/apply/job/${jobId}`, formData,{ responseType: 'text' })
+    .pipe(catchError(this.handleError));
+}
+
+
+  applyForInternship(internshipId: number, formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/apply/internship/${internshipId}`, formData,{ responseType: 'text' })
+    .pipe(catchError(this.handleError));
+}
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+  let errorMsg: string;
+
+  if (typeof error.error === 'string') {
+    // Backend returned a plain text error message
+    errorMsg = error.error;
+  } else if (error.error instanceof ProgressEvent) {
+    errorMsg = 'Network error';
+  } else {
+    errorMsg = error.error?.message || 'An unknown error occurred';
+  }
+
+  console.error('ApplicationService error', error);
+  return throwError(() => errorMsg);
+}
+
+
+
+  getApplicationQuestionsByJobId(jobId: number) {
+  return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/jobs/${jobId}/questions`);
+  }
+
+  getApplicationQuestionsByInternshipId(internshipId: number) {
+    return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/internships/${internshipId}/questions`);
+  }
+
 
 }

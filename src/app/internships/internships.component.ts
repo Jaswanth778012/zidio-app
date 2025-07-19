@@ -1,301 +1,118 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CalendarEvent } from '../_model/CalendarEvent.model';
-import { EmployerService } from '../_services/employer.service';
-import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-interface CalendarDay {
-  date: Date;
-  day: number;
-  currentMonth: boolean;
-  events: CalendarEvent[];
-}
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  query,
+  stagger
+} from '@angular/animations';
+import { UserService } from '../_services/user.service';
+
 @Component({
   selector: 'app-internships',
   templateUrl: './internships.component.html',
-  styleUrl: './internships.component.css'
+  styleUrls: ['./internships.component.css'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+        query('.card', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger(100, [
+            animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          ])
+        ], { optional: true })
+      ])
+    ])
+  ]
 })
-export class InternshipsComponent implements OnInit,OnDestroy{
-currentMonth: Date = new Date();
-  weeks: (Date | null)[][] = [];
-  events: CalendarEvent[] = [];
+export class InternshipsComponent{
+internships: any[] = [];
+  filteredInternships: any[] = [];
+  paginatedInternships: any[] = [];
 
-  selectedDateEvents: CalendarEvent[] = [];
-  selectedDate: Date | null = null;
+  searchTerm = '';
+  selectedType = '';
+  selectedMode = '';
+  stipendMin: number | null = null;
+  stipendMax: number | null = null;
 
-  showEventModal = false;
-  eventForm: FormGroup;
-  editingEvent: CalendarEvent | null = null;
+  // Pagination
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
 
-  reminderCheckInterval: any;
- remindedEventIds = new Set<number>() ;
-  remindersEnabled: boolean = true;
+  constructor(public userService: UserService) {}
 
-  constructor(
-    private employerService: EmployerService,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
-  ) {
-    this.eventForm = this.fb.group({
-      title: [''],
-      description: [''],
-      dateTime: ['']
-    });
+  ngOnInit(): void {
+    this.loadInternships();
   }
 
-  ngOnInit() {
-    this.generateCalendar(this.currentMonth);
-    this.loadEvents();
-  }
-
-  ngOnDestroy() {
-   if (this.reminderCheckInterval) {
-      clearInterval(this.reminderCheckInterval);
-    }
-  }
-
-
-  generateCalendar(date: Date) {
-    this.weeks = [];
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-    let day = start;
-    let week: (Date | null)[] = [];
-
-    for (let i = 0; i < day.getDay(); i++) {
-      week.push(null);
-    }
-
-    while (day <= end) {
-      week.push(new Date(day));
-      if (week.length === 7) {
-        this.weeks.push(week);
-        week = [];
-      }
-      day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
-    }
-
-    while (week.length < 7) {
-      week.push(null);
-    }
-    this.weeks.push(week);
-  }
-
-  loadEvents() {
-    this.employerService.getEvents().subscribe(events => {
-      this.events = events;
-      this.startReminderCheck();
-    });
-  }
-
-  getEventsForDate(date: Date | null): CalendarEvent[] {
-    if (!date) return [];
-    return this.events.filter(ev => {
-      const evDate = new Date(ev.dateTime);
-      return evDate.getFullYear() === date.getFullYear() &&
-        evDate.getMonth() === date.getMonth() &&
-        evDate.getDate() === date.getDate();
-    });
-  }
-
-  onDateClick(date: Date) {
-    if (!date) return;
-    this.selectedDate = date;
-    this.selectedDateEvents = this.getEventsForDate(date);
-    this.showEventModal = true;
-    this.editingEvent = null;
-    this.eventForm.reset({
-      dateTime: date.toISOString().substring(0, 16)
-    });
-  }
-
-  onEditEvent(event: CalendarEvent) {
-    this.editingEvent = event;
-    this.eventForm.setValue({
-      title: event.title,
-      description: event.description,
-      dateTime: event.dateTime.substring(0, 16)
-    });
-  }
-
-  onDeleteEvent(event: CalendarEvent) {
-    if (!confirm('Are you sure you want to delete this event?')) return;
-
-    this.employerService.deleteEvent(event.id!).subscribe({
-      next: () => {
-        this.snackBar.open('Event deleted successfully!', 'Close', {
-          duration: 3000,
-           horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snack-success'],
-        });
-
-        this.events = this.events.filter(e => e.id !== event.id);
-        this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
+  loadInternships() {
+    this.userService.getAllInternships().subscribe({
+      next: (res) => {
+        this.internships = res;
+        console.log('Internships loaded:', this.internships);
+        this.applyFilters();
       },
-      error: () => {
-        this.snackBar.open('Failed to delete event.', 'Close', {
-          duration: 3000,
-           horizontalPosition: 'right',
-            verticalPosition: 'top',
-          panelClass: ['snack-error'],
-        });
-      }
+      error: (err) => console.error('Failed to load internships:', err)
     });
   }
 
-  isToday(date: Date | null): boolean {
-  if (!date) return false;
-  const today = new Date();
-  return date.getFullYear() === today.getFullYear() &&
-         date.getMonth() === today.getMonth() &&
-         date.getDate() === today.getDate();
-}
+  applyFilters() {
+    this.filteredInternships = this.internships.filter(internship => {
+      const titleMatch = internship.title?.toLowerCase().includes(this.searchTerm.toLowerCase()) || '';
+      const companyMatch = internship.companyName?.toLowerCase().includes(this.searchTerm.toLowerCase()) || '';
+      const locationMatch = internship.location?.toLowerCase().includes(this.searchTerm.toLowerCase()) || '';
+      const matchesSearch = titleMatch || companyMatch || locationMatch;
 
+      const matchesType = !this.selectedType || internship.internshipType === this.selectedType;
+      const matchesMode = !this.selectedMode || internship.internshipMode === this.selectedMode;
 
-  onSaveEvent() {
-    const formValue = this.eventForm.value;
-    const formDateTime: string = formValue.dateTime;
-    const dateTimeWithSeconds = formDateTime.length === 16 ? formDateTime + ":00" : formDateTime;
+      const stipend = parseInt(internship.stipend?.replace(/\D/g, '')) || 0;
+      const matchesStipend =
+        (!this.stipendMin || stipend >= this.stipendMin) &&
+        (!this.stipendMax || stipend <= this.stipendMax);
 
-    const newEvent: CalendarEvent = {
-      title: formValue.title,
-      description: formValue.description,
-      dateTime: dateTimeWithSeconds
-    };
+      return matchesSearch && matchesType && matchesMode && matchesStipend;
+    });
 
-    if (this.editingEvent) {
-      this.employerService.updateEvent(this.editingEvent.id!, newEvent).subscribe({
-        next: () => {
-          this.snackBar.open('Event updated successfully!', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',panelClass: ['snack-success'],
+    this.totalPages = Math.ceil(this.filteredInternships.length / this.pageSize);
+    this.currentPage = 1;
+    this.updatePagination();
+  }
 
-          });
+  updatePagination() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    this.paginatedInternships = this.filteredInternships.slice(start, start + this.pageSize);
+  }
 
-          this.loadEvents();
-          this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
-          this.editingEvent = null;
-          this.eventForm.reset();
-        },
-        error: () => {
-          this.snackBar.open('Failed to update event.', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snack-error'],
-          });
-        }
-      });
-    } else {
-      this.employerService.createEvent(newEvent).subscribe({
-        next: (createdEvent) => {
-          console.log("Event Created",createdEvent)
-          this.snackBar.open('Event created successfully!', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snack-success'],
-          });
-
-          this.loadEvents();
-          this.selectedDateEvents = this.getEventsForDate(this.selectedDate);
-          this.eventForm.reset();
-        },
-        error: () => {
-          this.snackBar.open('Failed to create event.', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snack-error'],
-          });
-        }
-      });
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
     }
   }
 
-  closeModal() {
-    this.showEventModal = false;
-    this.selectedDate = null;
-    this.selectedDateEvents = [];
-    this.editingEvent = null;
-    this.eventForm.reset();
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 
-  prevMonth() {
-    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
-    this.generateCalendar(this.currentMonth);
+  calculateDaysAgo(dateStr: string): number {
+    const posted = new Date(dateStr);
+    return Math.floor((Date.now() - posted.getTime()) / (1000 * 60 * 60 * 24));
   }
 
-  nextMonth() {
-    this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
-    this.generateCalendar(this.currentMonth);
+  calculatePostedLabel(postedAt: string): string {
+    const daysAgo = this.calculateDaysAgo(postedAt);
+    if (daysAgo === 0) return 'Few hours ago';
+    if (daysAgo === 1) return '1 day ago';
+    if (daysAgo < 7) return `${daysAgo} days ago`;
+    const weeks = Math.floor(daysAgo / 7);
+    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
   }
 
-startReminderCheck() {
-  this.reminderCheckInterval = setInterval(() => {
-    console.log('Checking reminders...', new Date());
-    if (!this.remindersEnabled) return;
-
-    const now = new Date();
-    const nowRounded = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-      now.getHours(),
-      now.getMinutes(),
-      0, 0
-    );
-
-    this.events.forEach(event => {
-      if (!event.dateTime || !event.id) return;
-        const eventId = event.id; 
-      const isoDateTime = event.dateTime.replace(' ', 'T');
-      const eventDate = new Date(isoDateTime);
-      if (isNaN(eventDate.getTime())) return;
-
-      const eventRounded = new Date(
-        eventDate.getFullYear(),
-        eventDate.getMonth(),
-        eventDate.getDate(),
-        eventDate.getHours(),
-        eventDate.getMinutes(),
-        0, 0
-      );
-
-      console.log(`Comparing now ${nowRounded.getTime()} with event ${eventRounded.getTime()}`);
-
-      if (nowRounded.getTime() === eventRounded.getTime() && !this.remindedEventIds.has(eventId)) {
-    console.log('✅ Triggering reminder for:', event.title);
-    this.showReminder(event);
-    this.remindedEventIds.add(eventId);
-  }
-    });
-  }, 1000);
-}
-
-
-  showReminder(event: CalendarEvent) {
-  this.snackBar.open(`🔔 Reminder: "${event.title}" description: ${event.description} at ${event.dateTime}`, 'Dismiss', {
-    duration: 60000,
-    horizontalPosition: 'right',
-    verticalPosition: 'top',
-    panelClass: ['snack-success'],
-  });
-}
-
-
-  toggleReminders() {
-    this.remindersEnabled = !this.remindersEnabled;
-    const message = this.remindersEnabled ? 'Reminders Enabled' : 'Reminders Disabled';
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: [this.remindersEnabled ? 'snack-success' : 'snack-error'],
-    });
-  }
 }

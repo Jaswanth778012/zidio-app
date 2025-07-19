@@ -23,13 +23,13 @@ export class UserService {
  // REGISTER - for Student role
   public registerUser(userData: any) {
     const params = new HttpParams().set('roleName', 'Student');
-    return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
+    return this.httpClient.post(this.PATH_VARIABLE_API + '/auth/registerNewUser', userData, { headers: this.requestHeader, params });
   }
 
   // REGISTER - for Employer role
   public registerEmployer(userData: any) {
     const params = new HttpParams().set('roleName', 'Employer');
-    return this.httpClient.post(this.PATH_VARIABLE_API + '/registerNewUser', userData, { headers: this.requestHeader, params });
+    return this.httpClient.post(this.PATH_VARIABLE_API + '/auth/registerNewUser', userData, { headers: this.requestHeader, params });
   }
 
   // public registerAdmin(userData: any) {
@@ -38,7 +38,7 @@ export class UserService {
   // }
 
   public updatePassword(data: any) {
-  return this.httpClient.put(this.PATH_VARIABLE_API+'/updatePassword', data, {
+  return this.httpClient.put(this.PATH_VARIABLE_API+'/auth/updatePassword', data, {
     responseType: 'text',
     headers: new HttpHeaders({ 'No-Auth': 'True' }) // Assuming this endpoint does not require login
   });
@@ -84,6 +84,15 @@ export class UserService {
 
   getCourseById(id: number): Observable<any> {
     return this.httpClient.get<any>(`${this.PATH_VARIABLE_API}/auth/courses/${id}`);
+  }
+
+  //internships
+  getAllInternships(): Observable<any[]> {
+  return this.httpClient.get<any[]>(`${this.PATH_VARIABLE_API}/auth/internships`);
+  }
+
+  getAllJobs(): Observable<any[]> {
+  return this.httpClient.get<any[]>(`${this.PATH_VARIABLE_API}/auth/jobs`);
   }
 
 }

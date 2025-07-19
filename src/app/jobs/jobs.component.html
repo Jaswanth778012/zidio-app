@@ -1,1 +1,111 @@
-<p>jobs works!</p>
+<div class="container my-4" [@listAnimation]>
+  <!-- 🔍 Filter Bar -->
+  <div class="card p-3 mb-4 shadow-sm">
+    <div class="row g-2 align-items-center">
+      <div class="col-md-3">
+        <input
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          type="text"
+          class="form-control"
+          placeholder="Search by title, company"
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          [(ngModel)]="salaryMin"
+          (input)="applyFilters()"
+          class="form-control"
+          placeholder="Min Salary"
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          [(ngModel)]="salaryMax"
+          (input)="applyFilters()"
+          class="form-control"
+          placeholder="Max Salary"
+        />
+      </div>
+      <div class="col-md-2">
+        <select [(ngModel)]="selectedType" (change)="applyFilters()" class="form-select">
+          <option value="">All Types</option>
+          <option value="FULL_TIME">Full Time</option>
+          <option value="PART_TIME">Part Time</option>
+          <option value="INTERNSHIP">Internship</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select [(ngModel)]="selectedMode" (change)="applyFilters()" class="form-select">
+          <option value="">All Modes</option>
+          <option value="REMOTE">Remote</option>
+          <option value="ONSITE">Onsite</option>
+          <option value="HYBRID">Hybrid</option>
+        </select>
+      </div>
+      <div class="col-md-1 text-end">
+        <button class="btn btn-primary w-100" (click)="applyFilters()">Filter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📝 Job Cards with Fade-in Animation -->
+  <div
+    *ngFor="let job of paginatedJobs"
+    class="card mb-4 shadow-sm"
+  >
+    <div class="row g-0">
+      <div class="col-md-4 text-center p-3">
+        <img
+          [src]="job.companyLogo"
+          class="img-fluid rounded"
+          style="max-height: 180px; object-fit: contain;"
+          alt="Company Logo"
+        />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">{{ job.title }}</h5>
+          <p class="card-subtitle mb-2 text-muted">{{ job.companyName }}</p>
+
+          <div class="mb-2 d-flex flex-wrap gap-3 text-secondary small">
+            <span><i class="bi bi-geo-alt-fill me-1 text-primary"></i>{{ job.jobMode }}</span>
+            <span><i class="bi bi-currency-rupee me-1 text-success"></i>{{ job.salary }}</span>
+            <span><i class="bi bi-calendar-event me-1 text-info"></i>{{ job.experience || '0' }} year(s)</span>
+          </div>
+
+          <div class="d-flex justify-content-between text-muted small">
+            <span><i class="bi bi-clock me-1"></i>{{ calculatePostedLabel(job.postedAt) }}</span>
+            <span class="badge bg-success-subtle text-success">
+              {{
+                job.jobType === 'PART_TIME'
+                  ? 'Part time'
+                  : job.jobType === 'FULL_TIME'
+                  ? 'Full time'
+                  : 'Internship'
+              }}
+            </span>
+          </div>
+
+          <div class="mt-3 d-flex gap-2">
+            <a [routerLink]="['/jobs', job.id]" class="btn btn-outline-primary btn-sm">View</a>
+            <a [routerLink]="['/jobsapply', job.id]" class="btn btn-success btn-sm">Apply</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔁 Pagination -->
+  <div class="d-flex justify-content-center align-items-center gap-3 mt-4">
+    <button class="btn btn-outline-secondary btn-sm" (click)="prevPage()" [disabled]="currentPage === 1">
+      Prev
+    </button>
+    <span class="text-muted small">Page {{ currentPage }} / {{ totalPages }}</span>
+    <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
+</div>

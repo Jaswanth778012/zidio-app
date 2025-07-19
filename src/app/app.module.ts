@@ -86,6 +86,10 @@ import { RemainderSnackbarComponent } from './remainder-snackbar/remainder-snack
 import { CoursesComponent } from './courses/courses.component';
 import { StudentreviewComponent } from './user/studentreview/studentreview.component';
 import { CourseDetailsComponent } from './course-details/course-details.component';
+import { ApplicationComponent } from './user/application/application.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
+import { InternshipDetailsComponent } from './internship-details/internship-details.component';
 
 
 @NgModule({
@@ -139,6 +143,10 @@ import { CourseDetailsComponent } from './course-details/course-details.componen
     CoursesComponent,
     StudentreviewComponent,
     CourseDetailsComponent,
+    ApplicationComponent,
+    JobDetailsComponent,
+    InternshipapplicationComponent,
+    InternshipDetailsComponent,
    
 
 

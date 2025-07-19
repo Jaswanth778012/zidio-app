@@ -509,7 +509,7 @@
                             <nav aria-label="Internship application pagination">
                               <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item" [class.disabled]="groupedInternshipApplications[internshipId].currentPage === 1">
-                                  <button class="page-link" (click)="changePage(internshipId, -1)">Previous</button>
+                                  <button class="page-link" (click)="changePagei(internshipId, -1)">Previous</button>
                                 </li>
                                 <li class="page-item active">
                                   <span class="page-link">
@@ -518,7 +518,7 @@
                                   </span>
                                 </li>
                                 <li class="page-item" [class.disabled]="groupedInternshipApplications[internshipId].currentPage >= Math.ceil(groupedInternshipApplications[internshipId].applications.length / groupedInternshipApplications[internshipId].pageSize)">
-                                  <button class="page-link" (click)="changePage(internshipId, 1)">Next</button>
+                                  <button class="page-link" (click)="changePagei(internshipId, 1)">Next</button>
                                 </li>
                               </ul>
                             </nav>
@@ -532,7 +532,7 @@
             </table>
           </div>
           <div class="d-flex justify-content-center align-items-center gap-3 p-3 bg-light border-top">
-            <nav aria-label="Internship pagination">
+            <nav aria-label="Job pagination">
               <ul class="pagination pagination-sm mb-0">
                 <li class="page-item" [class.disabled]="currentPage === 1">
                   <button class="page-link" (click)="prevPage1()">Previous</button>

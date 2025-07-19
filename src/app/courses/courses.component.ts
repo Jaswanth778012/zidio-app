@@ -35,7 +35,6 @@ export class CoursesComponent implements OnInit{
  loadCourses(): void {
   this.userService.getCourses().subscribe({
     next: (data) => {
-      console.log('Courses loaded:', data);
       this.courses = data.map(course => ({
         ...course,
         duration: this.calculateDuration(course.startDate, course.endDate)
@@ -52,7 +51,6 @@ updateRatings(): void {
   this.courses.forEach(course => {
     this.userService.getAverageRating(course.id).subscribe({
       next: (rating: number) => {
-        console.log(`Rating for course ${course.id}:`, rating);
         this.courseRatings[course.id] = rating;
       },
       error: (err) => {

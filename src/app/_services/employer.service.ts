@@ -159,9 +159,7 @@ updateProfile(formData: FormData): Observable<EmployerProfile> {
 
 //Applications
 getAllApplications(): Observable<Application[]> {
-  const token = localStorage.getItem('token'); // or wherever your token is stored
-  const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-  return this.http.get<Application[]>(`${this.baseUrl}/All`, { headers });
+  return this.http.get<Application[]>(`${this.baseUrl}/All`, );
 }
 
   getRecentApplications(): Observable<Application[]> {

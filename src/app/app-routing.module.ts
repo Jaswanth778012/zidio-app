@@ -46,6 +46,11 @@ import path from 'path';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseDetailsComponent } from './course-details/course-details.component';
 import { StudentreviewComponent } from './user/studentreview/studentreview.component';
+import { application } from 'express';
+import { ApplicationComponent } from './user/application/application.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
+import { InternshipDetailsComponent } from './internship-details/internship-details.component';
 
 
 const routes: Routes = [
@@ -109,8 +114,24 @@ const routes: Routes = [
   component: InternshipsComponent
   },
   {
+    path: 'internshipsapply/:id',
+    component: InternshipapplicationComponent
+  },
+  {
+    path: 'internships/:id',
+    component: InternshipDetailsComponent
+  },
+  {
   path: 'jobs',
   component: JobsComponent
+  },
+  {
+    path: 'jobsapply/:id',
+    component: ApplicationComponent
+  },
+  {
+    path: 'jobs/:id',
+    component: JobDetailsComponent
   },
   {
     path: 'admin/users', 

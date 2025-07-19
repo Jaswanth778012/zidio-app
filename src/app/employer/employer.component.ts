@@ -231,6 +231,7 @@ prevPage(): void {
   this.groupedInternshipIds = this.groupedInternshipIds.slice(startIndex, endIndex);
 }
 
+
 nextPage1(): void {
   if (this.currentPage < this.totalPages) {
     this.currentPage++;
@@ -244,6 +245,8 @@ prevPage1(): void {
     this.updatePaginatedInternshipIds();
   }
 }
+
+
 
    getPaginatedApplicationsi(internshipId: number): Application[] {
     const group = this.groupedInternshipApplications[internshipId];
@@ -645,7 +648,6 @@ getRelativeDate(dateStr: string): string {
 }
   startReminderCheck() {
   this.reminderCheckInterval = setInterval(() => {
-    console.log('Checking reminders...', new Date());
     if (!this.remindersEnabled) return;
 
     const now = new Date();
@@ -674,13 +676,12 @@ getRelativeDate(dateStr: string): string {
         0, 0
       );
 
-      console.log(`Comparing now ${nowRounded.getTime()} with event ${eventRounded.getTime()}`);
+     
 
       if (nowRounded.getTime() === eventRounded.getTime() && !this.remindedEventIds.has(eventId)) {
-    console.log('✅ Triggering reminder for:', event.title);
-    this.showReminder(event);
-    this.remindedEventIds.add(eventId);
-  }
+        this.showReminder(event);
+        this.remindedEventIds.add(eventId);
+      }
     });
   }, 1000);
 }
