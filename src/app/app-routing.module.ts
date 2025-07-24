@@ -51,6 +51,11 @@ import { ApplicationComponent } from './user/application/application.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
 import { InternshipDetailsComponent } from './internship-details/internship-details.component';
+import { SyllabusComponent } from './admin/syllabus/syllabus.component';
+import { CourseComponent } from './admin/course/course.component';
+import { LearningDetailComponent } from './user/learning-detail/learning-detail.component';
+import { AllcoursesComponent } from './user/allcourses/allcourses.component';
+import { AllapplicationsComponent } from './user/allapplications/allapplications.component';
 
 
 const routes: Routes = [
@@ -151,6 +156,14 @@ const routes: Routes = [
      
   },
   {
+    path: 'admin/course',
+    component: CourseComponent
+  },
+  {
+    path: 'admin/syllabus',
+    component: SyllabusComponent
+  },
+  {
     path: 'admin/course/enroll',
     component: CourseEnrollmentManagementComponent
   },
@@ -243,12 +256,24 @@ const routes: Routes = [
   component: StudentcomposeComponent
 },
 {
+  path: 'student/allcourses',
+  component: AllcoursesComponent
+},
+{
+  path: 'student/allapplications',
+  component: AllapplicationsComponent
+},
+{
   path: 'student/inbox',
   component: StudentmessageComponent
 },
 {
   path: 'student/sent',
   component: StudentsentComponent
+},
+{
+  path: 'learning/:id',
+  component: LearningDetailComponent
 }
 
 ];

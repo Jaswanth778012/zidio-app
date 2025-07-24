@@ -1,22 +1,338 @@
-.about-section {
+/* Header Banner */
+.header-banner {
+  background: url("C:\\Users\\JaswanthKumar\\ZidioApp\\ZidioConnect\\src\\assets\\pexels-jopwell-2422290.jpg") no-repeat center top;
+  background-size: cover;
+  height: 500px;
+  position: relative;
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* About Container */
+.about-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Section headings */
+.section-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+
+/* Info Cards */
+.info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+}
+
+.info-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.info-card img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.info-card mat-card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #0a1152;
+}
+
+.info-card mat-card-content {
+  font-size: 15px;
+  color: #555;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+
+/* Why Choose Us */
+.why-card {
+  margin: 40px auto;
+  max-width: 1000px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  background-color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.why-card-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.why-left {
+  flex: 1;
+  min-width: 300px;
+  margin-right: 20px;
+}
+
+.why-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #0a1152;
+}
+
+.why-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.why-card:hover .why-image {
+  transform: scale(1.03);
+}
+
+.why-right {
+  flex: 1;
+  min-width: 250px;
+}
+
+.why-list {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 18px;
+  color: #333;
+  line-height: 1.8;
+  list-style: disc;
+  padding-left: 20px;
+  transition: color 0.3s ease;
+}
+
+.why-list li {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.why-list li strong {
+  display: block;
+  font-size: 20px;
+  color: #0a1152;
+  margin-bottom: 6px;
+}
+
+.why-list li p {
+  margin: 5px 0 0 0;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.why-card:hover .why-list li {
+  color: #0a1152;
+}
+
+.why-card:hover .why-list li p {
+  color: #333;
+}
+
+
+
+/* Timeline */
+.timeline-section {
+  margin: 60px 0;
+  padding: 0 20px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-width: 800px;
   margin: auto;
-  text-align: center;
 }
 
-.team {
+.timeline-item {
+  padding: 20px;
+  border-left: 4px solid #3f51b5;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.timeline-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #f5f7ff;
+}
+
+.timeline-item h4 {
+  margin: 0 0 8px;
+  color: #3f51b5;
+  font-size: 20px;
+}
+
+.timeline-item p {
+  margin: 0;
+  color: #444;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+
+/* Counters */
+.counter-section {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.team-card {
-  width: 150px;
+  gap: 50px;
+  margin: 60px 0;
   text-align: center;
 }
 
-.team-card img {
-  width: 100%;
-  border-radius: 50%;
+.counter h2 {
+  font-size: 40px;
+  color: #3f51b5;
+  margin-bottom: 5px;
 }
+
+.counter p {
+  font-weight: 500;
+}
+
+/* Video */
+.video-section {
+  max-width: 900px;
+  margin: 60px auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Team */
+.team-heading {
+  font-size: 28px;
+  margin: 60px 0 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #3f51b5;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Horizontal scroll container */
+.team-slider-container {
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Flex layout for scrolling */
+.team-slider {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding: 0 20px;
+}
+
+/* Wrapper for snapping */
+.team-card-wrapper {
+  scroll-snap-align: center;
+  flex: 0 0 auto;
+}
+
+/* Elegant card style */
+.elegant-team-card {
+  width: 260px;
+  min-width: 260px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.elegant-team-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Circular profile image */
+.profile-pic {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 16px; /* Center horizontally and add spacing below */
+  display: block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
+}
+
+
+.elegant-team-card:hover .profile-pic {
+  transform: scale(1.08);
+}
+
+/* Card text */
+.card-text {
+  padding: 0 10px;
+  text-align: center;
+}
+
+.member-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0a1152;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.member-role {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+

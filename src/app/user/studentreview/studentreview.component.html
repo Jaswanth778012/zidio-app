@@ -27,7 +27,7 @@
 </ng-template>
 
 <!-- Review Submission Form -->
-<div class="review-form">
+<div *ngIf="isStudent()" class="review-form">
   <h3 class="section-title">Leave a Review</h3>
   <form (ngSubmit)="submitReview()" #reviewForm="ngForm" class="form-fields">
     <mat-form-field appearance="outline" class="rating-field">

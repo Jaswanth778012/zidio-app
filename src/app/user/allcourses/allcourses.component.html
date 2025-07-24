@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <h2 class="mb-4">🎓 Enrolled Courses</h2>
+
+  <!-- Tabs for All, Free, Paid -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'all'" (click)="setTab('all')">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'free'" (click)="setTab('free')">Free</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'paid'" (click)="setTab('paid')">Paid</a>
+    </li>
+  </ul>
+
+  <!-- Search & Course Type Filters -->
+  <div class="row mb-4 align-items-end">
+    <div class="col-md-6 mb-2">
+      <label for="searchInput" class="form-label fw-semibold">Search</label>
+      <input id="searchInput" type="text" class="form-control"
+             placeholder="Search by course name"
+             [(ngModel)]="searchQuery"
+             (input)="onSearchChange()">
+    </div>
+    <div class="col-md-6 mb-2">
+      <label for="typeSelect" class="form-label fw-semibold">Course Type</label>
+      <select id="typeSelect" class="form-select"
+              [(ngModel)]="selectedType"
+              (change)="onTypeChange()">
+        <option value="all">All Types</option>
+        <option *ngFor="let type of courseTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Course Cards -->
+  <div class="row" *ngIf="filteredCourses.length > 0; else noCourses">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let course of filteredCourses">
+      <div class="card h-100 shadow-sm border-0 rounded-3">
+        <div class="position-relative">
+          <img [src]="course.courseImages?.[0]?.url || 'assets/images/default-course.jpg'"
+               class="card-img-top rounded-top"
+               [alt]="course.courseName"
+               style="height: 180px; object-fit: cover;">
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title mb-1">{{ course.courseName }}</h5>
+          <p class="text-muted small mb-1">
+            <i class="bi bi-calendar-week me-1"></i>
+            {{ course.startDate | date:'MMM d' }} – {{ course.endDate | date:'MMM d' }}
+          </p>
+          <p class="text-muted small mb-2">
+            <i class="bi bi-person me-1"></i>
+            {{ course.faculty?.userFirstName }} {{ course.faculty?.userLastName }}
+          </p>
+
+          <div class="progress mb-2" style="height: 6px;">
+            <div class="progress-bar bg-primary" role="progressbar"
+                 [style.width.%]="course.progress?.[0]?.progressPercentage ?? 0"
+                 [attr.aria-valuenow]="course.progress?.[0]?.progressPercentage ?? 0"
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <p class="small text-muted">{{ course.progress?.[0]?.progressPercentage ?? 0 }}% Complete</p>
+
+          <a class="btn btn-outline-primary mt-auto w-100"
+             [routerLink]="['/learning', course.id]">
+            Continue Learning
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <ng-template #noCourses>
+    <div class="text-center text-muted py-5">
+      <i class="bi bi-journal-x fs-1"></i>
+      <p class="mt-2">No courses found matching your criteria.</p>
+    </div>
+  </ng-template>
+</div>

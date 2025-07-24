@@ -54,6 +54,7 @@ currentPage: number = 1;
     showEventModal = false;
     eventForm: FormGroup;
     editingEvent: CalendarEvent | null = null;
+    upcomingEvents: CalendarEvent[] = [];
 
       reminderCheckInterval: any;
  remindedEventIds = new Set<number>() ;
@@ -81,6 +82,7 @@ currentPage: number = 1;
     this.updatePaginatedInternshipIds();
     this.fetchAllInterviews();
     this.generateCalendar(this.currentMonth);
+    this.loadUpcomingEvents();
     this.loadEvents();
   }
 
@@ -122,6 +124,17 @@ loadAll() {
     }
   });
 }
+
+loadUpcomingEvents(): void {
+    this.employerService.getUpcomingEvents().subscribe(
+      (events) => {
+        this.upcomingEvents = events;
+        this.loadEvents();
+      },
+      (error) => console.error('Failed to load upcoming events', error)
+    );
+    
+  }
 
 downloadResume(id: number) {
   this.employerService.downloadResume(id, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({

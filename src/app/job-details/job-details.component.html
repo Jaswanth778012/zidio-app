@@ -1,1 +1,174 @@
-<p>job-details works!</p>
+<!-- <div class="job-detail-container" *ngIf="job">
+  <div class="job-card">
+    <div class="job-header">
+      <img *ngIf="job.companyLogo" [src]="job.companyLogo" alt="Company Logo" />
+      <div class="text">
+        <h1>{{ job.title }}</h1>
+        <h2>{{ job.companyName }}</h2>
+        <p class="location">{{ job.location }} • {{ job.jobType }} • {{ job.jobMode }}</p>
+      </div>
+    </div>
+
+    <div class="job-body">
+      <section>
+        <h3>Job Description</h3>
+        <p>{{ job.description }}</p>
+      </section>
+
+      <section>
+        <h3>Eligibility</h3>
+        <p>{{ job.eligibility }}</p>
+      </section>
+
+      <section>
+        <h3>Skills Required</h3>
+        <p>{{ job.skillsRequired }}</p>
+      </section>
+
+      <section>
+        <h3>Perks</h3>
+        <p>{{ job.perks }}</p>
+      </section>
+
+      <section>
+        <h3>About the Company</h3>
+        <p>{{ job.aboutCompany }}</p>
+      </section>
+
+      <section class="info-grid">
+        <div><strong>Posted On:</strong> {{ job.postedAt | date }}</div>
+        <div><strong>Deadline:</strong> {{ job.applicationDeadline | date }}</div>
+        <div><strong>Openings:</strong> {{ job.numberOfOpenings }}</div>
+        <div><strong>Salary:</strong> {{ job.salary }}</div>
+      </section>
+    </div>
+
+    <div class="apply-button-wrapper">
+      <button (click)="applyNow()">Apply Now</button>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="job-detail-wrapper" *ngIf="!loading && job">
+  <div class="job-detail-card">
+    
+    <div class="header">
+      <div class="logo-box">
+        <img *ngIf="job.companyLogo" [src]="job.companyLogo" alt="Company Logo" />
+      </div>
+      <div class="job-title">
+        <h1>{{ job.title }}</h1>
+        <h3>{{ job.companyName }}</h3>
+        <div class="meta">
+          <span><i class="material-icons">location_on</i> {{ job.location }}</span>
+          <span><i class="material-icons">business_center</i> {{ job.jobType }} / {{ job.jobMode }}</span>
+          <span><i class="material-icons">paid</i> {{ job.salary }}</span>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="job-detail-body">
+      <div class="section">
+        <h4>Description</h4>
+        <p>{{ job.description }}</p>
+      </div>
+      <div class="section">
+        <h4>Eligibility</h4>
+        <p>{{ job.eligibility }}</p>
+      </div>
+      <div class="section">
+        <h4>Skills Required</h4>
+        <p>{{ job.skillsRequired }}</p>
+      </div>
+      <div class="section">
+        <h4>Perks</h4>
+        <p>{{ job.perks }}</p>
+      </div>
+      <div class="section">
+        <h4>About the Company</h4>
+        <p>{{ job.aboutCompany }}</p>
+      </div>
+
+      <div class="quick-info">
+        <div><i class="material-icons">event</i><strong>Deadline:</strong> {{ job.applicationDeadline | date }}</div>
+        <div><i class="material-icons">calendar_today</i><strong>Posted:</strong> {{ job.postedAt | date }}</div>
+        <div><i class="material-icons">group</i><strong>Openings:</strong> {{ job.numberOfOpenings }}</div>
+      </div>
+    </div>
+
+   
+    <div class="job-footer">
+      <button (click)="applyNow()">Apply Now</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="loading-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div> -->
+
+
+<div class="job-detail-wrapper" *ngIf="!loading && job">
+  <div class="job-detail-card">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-box" *ngIf="job.companyLogo">
+        <img [src]="job.companyLogo" alt="Company Logo" />
+      </div>
+      <div class="job-title">
+        <h1>{{ job.title }}</h1>
+        <h3>{{ job.companyName }}</h3>
+        <div class="meta">
+          <span><i class="material-icons">location_on</i> {{ job.location }}</span>
+          <span><i class="material-icons">business_center</i> {{ job.jobType }} / {{ job.jobMode }}</span>
+          <span><i class="material-icons">paid</i> {{ job.salary }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="job-detail-body">
+      <div class="section">
+        <h4>Description</h4>
+        <p>{{ job.description }}</p>
+      </div>
+      <div class="section">
+        <h4>Eligibility</h4>
+        <p>{{ job.eligibility }}</p>
+      </div>
+      <div class="section">
+        <h4>Skills Required</h4>
+        <p>{{ job.skillsRequired }}</p>
+      </div>
+      <div class="section">
+        <h4>Perks</h4>
+        <p>{{ job.perks }}</p>
+      </div>
+      <div class="section">
+        <h4>About the Company</h4>
+        <p>{{ job.aboutCompany }}</p>
+      </div>
+
+      <div class="quick-info">
+        <div><i class="material-icons">event</i><strong>Deadline:</strong> {{ job.applicationDeadline | date:'mediumDate' }}</div>
+        <div><i class="material-icons">calendar_today</i><strong>Posted:</strong> {{ job.postedAt | date:'mediumDate' }}</div>
+        <div><i class="material-icons">group</i><strong>Openings:</strong> {{ job.numberOfOpenings }}</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="job-footer">
+      <button class="apply-btn" (click)="applyNow()">Apply Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div class="loading-container" *ngIf="loading">
+  <div class="bouncing-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>

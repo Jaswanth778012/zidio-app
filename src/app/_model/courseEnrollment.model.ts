@@ -4,7 +4,9 @@ export interface CourseEnrollment {
   enrollmentAt: string;
   course: any;
   student: any;
+   enrollmentStatus: 'PENDING' | 'ENROLLED' | 'CANCELLED' | 'UNENROLLED';
   studentProfilePicture?: StudentProfilePicture
+
 }
 
 export interface StudentProfilePicture{

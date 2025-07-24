@@ -1,0 +1,71 @@
+<!-- <div class="video-manager">
+  <ul class="video-list">
+    <li *ngFor="let video of videos" class="video-item">
+      <div class="video-preview">
+        <video *ngIf="video.videoUrl" [src]="video.videoUrl" controls width="200"></video>
+      </div>
+      <div class="video-info">
+        <h3>{{ video.title }}</h3>
+        <p>{{ video.description }}</p>
+        <div class="actions">
+          <button (click)="editVideo(video)">✏️ Edit</button>
+          <button (click)="deleteVideo(video.id)">🗑️ Delete</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <form (submit)="editingVideoId ? updateVideo() : addVideo(); $event.preventDefault()" class="video-form">
+    <h2>{{ editingVideoId ? 'Edit' : 'Add' }} Video</h2>
+    
+    <input [(ngModel)]="title" name="title" placeholder="Title" required />
+    <textarea [(ngModel)]="description" name="description" placeholder="Description" required></textarea>
+    
+    <input type="file" (change)="onFileSelected($event)" />
+    <input [(ngModel)]="videoUrl" name="videoUrl" placeholder="Video URL" />
+    <input [(ngModel)]="duration" name="duration" type="number" placeholder="Duration (sec)" />
+
+    <video *ngIf="videoUrl" [src]="videoUrl" controls class="preview-player"></video>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingVideoId ? 'Update' : 'Add' }} Video</button>
+      <button type="button" *ngIf="editingVideoId" (click)="resetForm()">Cancel</button>
+    </div>
+  </form>
+</div> -->
+
+<div class="video-manager-container">
+
+  <form (submit)="editingVideoId ? updateVideo() : addVideo(); $event.preventDefault()" class="video-form">
+    <h2>{{ editingVideoId ? 'Edit' : 'Add' }} Video</h2>
+    
+    <input [(ngModel)]="title" name="title" placeholder="Title" required />
+    <textarea [(ngModel)]="description" name="description" placeholder="Description" required></textarea>
+    
+    <input type="file" (change)="onFileSelected($event)" />
+    <input [(ngModel)]="videoUrl" name="videoUrl" placeholder="Video URL" />
+    <input [(ngModel)]="duration" name="duration" type="number" placeholder="Duration (sec)" />
+
+    <video *ngIf="videoUrl" [src]="videoUrl" controls class="preview-player"></video>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingVideoId ? 'Update' : 'Add' }} Video</button>
+      <button type="button" *ngIf="editingVideoId" (click)="resetForm()">Cancel</button>
+    </div>
+  </form>
+
+
+  <ul class="video-list">
+    <li *ngFor="let video of videos" class="video-item">
+      <video *ngIf="video.videoUrl" [src]="video.videoUrl" controls class="video-thumb"></video>
+      <div class="video-details">
+        <h3>{{ video.title }}</h3>
+        <p>{{ video.description }}</p>
+        <div class="actions">
+          <button (click)="editVideo(video)">✏️ Edit</button>
+          <button (click)="deleteVideo(video.id)">🗑️ Delete</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

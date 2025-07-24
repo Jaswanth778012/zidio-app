@@ -1,0 +1,21 @@
+<div class="course-container">
+  <h2>🎓 Courses</h2>
+
+  <div class="course-grid">
+    <div 
+      class="course-card" 
+      *ngFor="let course of courses" 
+      (click)="selectCourse(course)"
+      [class.selected]="course === selectedCourse"
+    >
+      <div class="card-content">
+        <h3>{{ course.courseName }}</h3>
+        <p>Click to view syllabus</p>
+      </div>
+      <div class="arrow">➡️</div>
+    </div>
+  </div>
+
+  <!-- Inject syllabus component -->
+  <app-syllabus *ngIf="selectedCourse" [course]="selectedCourse"></app-syllabus>
+</div>

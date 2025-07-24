@@ -90,6 +90,14 @@ import { ApplicationComponent } from './user/application/application.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
 import { InternshipDetailsComponent } from './internship-details/internship-details.component';
+import { MatPaginator } from "@angular/material/paginator";
+import { SyllabusComponent } from './admin/syllabus/syllabus.component';
+import { VideoContentComponent } from './admin/video-content/video-content.component';
+import { CourseComponent } from './admin/course/course.component';
+import { CourseSyllabusComponent } from './course-syllabus/course-syllabus.component';
+import { LearningDetailComponent } from './user/learning-detail/learning-detail.component';
+import { AllcoursesComponent } from './user/allcourses/allcourses.component';
+import { AllapplicationsComponent } from './user/allapplications/allapplications.component';
 
 
 @NgModule({
@@ -147,6 +155,13 @@ import { InternshipDetailsComponent } from './internship-details/internship-deta
     JobDetailsComponent,
     InternshipapplicationComponent,
     InternshipDetailsComponent,
+    SyllabusComponent,
+    VideoContentComponent,
+    CourseComponent,
+    CourseSyllabusComponent,
+    LearningDetailComponent,
+    AllcoursesComponent,
+    AllapplicationsComponent,
    
 
 
@@ -185,8 +200,9 @@ import { InternshipDetailsComponent } from './internship-details/internship-deta
     MatDialogModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
-  ],
+    MatChipsModule,
+    MatPaginator
+],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider
     AuthGuard,

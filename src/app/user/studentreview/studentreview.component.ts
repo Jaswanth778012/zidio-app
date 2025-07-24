@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { CourseReview } from '../../_model/reviewes.model';
 import { UserService } from '../../_services/user.service';
 import { StudentService } from '../../_services/student.service';
+import { UserAuthService } from '../../_services/user-auth.service';
 
 @Component({
   selector: 'app-studentreview',
@@ -15,7 +16,7 @@ export class StudentreviewComponent {
   newRating: number = 5;
   newComment: string = '';
 
-  constructor(public userService: UserService, private studentService: StudentService) {}
+  constructor(public userService: UserService, private studentService: StudentService,private userAuthService: UserAuthService) {}
 
   ngOnInit(): void {
     if (this.id) {
@@ -28,6 +29,12 @@ export class StudentreviewComponent {
       this.loadReviews();
     }
   }
+
+  isStudent(): boolean {
+  return this.userAuthService.isLoggedIn() && 
+         this.userAuthService.getRoles() && 
+         this.userAuthService.getRoles().includes('Student'); 
+}
 
   loadReviews(): void {
     this.userService.getCourseReviews(this.id).subscribe({

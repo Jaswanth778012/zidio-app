@@ -2,18 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployerService } from '../../_services/employer.service';
 import { Interview } from '../../_model/Interview.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-interview',
   templateUrl: './interview.component.html',
-  styleUrl: './interview.component.css'
+  styleUrls: ['./interview.component.css']
 })
 export class InterviewComponent implements OnInit {
 
   interviewForm!: FormGroup;
   submitted = false;
   generatedMeetingLink: string | null = null;
-  constructor(private fb: FormBuilder, private employerService: EmployerService){}
+  loading = false;
+
+  constructor(private fb: FormBuilder, private employerService: EmployerService, private router: Router){}
 
   ngOnInit(): void {
        this.interviewForm = this.fb.group({
@@ -48,14 +51,17 @@ export class InterviewComponent implements OnInit {
       location: formValue.location,
       notes: formValue.notes
     };
-
+    this.loading = true;
     this.employerService.createInterview(interview).subscribe({
       next: (res) => {
+        this.loading = false;
         alert('Interview created successfully');
         this.generatedMeetingLink = res.meetingLink || null;
         this.resetForm(false);
+        this.router.navigate(['/employer']);
       },
       error: () => {
+        this.loading = false;
         alert('Failed to create interview');
       }
     });

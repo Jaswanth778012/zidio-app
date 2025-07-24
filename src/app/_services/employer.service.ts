@@ -250,5 +250,9 @@ getAllApplications(): Observable<Application[]> {
   deleteEvent(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/calendar/event/${id}`);
   }
+
+  getUpcomingEvents(): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(`${this.baseUrl}/upcoming`);
+  }
 } 
 

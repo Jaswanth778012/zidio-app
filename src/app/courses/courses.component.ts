@@ -15,7 +15,7 @@ export class CoursesComponent implements OnInit{
   paginatedCourses: any[] = [];
 
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 20;
   totalPages = 1;
 
   filters = {
@@ -92,7 +92,9 @@ updateRatings(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.paginatedCourses = this.filteredCourses.slice(startIndex, endIndex);
-    this.totalPages = Math.ceil(this.filteredCourses.length / this.pageSize);
+    this.totalPages = Math.max(1, Math.ceil(this.filteredCourses.length / this.pageSize));
+
+    console.log('Pagination updated: page', this.currentPage, 'of', this.totalPages);
   }
 
   nextPage() {

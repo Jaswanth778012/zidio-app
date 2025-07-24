@@ -7,6 +7,8 @@ import { CourseReview } from '../_model/reviewes.model';
 import { UserAuthService } from './user-auth.service';
 import { Application } from '../_model/Application.model';
 import { ApplicationQuestion } from '../_model/applicationQuestion.model';
+import { CourseEnrollment } from '../_model/courseEnrollment.model';
+import { CalendarEvent } from '../_model/CalendarEvent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +86,20 @@ export class StudentService {
 
     getInternshipById(id: number): Observable<any> {
   return this.http.get<any>(`${this.baseUrl}/internships/${id}`);
-}
+    }
+
+     getEnrollmentForCourse(id: number): Observable<CourseEnrollment> {
+    return this.http.get<CourseEnrollment>(`${this.baseUrl}/courseEnroll/${id}`);
+  }
+    markVideoWatched(videoId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/courseProgress/update/${videoId}`,{}  // body is empty—your endpoint reads only the path + principal
+    );
+  }
+
+    getDashboardCounts(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/counts`);
+  }
+
 
 
 
@@ -151,8 +166,6 @@ export class StudentService {
   return throwError(() => errorMsg);
 }
 
-
-
   getApplicationQuestionsByJobId(jobId: number) {
   return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/jobs/${jobId}/questions`);
   }
@@ -161,5 +174,51 @@ export class StudentService {
     return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/internships/${internshipId}/questions`);
   }
 
+   getMyCourses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/my-courses`);
+  }
+
+  getAppliedJobs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/applied-jobs`);
+  }
+
+  getAppliedInternships(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/applied-internships`);
+  }
+
+  getAllApplicationsForStudent() {
+  return this.http.get<Application[]>(`${this.baseUrl}/application/all`);
+  }
+
+
+  //progress
+  updateCourseProgress(videoId: number): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/courseProgress/update/${videoId}`, {});
+  }
+
+  //calendar events
+   getEvents(): Observable<CalendarEvent[]> {
+        return this.http.get<CalendarEvent[]>(`${this.baseUrl}/s/calendar/events`);
+      }
+    
+      getEvent(id: number): Observable<CalendarEvent> {
+        return this.http.get<CalendarEvent>(`${this.baseUrl}/s/calendar/event/${id}`);
+      }
+    
+      createEvent(event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+        return this.http.post<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/s/calendar/event`, event);
+      }
+    
+      updateEvent(id: number, event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+        return this.http.put<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/s/calendar/event/${id}`, event);
+      }
+    
+      deleteEvent(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/s/calendar/event/${id}`);
+      }
+    
+      getUpcomingEvents(): Observable<CalendarEvent[]> {
+        return this.http.get<CalendarEvent[]>(`${this.baseUrl}/s/calendar/upcoming`);
+      }
 
 }

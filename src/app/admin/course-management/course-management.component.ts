@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from '../../_services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -8,13 +8,15 @@ import { FileHandle } from '../../_model/file-handle.model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CourseReview } from '../../_model/reviewes.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-course-management',
   templateUrl: './course-management.component.html',
   styleUrls: ['./course-management.component.css']
 })
-export class CourseManagementComponent implements OnInit {
+export class CourseManagementComponent implements OnInit, AfterViewInit {
   courses: any[] = [];
   filteredCourses: any[] = [];
   categories: any[] = [];
@@ -39,9 +41,18 @@ export class CourseManagementComponent implements OnInit {
   adminuserName = this.userAuthService.getUsername(); // This should be fetched from the auth service
   reviews: any[] = [];
   selectedCategoryId: number = 1;
-   selectedFileHandle: FileHandle | null = null;
+  selectedFileHandle: FileHandle | null = null;
 
+  dataSource = new MatTableDataSource<any>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  displayedColumns: string[] = [
+    'id', 'image', 'name', 'category', 'price', 'discountedPrice', 'status', 'actions'
+  ];
   constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService, private sanitizer: DomSanitizer, private http: HttpClient) {}
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
 
   ngOnInit(): void {
     this.initForms();
@@ -86,6 +97,7 @@ export class CourseManagementComponent implements OnInit {
       console.log('Courses loaded:', res); // 🔍 Debug this
       this.courses = res;
       this.filteredCourses = res;
+      this.dataSource.data = res;
     },
     error: (err) => {
       console.error('Error loading courses:', err);
@@ -359,6 +371,7 @@ applySearchAndFilter() {
   }
 
   this.filteredCourses = courses;
+  this.dataSource.data = courses;
 }
 }
 
