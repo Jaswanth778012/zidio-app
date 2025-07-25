@@ -73,9 +73,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## 📂 Folder Structure (Simplified)
 
 <details> <summary>🖥️ Frontend (Angular)</summary>
-css
-Copy
-Edit
 frontend/
 └── src/
     └── app/
