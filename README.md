@@ -72,85 +72,76 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## 📂 Folder Structure (Simplified)
 
-<details>
-<summary>🖥️ Frontend (Angular)</summary>
-
+<details> <summary>🖥️ Frontend (Angular)</summary>
+css
+Copy
+Edit
 frontend/
 └── src/
-├── app/
-│ ├── _auth/
-│ ├── _model/
-│ ├── _services/
-│ ├── about/
-│ ├── admin/
-│ ├── contact/
-│ ├── course-details/
-│ ├── course-syllabus/
-│ ├── courses/
-│ ├── employer/
-│ ├── footer/
-│ ├── forbidden/
-│ ├── header/
-│ ├── home/
-│ ├── internship-details/
-│ ├── internships/
-│ ├── job-details/
-│ ├── jobs/
-│ ├── login/
-│ ├── message-dialog/
-│ ├── register/
-│ ├── remainder-snackbar/
-│ ├── update-password/
-│ ├── user/
-│ ├── app-routing.module.ts
-│ ├── app.component.ts / .html / .css
-│ └── app.module.ts
-└── assets/
-
-</details>
-
-<details>
-<summary>⚙️ Backend (Spring Boot)</summary>
+    └── app/
+        ├── _auth/
+        ├── _model/
+        ├── _services/
+        ├── about/
+        ├── admin/
+        ├── contact/
+        ├── course-details/
+        ├── course-syllabus/
+        ├── courses/
+        ├── employer/
+        ├── footer/
+        ├── forbidden/
+        ├── header/
+        ├── home/
+        ├── internship-details/
+        ├── internships/
+        ├── job-details/
+        ├── jobs/
+        ├── login/
+        ├── message-dialog/
+        ├── register/
+        ├── remainder-snackbar/
+        ├── update-password/
+        ├── user/
+        ├── app-routing.module.ts
+        ├── app.component.ts / .html / .css
+        └── app.module.ts
+    └── assets/
+</details> <details> <summary>⚙️ Backend (Spring Boot)</summary>
 
 Eureka Server/
 └── src/
-└── main/
-└── java/
-└── com/example/cloud/
-└── EurekaApplication.java
+    └── main/
+        └── java/
+            └── com/example/cloud/
+                └── EurekaApplication.java
 
 zidioApp/
 └── src/
-└── main/
-└── java/
-└── com/spring/zidio/
-├── configuration/
-├── controller/
-├── dao/
-├── payload/
-├── repository/
-├── service/
-├── util/
-├── deserializer/
-├── Address.java
-├── AdminNotification.java
-├── AdminProfile.java
-├── Application.java
-├── Interview.java
-└── resources/
-├── static/ # Static frontend assets (if any)
-├── templates/ # Thymeleaf or email templates
-├── application.properties
-└── credentials.json # Google API credentials (Calendar/Meet)
-└── test/
-└── java/ # Unit & integration tests
-
-
-</details>
-
-<details>
-<summary>📦 Root Directory</summary>
-
+    └── main/
+        └── java/
+            └── com/spring/zidio/
+                ├── configuration/
+                ├── controller/
+                ├── dao/
+                ├── payload/
+                ├── repository/
+                ├── service/
+                ├── util/
+                ├── deserializer/
+                ├── Address.java
+                ├── AdminNotification.java
+                ├── AdminProfile.java
+                ├── Application.java
+                ├── Interview.java
+        └── resources/
+            ├── static/               # Static frontend assets (if any)
+            ├── templates/            # Thymeleaf or email templates
+            ├── application.properties
+            └── credentials.json      # Google API credentials (Calendar/Meet)
+    └── test/
+        └── java/                    # Unit & integration tests
+</details> <details> <summary>📦 Root Directory</summary>
 zidio-connect/
 ├── .gitignore
 ├── .gitattributes
@@ -164,9 +155,7 @@ zidio-connect/
 ├── tsconfig.app.json
 ├── tsconfig.spec.json
 └── uploads/
-
 </details>
----
 
 ---
 ## 🧪 How to Run
