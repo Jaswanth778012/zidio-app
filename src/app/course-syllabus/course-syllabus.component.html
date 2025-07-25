@@ -1,0 +1,46 @@
+<!-- <h1 class="syllabus-title">Course Syllabus</h1>
+<div *ngFor="let syllabus of syllabusList" class="syllabus-card">
+  <div class="syllabus-header" (click)="toggleExpand(syllabus.id)">
+    <h3>• {{ syllabus.title }}</h3>
+    <span>{{ syllabus.videos?.length || 0 }} Video{{ syllabus.videos.length !== 1 ? 's' : '' }} inside</span>
+    <button class="toggle-btn">{{ expandedSyllabusId === syllabus.id ? '▼' : '▲' }}</button>
+  </div>
+
+  <div class="video-list" *ngIf="expandedSyllabusId === syllabus.id">
+    <div *ngFor="let video of syllabus.videos" class="video-item">
+      <div>
+        <strong>{{ video.title }}</strong>
+        <p>{{ video.description }}</p>
+      </div>
+      <button class="play-btn" (click)="openVideo(video.videoUrl)">▶ Play</button>
+    </div>
+  </div>
+</div> -->
+<div class="syllabus-container">
+  <h3 class="section-title">Course Syllabus</h3>
+
+  <div *ngFor="let syllabus of syllabusList" class="syllabus-card">
+    <div class="syllabus-header" (click)="toggleExpand(syllabus.id)">
+      <h3>• {{ syllabus.title }}</h3>
+      <span>{{ syllabus.videos?.length || 0 }} Video{{ syllabus.videos.length !== 1 ? 's' : '' }} inside</span>
+      <button class="toggle-btn">{{ expandedSyllabusId === syllabus.id ? '▼' : '▲' }}</button>
+    </div>
+
+    <div class="video-list" *ngIf="expandedSyllabusId === syllabus.id">
+      <div *ngFor="let video of syllabus.videos" class="video-item">
+        <div>
+          <strong>{{ video.title }}</strong>
+          <p>{{ video.description }}</p>
+        </div>
+        <button 
+          class="play-btn"
+          (click)="openVideo(video.videoUrl)" 
+          [disabled]="!enrolled"
+          [title]="enrolled ? 'Play video' : 'Enroll to unlock video'"
+        >
+          {{ enrolled ? '▶ Play' : '🔒 Locked' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

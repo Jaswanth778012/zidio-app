@@ -1,0 +1,44 @@
+<div class="syllabus-container">
+  <h3>Syllabuses for "{{ course?.courseName }}"</h3>
+
+  <!-- Add New Syllabus Form -->
+  <form (submit)="addSyllabus(); $event.preventDefault()" class="syllabus-form">
+    <h4>Add New Syllabus</h4>
+    <input [(ngModel)]="newSyllabus.title" name="title" placeholder="Title" required />
+    <input [(ngModel)]="newSyllabus.description" name="description" placeholder="Description" />
+    <button type="submit">Add Syllabus</button>
+  </form>
+
+  <!-- Edit Form -->
+  <div *ngIf="selectedSyllabus" class="syllabus-edit-section">
+    <h4>Edit Syllabus</h4>
+    <form (submit)="updateSyllabus(); $event.preventDefault()" class="syllabus-edit-form">
+      <input [(ngModel)]="selectedSyllabus.title" name="editTitle" placeholder="Title" required />
+      <input [(ngModel)]="selectedSyllabus.description" name="editDescription" placeholder="Description" />
+      <div class="form-actions">
+        <button type="submit">Save Changes</button>
+        <button type="button" (click)="selectedSyllabus = undefined">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- List of Syllabuses -->
+  <ul class="syllabus-list">
+    <li
+      *ngFor="let syllabus of syllabuses"
+      (click)="selectSyllabus(syllabus)"
+      [class.selected]="syllabus === selectedSyllabus"
+    >
+      <div>
+        <strong>{{ syllabus.title }}</strong>
+        <p>{{ syllabus.description }}</p>
+      </div>
+      <button (click)="deleteSyllabus(syllabus.id); $event.stopPropagation()" title="Delete syllabus">🗑️ Delete</button>
+    </li>
+  </ul>
+
+  <!-- Video Content Component -->
+  <div class="video-content-wrapper" *ngIf="selectedSyllabus?.id">
+    <app-video-content [syllabus]="selectedSyllabus"></app-video-content>
+  </div>
+</div>

@@ -1,4 +1,12 @@
-<div class="container">
+<div class="loading-container" *ngIf="loading">
+  <div class="bouncing-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<div *ngIf="!loading" class="container">
   <h2>Update Interview</h2>
 
   <form [formGroup]="interviewForm" (ngSubmit)="submitForm()">

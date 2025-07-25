@@ -1,0 +1,71 @@
+<div class="container-fluid mt-3">
+  <div class="row">
+    <!-- Left Section -->
+    <div class="col-md-8">
+      <h2 class="mb-3">{{ course?.courseName }}</h2>
+
+      <!-- Video Player -->
+      <div class="video-container mb-4" *ngIf="selectedVideo?.videoUrl">
+  <video width="100%" height="auto" controls [poster]="course?.courseImages[0]?.url">
+    <source [src]="selectedVideo.videoUrl.replace('http://', 'https://')" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
+      <!-- Title & Description -->
+      <h4>{{ selectedVideo?.title }}</h4>
+      <p>{{ selectedVideo?.description }}</p>
+
+      <!-- Tabs -->
+      <mat-tab-group>
+        <mat-tab label="Overview">
+          <div class="mt-3">
+            <p>{{ course?.description }}</p>
+            <p><strong>Category:</strong> {{ course?.category?.name }}</p>
+            <p><strong>Start Date:</strong> {{ course?.startDate }}</p>
+            <p><strong>End Date:</strong> {{ course?.endDate }}</p>
+            <p><strong>Certificate:</strong> {{ course?.certificate ? 'Yes' : 'No' }}</p>
+            <p><strong>Instructor:</strong> {{ course?.faculty?.userFirstName }} {{ course?.faculty?.userLastName }}</p>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Reviews">
+          <div class="mt-3" *ngFor="let review of course?.reviews">
+            <p><strong>{{ review.reviewerUsername }}</strong> (Rating: {{ review.rating }}/5)</p>
+            <p>{{ review.comment }}</p>
+            <hr />
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <!-- Right Section -->
+    <div class="col-md-4">
+      <h5 class="mb-3">Course Content</h5>
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let section of course?.syllabus">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ section.title }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <ul class="list-group">
+            <li
+              *ngFor="let video of section.videos"
+              class="list-group-item d-flex justify-content-between align-items-center"
+              (click)="playVideo(video)"
+              [class.bg-success]="isWatched(video.id)"
+              style="cursor: pointer;"
+            >
+              ▶ {{ video.title }}
+              <span class="badge bg-primary rounded-pill">{{ video.duration }} min</span>
+            </li>
+          </ul>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
+

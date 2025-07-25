@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from '../../_services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -7,18 +7,21 @@ import { TagContentType } from '@angular/compiler';
 import { FileHandle } from '../../_model/file-handle.model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CourseReview } from '../../_model/reviewes.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-course-management',
   templateUrl: './course-management.component.html',
   styleUrls: ['./course-management.component.css']
 })
-export class CourseManagementComponent implements OnInit {
+export class CourseManagementComponent implements OnInit, AfterViewInit {
   courses: any[] = [];
   filteredCourses: any[] = [];
   categories: any[] = [];
-  flaggedReviews: any[] = [];
-  selectedCourseReviews: any[] = [];
+  flaggedReviews: CourseReview[] = [];
+
   auditLogs: any[] = [];
   selectedFile: File | null = null;
   imagePreview: string | null = null; 
@@ -38,9 +41,18 @@ export class CourseManagementComponent implements OnInit {
   adminuserName = this.userAuthService.getUsername(); // This should be fetched from the auth service
   reviews: any[] = [];
   selectedCategoryId: number = 1;
-   selectedFileHandle: FileHandle | null = null;
+  selectedFileHandle: FileHandle | null = null;
 
+  dataSource = new MatTableDataSource<any>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  displayedColumns: string[] = [
+    'id', 'image', 'name', 'category', 'price', 'discountedPrice', 'status', 'actions'
+  ];
   constructor(private adminService: AdminService, private snackBar: MatSnackBar,private fb: FormBuilder,private userAuthService: UserAuthService, private sanitizer: DomSanitizer, private http: HttpClient) {}
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
 
   ngOnInit(): void {
     this.initForms();
@@ -79,49 +91,13 @@ export class CourseManagementComponent implements OnInit {
   });
   }
 
-  imageUrls: { [courseId: number]: SafeUrl } = {};
-  
-  baseUrl: string = 'http://localhost:8080/admin';
-  getImageUrl(imageName: string): string { // Adjust this to your actual base URL
-    console.log('imageName', imageName); // 🔍 Debug this
-  const url = `${this.baseUrl}/courses/image/${encodeURIComponent(imageName)}`;
-  console.log('Constructed Image URL:', url); // 🔍 Debug thi
-  return url;
-  }
-
-  // Call this once courses data is loaded
- loadImagesForCourses(courses: any[]) {
-  courses.forEach(course => {
-    if (course.courseImages?.length > 0) {
-      const imageName = course.courseImages[0].imageName;
-      this.http.get(`${this.baseUrl}/courses/image/${imageName}`, {
-        responseType: 'blob',
-        withCredentials: false, // in case you're using cookies for session
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + this.userAuthService.getToken()  // Inject token
-        })
-      }).subscribe({
-        next: (blob) => {
-          const objectURL = URL.createObjectURL(blob);
-          this.imageUrls[course.id] = this.sanitizer.bypassSecurityTrustUrl(objectURL) as string;
-        },
-        error: (err) => {
-          console.error(`Error loading image for course ${course.id}:`, err);
-        }
-      });
-    }
-  });
-}
-
-
-
   loadCourses() {
   this.adminService.getAllCourses().subscribe({
     next: (res) => {
       console.log('Courses loaded:', res); // 🔍 Debug this
       this.courses = res;
       this.filteredCourses = res;
-      this.loadImagesForCourses(this.filteredCourses);
+      this.dataSource.data = res;
     },
     error: (err) => {
       console.error('Error loading courses:', err);
@@ -221,27 +197,6 @@ onFileSelected(event: any) {
       reader.readAsDataURL(this.selectedFile);
   }
 }
-
-//  onFileSelected(event: any): void {
-//     const files: FileList = event.target.files;
-//     if (files && files.length > 0) {
-//       const file = files[0];
-//       const url = this.sanitizer.bypassSecurityTrustUrl(
-//         window.URL.createObjectURL(file)
-//       );
-
-//       this.selectedFileHandle = {
-//         file: file,
-//         url: url
-//       };
-//       // Optional: For preview
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imagePreview = reader.result as string;
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   }
 
 
  startEdit(course: any): void {
@@ -365,25 +320,16 @@ unarchiveCourse(courseId: number): void {
     console.log('Audit Logs:', this.auditLogs);
   });
 }
-  getCourseReviews(courseId: number): void {
-     this.selectedCourseId = courseId;
-    this.adminService.getCourseReviews(courseId).subscribe(reviews => this.selectedCourseReviews = reviews);
-  }
 
   loadFlaggedReviews(): void {
     this.adminService.getFlaggedReviews().subscribe(data => this.flaggedReviews = data);
   }
 
-  flagReview(id: number): void {
-    this.adminService.flagReview(id).subscribe(() => {
-      this.loadFlaggedReviews();
-      if (this.selectedCourseId) this.getCourseReviews(this.selectedCourseId);
-    });
-  }
 
   deleteReview(id: number): void {
-   
-    this.adminService.deleteReview(id).subscribe(() => this.loadFlaggedReviews());
+    if (confirm('Delete this review?')) {
+      this.adminService.deleteReview(id).subscribe(() => this.loadFlaggedReviews());
+    }
   }
 
   // Category management
@@ -425,6 +371,7 @@ applySearchAndFilter() {
   }
 
   this.filteredCourses = courses;
+  this.dataSource.data = courses;
 }
 }
 

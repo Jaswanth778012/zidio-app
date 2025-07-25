@@ -1,11 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Message, PaginatedMessageResponse } from '../_model/message.model';
 import { SendMessageRequest } from '../_model/message.model';
 import { EmployerProfile } from '../_model/employer-profile.model';
-import { Application } from '../_model/Application.model';
+import { Application, ApplicationStage } from '../_model/Application.model';
 import { Interview } from '../_model/Interview.model';
+import { CalendarEvent } from '../_model/CalendarEvent.model';
 
 
 @Injectable({
@@ -158,7 +159,11 @@ updateProfile(formData: FormData): Observable<EmployerProfile> {
 
 //Applications
 getAllApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${this.baseUrl}/All`);
+  return this.http.get<Application[]>(`${this.baseUrl}/All`, );
+}
+
+  getRecentApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/recent`);
   }
 
   getApplicationsByJob(jobId: number): Observable<Application[]> {
@@ -173,19 +178,33 @@ getAllApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.baseUrl}/student/${username}`);
   }
 
-  updateApplicationStatus(id: number, status: string): Observable<any> {
+  updateApplicationStatus(id: number, status: string): Observable<Application> {
     const params = new HttpParams().set('status', status);
-    return this.http.put(`${this.baseUrl}/${id}/status`, {}, { params });
+    return this.http.put<Application>(`${this.baseUrl}/${id}/status`, {}, { params });
   }
 
   deleteApplication(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  downloadResume(id: number) {
-    return this.http.get(`${this.baseUrl}/resume/${id}`, {
-      responseType: 'blob' 
-    });
+  /** 
+   * Count applications by stage
+   * @param stage - ApplicationStage as string (e.g. 'APPLIED', 'INTERVIEWING', etc.)
+   */
+  countApplicationsByStage(stage: ApplicationStage): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}/count?stage=${stage}`);
+  }
+
+  /**
+   * Get list of applications filtered by stage
+   * @param stage - ApplicationStage as string
+   */
+  getApplicationsByStage(stage: ApplicationStage): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/phase?stage=${stage}`);
+  }
+  
+  downloadResume(id: number, options: any={}): Observable<any> {
+    return this.http.get(`${this.baseUrl}/resume/${id}`, options);
   }
   //Interviews Schedule
    createInterview(interview: Interview): Observable<Interview> {
@@ -211,6 +230,29 @@ getAllApplications(): Observable<Application[]> {
   deleteInterview(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/interviews/${id}`, { responseType: 'text' });
   }
+  //calendar event
+  getEvents(): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(`${this.baseUrl}/calendar/events`);
+  }
 
+  getEvent(id: number): Observable<CalendarEvent> {
+    return this.http.get<CalendarEvent>(`${this.baseUrl}/calendar/event/${id}`);
+  }
+
+  createEvent(event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+    return this.http.post<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/calendar/event`, event);
+  }
+
+  updateEvent(id: number, event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+    return this.http.put<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/calendar/event/${id}`, event);
+  }
+
+  deleteEvent(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/calendar/event/${id}`);
+  }
+
+  getUpcomingEvents(): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(`${this.baseUrl}/upcoming`);
+  }
 } 
 

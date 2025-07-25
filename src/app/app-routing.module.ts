@@ -37,6 +37,25 @@ import { JobManagementComponent } from './employer/job-management/job-management
 import { InternshipManagementComponent } from './employer/internship-management/internship-management.component';
 import { InterviewComponent } from './employer/interview/interview.component';
 import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
+import { ApplicationsComponent } from './employer/applications/applications.component';
+import { InterviewsComponent } from './employer/interviews/interviews.component';
+import { InternshipsComponent } from './internships/internships.component';
+import { JobsComponent } from './jobs/jobs.component';
+import { CourseEnrollmentManagementComponent } from './admin/course-enrollment-management/course-enrollment-management.component';
+import path from 'path';
+import { CoursesComponent } from './courses/courses.component';
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { StudentreviewComponent } from './user/studentreview/studentreview.component';
+import { application } from 'express';
+import { ApplicationComponent } from './user/application/application.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
+import { InternshipDetailsComponent } from './internship-details/internship-details.component';
+import { SyllabusComponent } from './admin/syllabus/syllabus.component';
+import { CourseComponent } from './admin/course/course.component';
+import { LearningDetailComponent } from './user/learning-detail/learning-detail.component';
+import { AllcoursesComponent } from './user/allcourses/allcourses.component';
+import { AllapplicationsComponent } from './user/allapplications/allapplications.component';
 
 
 const routes: Routes = [
@@ -80,6 +99,46 @@ const routes: Routes = [
     component: UpdatePasswordComponent
   },
   {
+  path: 'about',
+  component: AboutComponent
+  },
+  {
+  path: 'contact',
+  component: ContactComponent
+  },
+  {
+    path: 'courses',
+    component: CoursesComponent
+  },
+  {
+    path: 'courses/:id',
+    component: CourseDetailsComponent
+  },
+  {
+  path: 'internships',
+  component: InternshipsComponent
+  },
+  {
+    path: 'internshipsapply/:id',
+    component: InternshipapplicationComponent
+  },
+  {
+    path: 'internships/:id',
+    component: InternshipDetailsComponent
+  },
+  {
+  path: 'jobs',
+  component: JobsComponent
+  },
+  {
+    path: 'jobsapply/:id',
+    component: ApplicationComponent
+  },
+  {
+    path: 'jobs/:id',
+    component: JobDetailsComponent
+  },
+  {
     path: 'admin/users', 
     component: UserManagementComponent
   },
@@ -95,6 +154,18 @@ const routes: Routes = [
      path: 'admin/courses', 
     component: CourseManagementComponent
      
+  },
+  {
+    path: 'admin/course',
+    component: CourseComponent
+  },
+  {
+    path: 'admin/syllabus',
+    component: SyllabusComponent
+  },
+  {
+    path: 'admin/course/enroll',
+    component: CourseEnrollmentManagementComponent
   },
   {
     path: 'admin/internships',
@@ -136,14 +207,6 @@ const routes: Routes = [
   component: NotificationsComponent
 },
 {
-  path: 'about',
-  component: AboutComponent
-},
-{
-  path: 'contact',
-  component: ContactComponent
-},
-{
   path: 'employer/jobs',
   component: JobManagementComponent
 },
@@ -177,6 +240,14 @@ const routes: Routes = [
   component: InterviewUpdateComponent
 },
 {
+  path: 'employer/applications',
+  component: ApplicationsComponent
+},
+{
+  path: 'employer/interviews',
+  component: InterviewsComponent
+},
+{
   path: 'student/student-profile',
   component: StudentProfileComponent
 },
@@ -185,12 +256,24 @@ const routes: Routes = [
   component: StudentcomposeComponent
 },
 {
+  path: 'student/allcourses',
+  component: AllcoursesComponent
+},
+{
+  path: 'student/allapplications',
+  component: AllapplicationsComponent
+},
+{
   path: 'student/inbox',
   component: StudentmessageComponent
 },
 {
   path: 'student/sent',
   component: StudentsentComponent
+},
+{
+  path: 'learning/:id',
+  component: LearningDetailComponent
 }
 
 ];

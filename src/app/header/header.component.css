@@ -1,4 +1,4 @@
-.space-buttons
+/* .space-buttons
 {
     flex:auto;
 }
@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-} */
+} 
 
 .sidebar a span {
   line-height: 1;
@@ -257,7 +257,7 @@
 
 .mat-menu-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
-}
+} */
 
 /* body, html {
   margin: 0;
@@ -449,3 +449,187 @@
   }
 } */
 
+/* ----- TOOLBAR STYLES ----- */
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 64px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu-button {
+  margin-right: 16px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.topbar {
+  margin-left: 40px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.space-buttons {
+  flex: 1 1 auto;
+}
+
+/* ----- SIDE NAVIGATION ----- */
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  background-color: #fafafa;
+  padding: 10px;
+}
+
+mat-sidenav button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  gap: 8px;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+mat-sidenav button:hover {
+  background-color: #e3f2fd;
+}
+
+mat-sidenav mat-icon {
+  color: #1976d2;
+}
+
+mat-menu button mat-icon {
+  margin-right: 8px;
+}
+
+/* Highlight active route (optional if routerLinkActive is used) */
+.active-link {
+  background-color: #bbdefb;
+  font-weight: bold;
+}
+
+/* Responsive padding inside sidenav content */
+mat-sidenav-content {
+  padding: 16px;
+}
+
+/* Style for right-side nav buttons */
+.navbar button {
+  margin-left: 8px;
+}
+
+@media (max-width: 767px) {
+  .navbar button {
+    margin-left: 2px;
+    margin-top: 8px;
+  }
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+  .topbar {
+    display: none;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .menu-button {
+    margin-bottom: 8px;
+  }
+
+}
+
+
+/* .bubble-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  z-index: 9999;
+}
+
+.bubble {
+  width: 8px;
+  height: 8px;
+  margin: 0 2px;
+  background-color: white;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.bubble:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.bubble:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+} */
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+}
+
+/* Bouncing loader animation */
+.bouncing-loader {
+  display: flex;
+  justify-content: space-between;
+  width: 70px;
+}
+
+.bouncing-loader > div {
+  width: 18px;
+  height: 18px;
+  background-color: #d55e19;
+  border-radius: 50%;
+  animation: bouncing 0.6s infinite alternate;
+}
+
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bouncing {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0.7;
+  }
+}

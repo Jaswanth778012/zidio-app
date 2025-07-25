@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { AdminProfile } from '../_model/admin-profile.model';
 import { AdminNotification } from '../_model/admin-notification.model';
 import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model/message.model';
+import { CourseEnrollment } from '../_model/courseEnrollment.model';
+import { Course } from '../_model/course.model';
+import { VideoContent } from '../_model/video-content.model';
+import { Syllabus } from '../_model/syllabus.model';
 
 @Injectable({
   providedIn: 'root'
@@ -112,39 +116,40 @@ filterCourses(params: any): Observable<any> {
   return this.http.get(`${this.baseUrl}/courses/filter`, { params });
 }
 
+getAllEnrollments(): Observable<CourseEnrollment[]> {
+    return this.http.get<CourseEnrollment[]>(`${this.baseUrl}/course/enroll/all`);
+  }
+
+  getEnrollmentsByCourseId(courseId: number): Observable<CourseEnrollment[]> {
+    return this.http.get<CourseEnrollment[]>(`${this.baseUrl}/course/enroll/${courseId}`);
+  }
+
+  getEnrollmentsByStudentUsername(username: string): Observable<CourseEnrollment[]> {
+    return this.http.get<CourseEnrollment[]>(`${this.baseUrl}/course/enroll/student/${username}`);
+  }
+
+  getEnrollmentById(id: number): Observable<CourseEnrollment> {
+    return this.http.get<CourseEnrollment>(`${this.baseUrl}/course/enrollby/${id}`);
+  }
+
 getCourseAuditLogs(id: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/courses/${id}/audit`);
 }
 
 
 getFlaggedReviews(): Observable<any[]> {
-  const token = localStorage.getItem('token');  // Or wherever you store the token
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.http.get<any[]>(`${this.baseUrl}/reviews/flagged`, { headers });
+  return this.http.get<any[]>(`${this.baseUrl}/course/reviews/flagged`);
 }
 
-
-getCourseReviews(courseId: number): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/courses/${courseId}/reviews`);
-}
 
 deleteReview(id: number): Observable<any> {
   return this.http.delete(`${this.baseUrl}/reviews/${id}`);
 }
 
-flagReview(id: number): Observable<any> {
-  return this.http.put(`${this.baseUrl}/reviews/${id}/flag`, {});
-}
 
 // Categories
 getAllCategories(): Observable<any[]> {
-  const token = localStorage.getItem('token');
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.http.get<any[]>(`${this.baseUrl}/categories`, { headers });
+  return this.http.get<any[]>(`${this.baseUrl}/categories`);
 }
 
 
@@ -163,6 +168,8 @@ deleteCategory(id: number): Observable<any> {
 deleteCourse(id: number) {
   return this.http.delete(`${this.baseUrl}/courses/${id}/delete`,{ responseType: 'text' });
 }
+
+
 
 assignFaculty(courseId: number, userName: string) {
   return this.http.put(`${this.baseUrl}/courses/${courseId}/assign?userName=${userName}`, {});
@@ -333,5 +340,54 @@ resolveAllNotifications(): Observable<any> {
   return this.http.put<any>(`${this.baseUrl}/messages/sender/${userName}/read`, {});
 }
 
+  getCourseById(id: number): Observable<Course> {
+    return this.http.get<Course>(`${this.baseUrl}/courses/${id}`);
+  }
+
+///syllabus
+  getAllSyllabus(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/syllabus`);
+  }
+
+  getByCourseId(courseId: number): Observable<Syllabus[]> {
+    return this.http.get<Syllabus[]>(`${this.baseUrl}/course/${courseId}`);
+  }
+
+  getById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/syll/${id}`);
+  }
+
+  create(syllabus: Syllabus): Observable<Syllabus> {
+    return this.http.post<Syllabus>(`${this.baseUrl}/syllabus`, syllabus);
+  }
+
+  update(id: number, syllabus: Syllabus): Observable<Syllabus> {
+    return this.http.put<Syllabus>(`${this.baseUrl}/upsyllabus/${id}`, syllabus);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/syllabus/${id}`);
+  }
+
+  //video content
+  addVideoContent(syllabusId: number, formData: FormData): Observable<VideoContent> {
+    return this.http.post<VideoContent>(`${this.baseUrl}/syllabus/${syllabusId}/video-content`, formData);
+  }
+
+  updateVideo(id: number, formData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/video-content/${id}`, formData);
+  }
+
+  getByVideoId(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/videos-content/${id}`);
+  }
+
+  deleteVideo(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/video-content/${id}`);
+  }
+
+  getVideoBySyllabusId(syllabusId: number): Observable<VideoContent[]> {
+    return this.http.get<VideoContent[]>(`${this.baseUrl}/video-content/${syllabusId}`);
+  }
 }
 

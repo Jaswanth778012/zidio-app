@@ -1,0 +1,174 @@
+<div class="container my-4">
+  <h2 class="mb-4">Apply for {{ internship?.title }}</h2>
+
+  <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+
+    <!-- Personal Info -->
+    <div class="card mb-4 p-3">
+      <h4>Personal Information</h4>
+      <div class="row g-3">
+        <div class="col-md-6"><input formControlName="userFirstName" class="form-control" placeholder="First Name" /></div>
+        <div class="col-md-6"><input formControlName="userLastName" class="form-control" placeholder="Last Name" /></div>
+        <div class="col-md-6"><input formControlName="gender" class="form-control" placeholder="Gender" /></div>
+        <div class="col-md-6"><input type="date" formControlName="dateOfBirth" class="form-control" placeholder="Date of Birth" /></div>
+        <div class="col-md-6"><input formControlName="email" class="form-control" placeholder="Email" /></div>
+        <div class="col-md-3"><input formControlName="countryCode" class="form-control" placeholder="Country Code" /></div>
+        <div class="col-md-3"><input formControlName="phone" class="form-control" placeholder="Phone" /></div>
+        <div class="col-md-6"><input formControlName="aadharNumber" class="form-control" placeholder="Aadhar Number" /></div>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="card mb-4 p-3">
+      <h4>Addresses</h4>
+      <label><input type="checkbox" formControlName="currentAddressSameAsPermanent" /> Current address same as permanent</label>
+
+      <div class="row g-3 mt-2" formGroupName="currentAddress">
+        <div class="col-md-6"><input formControlName="line1" class="form-control" placeholder="Current Address Line 1" /></div>
+        <div class="col-md-6"><input formControlName="line2" class="form-control" placeholder="Current Address Line 2" /></div>
+        <div class="col-md-4"><input formControlName="country" class="form-control" placeholder="Country" /></div>
+        <div class="col-md-4"><input formControlName="state" class="form-control" placeholder="State" /></div>
+        <div class="col-md-4"><input formControlName="city" class="form-control" placeholder="City" /></div>
+        <div class="col-md-4"><input formControlName="zipCode" class="form-control" placeholder="Zip Code" /></div>
+      </div>
+
+      <div class="row g-3 mt-3" formGroupName="permanentAddress">
+        <div class="col-md-6"><input formControlName="line1" class="form-control" placeholder="Permanent Address Line 1" /></div>
+        <div class="col-md-6"><input formControlName="line2" class="form-control" placeholder="Permanent Address Line 2" /></div>
+        <div class="col-md-4"><input formControlName="country" class="form-control" placeholder="Country" /></div>
+        <div class="col-md-4"><input formControlName="state" class="form-control" placeholder="State" /></div>
+        <div class="col-md-4"><input formControlName="city" class="form-control" placeholder="City" /></div>
+        <div class="col-md-4"><input formControlName="zipCode" class="form-control" placeholder="Zip Code" /></div>
+      </div>
+    </div>
+
+<!-- Education -->
+<div class="card mb-4 p-3">
+  <h4>Education History <button type="button" (click)="addEducation()" class="btn btn-sm btn-outline-primary">Add</button></h4>
+  <div formArrayName="educationHistory">
+    <div *ngFor="let edu of educationHistory.controls; let i = index" [formGroupName]="i" class="border p-3 my-2">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Remove" (click)="removeEducation(i)"></button>
+      <div class="row g-3">
+        <div class="col-md-6"><input formControlName="degree" class="form-control" placeholder="Degree" /></div>
+        <div class="col-md-6"><input formControlName="fieldOfSpecialization" class="form-control" placeholder="Field of Specialization" /></div>
+        <div class="col-md-4"><input formControlName="courseType" class="form-control" placeholder="Course Type" /></div>
+        <div class="col-md-4"><input formControlName="gpaorPercentage" class="form-control" placeholder="GPA or Percentage" /></div>
+        <div class="col-md-4"><input formControlName="UniversityName" class="form-control" placeholder="University Name" /></div>
+        <div class="col-md-3"><input type="date" formControlName="startDate" class="form-control" /></div>
+        <div class="col-md-3"><input type="date" formControlName="endDate" class="form-control" /></div>
+        <div class="col-md-3"><input formControlName="country" class="form-control" placeholder="Country" /></div>
+        <div class="col-md-3"><input formControlName="city" class="form-control" placeholder="City" /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Work Experience -->
+<div class="card mb-4 p-3">
+  <h4>Work Experience <button type="button" (click)="addExperience()" class="btn btn-sm btn-outline-primary">Add</button></h4>
+  <div formArrayName="workExperiences">
+    <div *ngFor="let exp of workExperiences.controls; let i = index" [formGroupName]="i" class="border p-3 my-2">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Remove" (click)="removeExperience(i)"></button>
+      <div class="row g-3">
+        <div class="col-md-6"><input formControlName="employerName" class="form-control" placeholder="Employer Name" /></div>
+        <div class="col-md-6"><input formControlName="jobTitle" class="form-control" placeholder="Job Title" /></div>
+        <div class="col-md-4"><input formControlName="startDate" type="date" class="form-control" /></div>
+        <div class="col-md-4"><input formControlName="endDate" type="date" class="form-control" /></div>
+        <div class="col-md-4"><input formControlName="employerCountry" class="form-control" placeholder="Country" /></div>
+        <div class="col-md-4"><input formControlName="employerCity" class="form-control" placeholder="City" /></div>
+        <div class="col-md-12"><textarea formControlName="responsibilities" class="form-control" rows="3" placeholder="Responsibilities"></textarea></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Certifications -->
+<div class="card mb-4 p-3">
+  <h4>Certifications <button type="button" (click)="addCertification()" class="btn btn-sm btn-outline-primary">Add</button></h4>
+  <div formArrayName="certifications">
+    <div *ngFor="let cert of certifications.controls; let i = index" [formGroupName]="i" class="border p-3 my-2">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Remove" (click)="removeCertification(i)"></button>
+      <div class="row g-3">
+        <div class="col-md-6"><input formControlName="certificationName" class="form-control" placeholder="Certification Name" /></div>
+        <div class="col-md-6"><input formControlName="issuingOrganization" class="form-control" placeholder="Issuing Organization" /></div>
+        <div class="col-md-6"><input type="date" formControlName="issueDate" class="form-control" /></div>
+        <div class="col-md-6"><input formControlName="fileUrl" class="form-control" placeholder="Certificate URL" /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Skills -->
+<div class="card mb-4 p-3">
+  <h4>Skills <button type="button" (click)="addSkill()" class="btn btn-sm btn-outline-primary">Add</button></h4>
+  <div formArrayName="skills">
+    <div *ngFor="let skill of skills.controls; let i = index" class="d-flex align-items-center mb-2">
+      <input [formControlName]="i" class="form-control me-2" placeholder="Skill" />
+      <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeSkill(i)">Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- Languages -->
+<div class="card mb-4 p-3">
+  <h4>Languages <button type="button" (click)="addLanguage()" class="btn btn-sm btn-outline-primary">Add</button></h4>
+  <div formArrayName="languages">
+    <div *ngFor="let lang of languages.controls; let i = index" class="d-flex align-items-center mb-2">
+      <input [formControlName]="i" class="form-control me-2" placeholder="Language" />
+      <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeLanguage(i)">Remove</button>
+    </div>
+  </div>
+</div>
+
+    <!-- Application Questions -->
+<div class="card mb-4 p-3">
+  <h4>Application Questions</h4>
+  
+  <div formArrayName="applicationQuestions">
+    <div *ngFor="let q of applicationQuestions.controls; let i = index" [formGroupName]="i" class="mb-3">
+
+      <!-- Show the question text -->
+      <label class="form-label">
+        <strong>Q{{ i + 1 }}:</strong> {{ q.get('questionText')?.value }}
+        <span *ngIf="q.get('questionType')?.value === 'TEXT'" class="text-muted">(Text Answer)</span>
+        <span *ngIf="q.get('questionType')?.value === 'MULTIPLE_CHOICE'" class="text-muted">(Multiple Choice)</span>
+      </label>
+
+      <!-- Answer Field -->
+      <ng-container [ngSwitch]="q.get('questionType')?.value">
+        <!-- Text Answer -->
+        <textarea *ngSwitchCase="'TEXT'" formControlName="answer" class="form-control" placeholder="Your answer..." rows="3"></textarea>
+
+        <!-- MCQ Answer (if needed in future) -->
+        <select *ngSwitchCase="'MULTIPLE_CHOICE'" formControlName="answer" class="form-select">
+  <option value="">-- Select an option --</option>
+  <option *ngFor="let opt of q.get('options')?.value" [value]="opt">{{ opt }}</option>
+</select>
+
+
+        <!-- Default (fallback) -->
+        <textarea *ngSwitchDefault formControlName="answer" class="form-control" placeholder="Your answer..." rows="3"></textarea>
+      </ng-container>
+
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Resume -->
+    <div class="card mb-4 p-3">
+      <h4>Upload Resume</h4>
+      <input type="file" (change)="onResumeFileChange($event)" class="form-control" />
+    </div>
+
+    <!-- Signature -->
+    <div class="card mb-4 p-3">
+      <h4>e-Signature</h4>
+      <input formControlName="eSignature" class="form-control" placeholder="Type your full name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+  </form>
+</div>
+

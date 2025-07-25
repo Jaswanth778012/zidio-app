@@ -1,26 +1,27 @@
-import { Injectable } from '@angular/core';
-
+import {  Inject, Injectable, PLATFORM_ID  } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { co } from '@fullcalendar/core/internal-common';
 @Injectable({
   providedIn: 'root'
 })
 export class UserAuthService {
-
-  constructor() { }
-
-  public isBrowser(): boolean {
-    return typeof window !== 'undefined' && !!window.localStorage;
+  private isBrowser: boolean;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   public setRoles(roles: any[])
   {
-    if (this.isBrowser()) {
+    if (this.isBrowser) {
       localStorage.setItem("roles", JSON.stringify(roles));
     }
   }
 
   public getRoles() : string[]
   {
-   
+   if (!this.isBrowser) {
+      return [];
+    }
   const storedRoles = localStorage.getItem('roles');
 
   // Reject literal string "undefined" or empty
@@ -38,38 +39,44 @@ export class UserAuthService {
 
   public setToken(jwtToken: string)
   {
-    if (this.isBrowser()) {
+    if (this.isBrowser) {
       localStorage.setItem("jwtToken", jwtToken);
     }
   }
 
   public getToken() : string | null
   {
-    if (this.isBrowser()) {
-      return localStorage.getItem("jwtToken");
+    if (this.isBrowser) {
+       const token = localStorage.getItem("jwtToken");
+      return token;
     }
     return null;
   }
 
   public setUsername(userName: string): void {
-    if (this.isBrowser()) {
+    if (this.isBrowser) {
       localStorage.setItem('username', userName);
     }
   }
 
   public getUsername(): string | null {
-    if (this.isBrowser()) {
+    if (this.isBrowser) {
       return localStorage.getItem('username');
     }
     return null;
   }
 
   public clear(): void {
-    if (this.isBrowser()) {
+    if (this.isBrowser) {
       localStorage.removeItem('roles');
       localStorage.removeItem('jwtToken');
       localStorage.removeItem('username');
     }
+  }
+
+  public getRole(): string {
+    const roles = this.getRoles();
+    return roles.length > 0 ? roles[0] : '';
   }
 
   public isLoggedIn(): boolean
@@ -77,6 +84,7 @@ export class UserAuthService {
     const token = this.getToken();
     return token !== null && token.trim() !== '';
   }
+
 
   }
 

@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import { EmployerService } from '../../_services/employer.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Application } from '../../_model/Application.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employer-profile',
   templateUrl: './employer-profile.component.html',
   styleUrl: './employer-profile.component.css'
 })
+
+
 export class EmployerProfileComponent {
   profileForm: FormGroup;
   profilePicturePreview: string | ArrayBuffer | null = null;
@@ -15,7 +18,7 @@ export class EmployerProfileComponent {
   //  applications: Application[] = [];
   // selectedStatus: string = 'PENDING';
 
-  constructor(private employerService: EmployerService, private fb: FormBuilder) {
+  constructor(private employerService: EmployerService, private fb: FormBuilder,private router: Router) {
     this.profileForm = this.fb.group({
       userFirstName: [''],
       userLastName: [''],
@@ -33,8 +36,7 @@ export class EmployerProfileComponent {
     this.employerService.getProfile().subscribe(data => {
       this.profileForm.patchValue(data);
       if (data.profilePictureUrl) {
-        const baseUrl = 'http://localhost:8080';
-        this.profilePicturePreview = baseUrl + data.profilePictureUrl;
+        this.profilePicturePreview = data.profilePictureUrl;
       }
     });
     // this.loadAll();
@@ -70,7 +72,7 @@ export class EmployerProfileComponent {
         this.profileForm.reset();
         this.profilePicturePreview = null; // Clear the image preview
         this.selectedFile = null; // Clear the selected file
-        console.log(this.profileForm.value);
+        this.router.navigate(['/employer']); // Navigate to the profile page
       },
       error: (error) => {
         console.error('Error updating profile:', error);
@@ -91,5 +93,7 @@ export class EmployerProfileComponent {
   //     this.employerService.deleteApplication(id).subscribe(() => this.loadAll());
   //   }
   // }
+  
+ 
 
 }

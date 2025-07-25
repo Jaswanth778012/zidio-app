@@ -1,0 +1,248 @@
+<div class="container-fluid py-4 bg-light min-vh-100">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body d-flex justify-content-between align-items-center py-4">
+          <div>
+            <h1 class="h3 mb-1 text-primary fw-bold">
+              <i class="bi bi-list-ul me-2"></i>All Applications
+            </h1>
+            <p class="text-muted mb-0">Manage all candidate applications</p>
+          </div>
+          <button class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-medium">Search Applications</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-start-0" 
+                  placeholder="Search by name, position, or company..." 
+                  [(ngModel)]="searchTerm" (input)="filterApplications()">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-medium">Status</label>
+              <select class="form-select" [(ngModel)]="statusFilter" (change)="filterApplications()">
+                <option value="">All Status</option>
+                <option value="APPLICATIONS_RECEIVED">RECEIVED</option>
+                <option value="RESUME_SCREENING">SCREENING</option>
+                <option value="SHORTLISTED">SHORTLISTED</option>
+                <option Value="PHONE_INTERVIEW">PHONE_INTERVIEW</option>
+                <option value="TECHNICAL_ASSESSMENT">ASSESSMENT</option>
+                <option value="FINAL_INTERVIEW">INTERVIEW</option>
+                <option value="OFFER_EXTENDED">OFFERED</option>
+                <option value="REJECTED">REJECTED</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-medium">Type</label>
+              <select class="form-select" [(ngModel)]="typeFilter" (change)="filterApplications()">
+                <option value="">All Types</option>
+                <option value="job">Jobs</option>
+                <option value="internship">Internships</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-medium">Mode</label>
+              <select class="form-select" [(ngModel)]="modeFilter" (change)="filterApplications()">
+                <option value="">All Modes</option>
+                <option value="REMOTE">Remote</option>
+                <option value="ONSITE">Onsite</option>
+                <option value="HYBRID">Hybrid</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-medium">Page Size</label>
+              <select class="form-select" [(ngModel)]="pageSize" (change)="calculateTotalPages()">
+                <option value="10">10 per page</option>
+                <option value="25">25 per page</option>
+                <option value="50">50 per page</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+                <i class="bi bi-x-circle me-1"></i>Clear Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applications Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white border-0 py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-dark">
+              Applications ({{filteredApplications.length}} total)
+            </h5>
+            <span class="text-muted">
+              Showing {{(currentPage - 1) * pageSize + 1}} - 
+              {{Math.min(currentPage * pageSize, filteredApplications.length)}} 
+              of {{filteredApplications.length}}
+            </span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Candidate</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Position</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Company</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Type</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Mode</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Status</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Applied Date</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let app of getPaginatedApplications()" class="border-bottom">
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <img [src]=" app.studentProfilePicture?.profilePictureUrl"
+                        class="rounded-circle border me-3" width="40" height="40" alt="Candidate" />
+                      <div>
+                        <div class="fw-medium">{{app.student?.userFirstName}} {{app.student?.userLastName}}</div>
+                        <small class="text-muted">{{app.student?.userName}}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <div class="fw-medium">{{app.job?.title || app.internship?.title}}</div>
+                  </td>
+                  <td class="py-3">
+                    <small class="text-muted">{{app.job?.companyName || app.internship?.companyName}}</small>
+                  </td>
+
+                  <td class="py-3">
+                    <span class="badge" [ngClass]="{
+                      'bg-primary-subtle text-primary': app.job,
+                      'bg-success-subtle text-success': app.internship
+                    }">
+                      <i class="bi" [ngClass]="{
+                        'bi-briefcase': app.job,
+                        'bi-mortarboard': app.internship
+                      }" class="me-1"></i>
+                      {{app.job ? 'Job' : 'Internship'}}
+                    </span>
+                  </td>
+                    <td class="py-3">
+                        <span class="badge bg-secondary-subtle text-secondary">
+                        <i class="bi" [ngClass]="{
+                            'bi-globe': app.internship?.internshipMode || app.job?.jobMode === 'REMOTE',
+                            'bi-house': app.internship?.internshipMode || app.job?.jobMode === 'ONSITE',
+                            'bi-people': app.internship?.internshipMode || app.job?.jobMode === 'HYBRID'
+                        }" class="me-1"></i>
+                        {{app.internship?.internshipMode || app.job?.jobMode || 'N/A'}}
+                        </span>
+                  </td>
+                  <td class="py-3">
+                    <select [(ngModel)]="selectedStatuses[app.id]" 
+                      class="form-select form-select-sm" 
+                      (change)="updateStatus(app.id)"
+                      [ngClass]="{
+                        'border-success': selectedStatuses[app.id] === 'SHORTLISTED',
+                        'border-warning': selectedStatuses[app.id] === 'APPLICATIONS_RECEIVED',
+                        'border-danger': selectedStatuses[app.id] === 'REJECTED',
+                        'border-white': selectedStatuses[app.id] === 'PHONE_INTERVIEW',
+                        'border-0':selectedStatuses[app.id] === 'TECHNICAL_ASSESSMENT',
+                        'border-end-0':selectedStatuses[app.id] === 'FINAL_INTERVIEW',
+                        'border-start-0':selectedStatuses[app.id] === 'OFFER_EXTENDED'
+                      }">
+                     
+                      <option value="APPLICATIONS_RECEIVED">RECEIVED</option>
+                      <option value="RESUME_SCREENING">SCREENING</option>
+                      <option value="SHORTLISTED">SHORTLISTED</option>
+                      <option value="PHONE_INTERVIEW">PHONE_INTERVIEW</option>
+                      <option value="TECHNICAL_ASSESSMENT">ASSESSMENT</option>
+                      <option value="FINAL_INTERVIEW">INTERVIEW</option>
+                      <option value="OFFER_EXTENDED">OFFERED</option>
+                      <option value="REJECTED">Rejected</option>
+
+                    </select>
+                  </td>
+                  <td class="py-3">
+                    <div>
+                      <small class="text-muted">{{app.appliedDate | date: 'MMM dd, yyyy'}}</small>
+                    </div>
+                    <div>
+                      <small class="text-muted">{{getRelativeDate(app.appliedDate)}}</small>
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <div class="d-flex gap-1">
+                      <button class="btn btn-outline-success btn-sm" 
+                        (click)="downloadResume(app.id)"
+                        title="Download Resume">
+                        <i class="bi bi-download"></i>
+                      </button>
+                      <button class="btn btn-outline-danger btn-sm" 
+                        (click)="deleteApplication(app.id)"
+                        title="Delete Application">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- No Results -->
+          <div *ngIf="filteredApplications.length === 0" class="p-5 text-center text-muted">
+            <i class="bi bi-search fs-1 text-muted mb-3"></i>
+            <h5>No applications found</h5>
+            <p class="mb-0">Try adjusting your search criteria or filters.</p>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="card-footer bg-light border-0" *ngIf="filteredApplications.length > 0">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted">
+              Showing {{(currentPage - 1) * pageSize + 1}} - 
+              {{Math.min(currentPage * pageSize, filteredApplications.length)}} 
+              of {{filteredApplications.length}} applications
+            </span>
+            <nav aria-label="Applications pagination">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <button class="page-link" (click)="prevPage()">Previous</button>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(Math.min(5, totalPages)); let i = index"
+                  [class.active]="currentPage === i + 1">
+                  <button class="page-link" (click)="goToPage(i + 1)">{{i + 1}}</button>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <button class="page-link" (click)="nextPage()">Next</button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -49,7 +49,7 @@
       <textarea matInput formControlName="aboutCompany"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" >
       <mat-label>Number of Openings</mat-label>
       <input matInput formControlName="numberOfOpenings" type="number" min="1" />
     </mat-form-field>
@@ -63,6 +63,26 @@
       <mat-label>Perks</mat-label>
       <input matInput formControlName="perks" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline">
+  <mat-label>Job Type</mat-label>
+  <mat-select formControlName="jobType" required>
+    <mat-option value="FULL_TIME">Full Time</mat-option>
+    <mat-option value="PART_TIME">Part Time</mat-option>
+    <mat-option value="INTERNSHIP">Internship</mat-option>
+    <mat-option value="CONTRACT">Contract</mat-option>
+    <!-- Add more types as needed -->
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+  <mat-label>Job Mode</mat-label>
+  <mat-select formControlName="jobMode" required>
+    <mat-option value="ONSITE">Onsite</mat-option>
+    <mat-option value="REMOTE">Remote</mat-option>
+    <mat-option value="HYBRID">Hybrid</mat-option>
+  </mat-select>
+</mat-form-field>
 
     <input type="file" (change)="onJobFileChange($event)" accept="image/*" />
     <button mat-raised-button color="primary" type="submit">
@@ -95,13 +115,15 @@
       </button>
     </div>
   </div>
-  <img [src]="'http://localhost:8080'+job.companyLogo" alt="Company Logo" width="100" />
+  <img [src]="job.companyLogo" alt="Company Logo" width="100" />
   <p><strong>Description:</strong> {{ job.description }}</p>
   <p><strong>Location:</strong> {{ job.location }}</p>
   <p><strong>Company:</strong> {{ job.companyName }}</p>
   <p><strong>Start Date:</strong> {{ job.startDate | date }}</p>
   <p><strong>Application Deadline:</strong> {{ job.applicationDeadline | date:'short' }}</p>
   <p><strong>Number of Openings:</strong> {{ job.numberOfOpenings }}</p>
+  <p><strong>Job status:</strong> {{ job.status }}</p>
+  <p><strong>Job Mode:</strong> {{ job.jobMode }}</p>
 </div>
 
 <!-- Pagination Controls -->

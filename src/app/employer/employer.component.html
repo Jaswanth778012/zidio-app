@@ -1,26 +1,29 @@
-<div class="container-fluid py-4">
+   <div class="container-fluid py-4 bg-light min-vh-100">
+  <!-- Header Section -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card shadow-sm">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <h1 class="h3 mb-0">Employer Dashboard</h1>
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body d-flex justify-content-between align-items-center py-4">
+          <div>
+            <h1 class="h3 mb-1 text-primary fw-bold">Employer Dashboard</h1>
+            <p class="text-muted mb-0">Manage your job postings and applications</p>
+          </div>
           <div class="d-flex align-items-center">
-            <span class="me-3">Welcome</span>
+            <span class="me-3 text-muted">Welcome</span>
             <div class="dropdown">
-              <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="profileDropdown"
-                data-bs-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img [src]="profilePictureUrl" alt="Employer" class="rounded-circle me-2" width="32" height="32" />
-                <span>{{userName}}</span>
+              <button class="btn btn-light dropdown-toggle d-flex align-items-center border-0 shadow-sm" type="button" 
+                id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img [src]="profilePictureUrl" alt="Employer" class="rounded-circle me-2 border" width="40" height="40" />
+                <span class="fw-medium">{{userName}}</span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item" routerLink="/employer/employer-profile"><i
-                      class="bi bi-building me-2"></i>Company Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Account Settings</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#" (click)="logout()"><i
-                      class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="profileDropdown">
+                <li><a class="dropdown-item py-2" routerLink="/employer/employer-profile">
+                  <i class="bi bi-building me-2 text-primary"></i>Company Settings</a></li>
+                <li><a class="dropdown-item py-2" href="#">
+                  <i class="bi bi-gear me-2 text-secondary"></i>Account Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item py-2 text-danger" href="#" (click)="logout()">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
               </ul>
             </div>
           </div>
@@ -28,177 +31,247 @@
       </div>
     </div>
   </div>
+  <div class="container-fluid">
+  <div class="row mb-4 justify-content-between">
 
-
-
-  <!-- <div class="row mb-4">
-    <div class="col-md-3 mb-4 mb-md-0">
-      <div class="card bg-primary text-white shadow-sm h-100">
-        <div class="card-body">
+    <!-- Active Job Postings -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-primary text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
           <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
-              <i class="bi bi-briefcase fs-4"></i>
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-briefcase fs-5"></i>
             </div>
             <div>
-              <h3 class="h2 mb-0">12</h3>
-              <p class="mb-0">Active Job Postings</p>
+              <h4 class="mb-0 fw-bold">{{ groupedJobIds.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Job Postings</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-3 mb-4 mb-md-0">
-      <div class="card bg-success text-white shadow-sm h-100">
-        <div class="card-body">
+
+    <!-- Active Internship Postings -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-dark text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
           <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
-              <i class="bi bi-person-lines-fill fs-4"></i>
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-briefcase fs-5"></i>
             </div>
             <div>
-              <h3 class="h2 mb-0">87</h3>
-              <p class="mb-0">Total Applications</p>
+              <h4 class="mb-0 fw-bold">{{ groupedInternshipIds.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Internship Postings</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-3 mb-4 mb-md-0">
-      <div class="card bg-info text-white shadow-sm h-100">
-        <div class="card-body">
+
+    <!-- Total Applications -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-success text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
           <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
-              <i class="bi bi-calendar-check fs-4"></i>
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-person-lines-fill fs-5"></i>
             </div>
             <div>
-              <h3 class="h2 mb-0">24</h3>
-              <p class="mb-0">Interviews Scheduled</p>
+              <h4 class="mb-0 fw-bold">{{ applications.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Total Applications</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-warning text-white shadow-sm h-100">
-        <div class="card-body">
+
+    <!-- Interviews Scheduled -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-info text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
           <div class="d-flex align-items-center">
-            <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
-              <i class="bi bi-person-check fs-4"></i>
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-calendar-check fs-5"></i>
             </div>
             <div>
-              <h3 class="h2 mb-0">8</h3>
-              <p class="mb-0">Positions Filled</p>
+              <h4 class="mb-0 fw-bold">{{ interviews.length || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Interviews Scheduled</p>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Positions Filled -->
+    <div class="col-md-2 mb-3">
+      <div class="card bg-warning text-white shadow-sm border-0 h-100">
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-white bg-opacity-25 p-2 me-2">
+              <i class="bi bi-person-check fs-5"></i>
+            </div>
+            <div>
+              <h4 class="mb-0 fw-bold">{{ counts.OFFER_EXTENDED || 0 }}</h4>
+              <p class="mb-0 opacity-75 small">Positions Filled</p>
+            </div>
+          </div>
         </div>
-        </div>
-        </div> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
   <div class="row">
-    <div class="col-lg-8 mb-4 mb-lg-0">
-      <div class="card shadow-sm mb-4 w-100">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-          <h5 class="mb-0">Active Job Listings</h5>
-          <button class="btn btn-sm btn-success" routerLink="/employer/jobs"><i class="bi bi-plus-lg me-1"></i>Post New
-            Job</button>
+    <!-- Main Content -->
+    <div class="col-lg-8 mb-4">
+      <!-- Job Listings -->
+      <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+          <div>
+            <h5 class="mb-0 fw-bold text-dark">
+              <i class="bi bi-briefcase text-primary me-2"></i>Active Job Listings
+            </h5>
+            <small class="text-muted">Manage your job postings and applications</small>
+          </div>
+          <button class="btn btn-success shadow-sm" routerLink="/employer/jobs">
+            <i class="bi bi-plus-lg me-1"></i>Post New Job
+          </button>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-              <thead class="table-light">
+              <thead class="bg-light">
                 <tr>
-                  <th scope="col">Job ID</th>
-                  <th scope="col">Job Title</th>
-                  <th scope="col">Company Name</th>
-                  <!-- <th scope="col">Status</th> -->
-                  <th scope="col">Posted Date</th>
-                  <th scope="col">Applications</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Job ID</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Job Title</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Company</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Posted Date</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Applications</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <ng-container *ngFor="let jobId of groupedJobIds">
                   <ng-container *ngIf="groupedApplications[jobId]?.applications?.length">
-                    <tr>
-                      <td>{{ jobId }}</td>
-                      <td>{{ groupedApplications[jobId].applications[0].job?.title }}</td>
-                      <td>{{ groupedApplications[jobId].applications[0].job?.companyName }}</td>
-                      <!-- <td>{{ groupedApplications[jobId].applications[0].status }}</td> -->
-                      <td>{{ groupedApplications[jobId].applications[0].timestamp | date }}</td>
-                      <td>{{ groupedApplications[jobId].applications.length }}</td>
-                      <td>
-                        <!-- <select [(ngModel)]="selectedStatus" class="form-select form-select-sm d-inline w-auto me-2">
-                                  <option>SHORTLISTED</option>
-                                  <option>PENDING</option>
-                                  <option>REJECTED</option>
-                                </select> -->
-                        <!-- <button class="btn btn-sm btn-outline-primary"
-                                  (click)="updateStatus(groupedApplications[jobId].applications[0].id)">
-                                  <i class="bi bi-arrow-repeat"></i>
-                                </button> -->
-                        <button class="btn btn-sm btn-outline-primary me-1" (click)="toggleJobApplications(jobId)">
-                          <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger"
-                          (click)="deleteApplication(groupedApplications[jobId].applications[0].id)">
-                          <i class="bi bi-trash"></i>
+                    <tr class="border-bottom">
+                      <td class="py-3">
+                        <span class="badge bg-primary-subtle text-primary">#{{jobId}}</span>
+                      </td>
+                      <td class="py-3">
+                        <div class="fw-medium">{{groupedApplications[jobId].applications[0].job?.title}}</div>
+                      </td>
+                      <td class="py-3">{{groupedApplications[jobId].applications[0].job?.companyName}}</td>
+                      <td class="py-3">
+                        <small class="text-muted">{{groupedApplications[jobId].applications[0].job?.postedAt | date}}</small>
+                      </td>
+                      <td class="py-3">
+                        <span class="badge bg-info-subtle text-info">
+                          {{groupedApplications[jobId].applications.length}} applications
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <button class="btn btn-outline-primary btn-sm" (click)="toggleJobApplications(jobId)">
+                          <i class="bi bi-eye me-1"></i>View
                         </button>
                       </td>
                     </tr>
 
                     <tr *ngIf="expandedJobId === jobId">
-                      <td colspan="8" class="bg-light">
-                        <table class="table table-sm mb-0">
-                          <thead class="table-light">
-                            <tr>
-                              <th>Student Username</th>
-                              <th>Status</th>
-                              <th>Applied Date</th>
-                              <th>Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let app of getPaginatedApplications(jobId)">
-                              <td>{{ app.student?.userName }}</td>
-                              <td>{{ app.status }}</td>
-                              <td>{{ app.appliedDate | date }}</td>
-                              <td>
-                                <select [(ngModel)]="selectedStatuses[app.id]"
-                                  class="form-select form-select-sm d-inline w-auto me-2">
-                                  <option>SHORTLISTED</option>
-                                  <option>PENDING</option>
-                                  <option>REJECTED</option>
-                                </select>
-                                <button class="btn btn-sm btn-outline-primary" (click)="updateStatus(app.id)">
-                                  <i class="bi bi-arrow-repeat"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-success ms-2" (click)="downloadResume(app.id)"
-                                  title="Download Resume">
-                                  <i class="bi bi-download"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" (click)="deleteApplication(app.id)">
-                                  <i class="bi bi-trash"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div class="d-flex justify-content-end align-items-center p-2">
-                          <button class="btn btn-sm btn-outline-secondary me-2" (click)="changePage(jobId, -1)"
-                            [disabled]="groupedApplications[jobId].currentPage === 1">
-                            Previous
-                          </button>
-                          <span class="small">
-                            Page {{ groupedApplications[jobId].currentPage }} of {{
-                            Math.ceil(groupedApplications[jobId].applications.length /
-                            groupedApplications[jobId].pageSize)
-                            }}
-                          </span>
-                          <button class="btn btn-sm btn-outline-secondary ms-2" (click)="changePage(jobId, 1)"
-                            [disabled]="groupedApplications[jobId].currentPage >=
-                        Math.ceil(groupedApplications[jobId].applications.length / groupedApplications[jobId].pageSize)">
-                            Next
-                          </button>
+                      <td colspan="6" class="bg-light p-0">
+                        <div class="p-3">
+                          <h6 class="mb-3 text-dark">
+                            <i class="bi bi-people me-2"></i>Applications for this job
+                          </h6>
+                          <div class="table-responsive">
+                            <table class="table table-sm mb-0 bg-white rounded">
+                              <thead class="bg-primary text-white">
+                                <tr>
+                                  <th class="border-0 py-2">Profile Picture</th>
+                                  <th class="border-0 py-2">Student</th>
+                                  <th class="border-0 py-2">Email</th>
+                                  <th class="border-0 py-2">Status</th>
+                                  <th class="border-0 py-2">Applied Date</th>
+                                  <th class="border-0 py-2">Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let app of getPaginatedApplications(jobId)" class="border-bottom">
+                                <td class="py-2 d-flex justify-content-center align-items-center">
+                                <img [src]="app.studentProfilePicture?.profilePictureUrl || 'assets/images/default-profile.png'" 
+                                  alt="Profile Picture" class="rounded-circle" width="50" height="50">
+                                </td>
+                                  <td class="py-2">
+                                    <div class="fw-medium">{{app.student?.userName}}</div>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted
+                                      ">{{app.studentProfilePicture?.email}}</small>
+                                  </td>
+                                  <td class="py-2">
+                                    <span class="badge" [ngClass]="{
+                                      'bg-success-subtle text-success': app.status === 'APPLICATIONS_RECEIVED',
+                                      'bg-warning-subtle text-warning': app.status === 'RESUME_SCREENING',
+                                      'bg-gradient-info text-dark':app.status === 'SHORTLISTED',
+                                      'bg-gradient-primary text-white':app.status === 'PHONE_INTERVIEW',
+                                      'bg-primary-subtle text-muted': app.status === 'TECHNICAL_ASSESSMENT',
+                                      'bg-secondary-subtle text-secondary':app.status ==='FINAL_INTERVIEW',
+                                      'bg-gradient-success text-success':app.status ==='OFFER_EXTENDED',
+                                      'bg-danger-subtle text-danger': app.status === 'REJECTED'
+                                    }">{{app.status}}</span>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted">{{app.appliedDate | date}}</small>
+                                  </td>
+                                  <td class="py-2">
+                                    <div class="d-flex gap-1 align-items-center">
+                                      <select [(ngModel)]="selectedStatuses[app.id]" 
+                                        class="form-select form-select-sm" style="width: auto;">
+                                        <option value="APPLICATIONS_RECEIVED">APPLICATIONS_RECEIVED</option>
+                                        <option value="RESUME_SCREENING">RESUME_SCREENING</option>
+                                        <option value="SHORTLISTED">SHORTLISTED</option>
+                                        <option value="TECHNICAL_ASSESSMENT">TECHNICAL_ASSESSMENT</option>
+                                        <option value="FINAL_INTERVIEW">FINAL_INTERVIEW</option>
+                                        <option value="OFFER_EXTENDED">OFFER_EXTENDED</option>
+                                        <option value="REJECTED">Rejected</option>
+                                      </select>
+                                      <button class="btn btn-outline-primary btn-sm" (click)="updateStatus(app.id)" 
+                                        title="Update Status">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                      </button>
+                                      <button class="btn btn-outline-success btn-sm" (click)="downloadResume(app.id)" 
+                                        title="Download Resume">
+                                        <i class="bi bi-download"></i>
+                                      </button>
+                                      <button class="btn btn-outline-danger btn-sm" (click)="deleteApplication(app.id)"
+                                        title="Delete Application">
+                                        <i class="bi bi-trash"></i>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="d-flex justify-content-end align-items-center mt-3">
+                            <nav aria-label="Application pagination">
+                              <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item" [class.disabled]="groupedApplications[jobId].currentPage === 1">
+                                  <button class="page-link" (click)="changePage(jobId, -1)">Previous</button>
+                                </li>
+                                <li class="page-item active">
+                                  <span class="page-link">
+                                    {{groupedApplications[jobId].currentPage}} of 
+                                    {{Math.ceil(groupedApplications[jobId].applications.length / groupedApplications[jobId].pageSize)}}
+                                  </span>
+                                </li>
+                                <li class="page-item" [class.disabled]="groupedApplications[jobId].currentPage >= Math.ceil(groupedApplications[jobId].applications.length / groupedApplications[jobId].pageSize)">
+                                  <button class="page-link" (click)="changePage(jobId, 1)">Next</button>
+                                </li>
+                              </ul>
+                            </nav>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -207,390 +280,686 @@
               </tbody>
             </table>
           </div>
-          <div class="d-flex justify-content-center align-items-center gap-3 p-3 border-top">
-            <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 1"
-              (click)="prevPage()">Previous</button>
-            <span>Page {{ currentPage }} of {{ totalPages }}</span>
-            <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === totalPages"
-              (click)="nextPage()">Next</button>
+          <div class="d-flex justify-content-center align-items-center gap-3 p-3 bg-light border-top">
+            <nav aria-label="Job pagination">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <button class="page-link" (click)="prevPage()">Previous</button>
+                </li>
+                <li class="page-item active">
+                  <span class="page-link">Page {{currentPage}} of {{totalPages}}</span>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <button class="page-link" (click)="nextPage()">Next</button>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-8 mb-4 mb-lg-0 w-100">
-        <div class="card shadow-sm w-100">
-          <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0">Active Internship Listings</h5>
-            <button class="btn btn-sm btn-success" routerLink="/employer/internships"><i
-                class="bi bi-plus-lg me-1"></i>Post New Internship</button>
+      <!-- Internship Listings -->
+      <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+          <div>
+            <h5 class="mb-0 fw-bold text-dark">
+              <i class="bi bi-mortarboard text-success me-2"></i>Active Internship Listings
+            </h5>
+            <small class="text-muted">Manage your internship postings and applications</small>
           </div>
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                  <tr>
-                    <th scope="col">Internship ID</th>
-                    <th scope="col">Internship Title</th>
-                    <th scope="col">Company Name</th>
-                    <!-- <th scope="col">Status</th> -->
-                    <th scope="col">Posted Date</th>
-                    <th scope="col">Applications</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let internshipId of groupedInternshipIds">
-                    <ng-container *ngIf="groupedInternshipApplications[internshipId].applications?.length">
-                      <tr>
-                        <td>{{ internshipId }}</td>
-                        <td>{{ groupedInternshipApplications[internshipId].applications[0].internship?.title }}</td>
-                        <td>{{ groupedInternshipApplications[internshipId].applications[0].internship?.companyName }}
-                        </td>
-                        <!-- <td>{{ groupedInternshipApplications[internshipId].applications[0].status }}</td> -->
-                        <td>{{ groupedInternshipApplications[internshipId].applications[0].timestamp | date }}</td>
-                        <td>{{ groupedInternshipApplications[internshipId].applications.length }}</td>
-                        <td>
-                          <!--<select [(ngModel)]="selectedStatus" class="form-select form-select-sm d-inline w-auto me-2">
-                            <option>SHORTLISTED</option>
-                            <option>PENDING</option>
-                            <option>REJECTED</option>
-                          </select>
-                          <button class="btn btn-sm btn-outline-primary"
-                            (click)="updateStatus(groupedInternshipApplications[internshipId].applications[0].id)">
-                            <i class="bi bi-arrow-repeat"></i>
-                          </button> -->
-                          <button class="btn btn-sm btn-outline-primary me-1"
-                            (click)="toggleInternshipApplications(internshipId)">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-sm btn-outline-danger"
-                            (click)="deleteApplication(groupedInternshipApplications[internshipId].applications[0].id)">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr *ngIf="expandedinternshipId === internshipId">
-                        <td colspan="8" class="bg-light">
-                          <table class="table table-sm mb-0">
-                            <thead class="table-light">
-                              <tr>
-                                <th>Student Username</th>
-                                <th>Status</th>
-                                <th>Applied Date</th>
-                                <th>Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr *ngFor="let app of getPaginatedApplicationsi(internshipId)">
-                                <td>{{ app.student?.userName }}</td>
-                                <td>{{ app.status }}</td>
-                                <td>{{ app.appliedDate | date }}</td>
-                                <td>
-                                  <select [(ngModel)]="selectedStatuses[app.id]"
-                                    class="form-select form-select-sm d-inline w-auto me-2">
-                                    <option>SHORTLISTED</option>
-                                    <option>PENDING</option>
-                                    <option>REJECTED</option>
-                                  </select>
-                                  <button class="btn btn-sm btn-outline-primary" (click)="updateStatus(app.id)">
-                                    <i class="bi bi-arrow-repeat"></i>
-                                  </button>
-                                  <button class="btn btn-sm btn-outline-success ms-2" (click)="downloadResume(app.id)"
-                                    title="Download Resume">
-                                    <i class="bi bi-download"></i>
-                                  </button>
-                                  <button class="btn btn-sm btn-outline-danger" (click)="deleteApplication(app.id)">
-                                    <i class="bi bi-trash"></i>
-                                  </button>
+          <button class="btn btn-success shadow-sm" routerLink="/employer/internships">
+            <i class="bi bi-plus-lg me-1"></i>Post New Internship
+          </button>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Internship ID</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Title</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Company</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Posted Date</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Applications</th>
+                  <th scope="col" class="fw-semibold text-dark border-0 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let internshipId of groupedInternshipIds">
+                  <ng-container *ngIf="groupedInternshipApplications[internshipId].applications?.length">
+                    <tr class="border-bottom">
+                      <td class="py-3">
+                        <span class="badge bg-success-subtle text-success">#{{internshipId}}</span>
+                      </td>
+                      <td class="py-3">
+                        <div class="fw-medium">{{groupedInternshipApplications[internshipId].applications[0].internship?.title}}</div>
+                      </td>
+                      <td class="py-3">{{groupedInternshipApplications[internshipId].applications[0].internship?.companyName}}</td>
+                      <td class="py-3">
+                        <small class="text-muted">{{groupedInternshipApplications[internshipId].applications[0].internship?.postedAt | date}}</small>
+                      </td>
+                      <td class="py-3">
+                        <span class="badge bg-info-subtle text-info">
+                          {{groupedInternshipApplications[internshipId].applications.length}} applications
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <button class="btn btn-outline-primary btn-sm" (click)="toggleInternshipApplications(internshipId)">
+                          <i class="bi bi-eye me-1"></i>View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="expandedinternshipId === internshipId">
+                      <td colspan="6" class="bg-light p-0">
+                        <div class="p-3">
+                          <h6 class="mb-3 text-dark">
+                            <i class="bi bi-people me-2"></i>Applications for this internship
+                          </h6>
+                          <div class="table-responsive">
+                            <table class="table table-sm mb-0 bg-white rounded">
+                              <thead class="bg-success text-white">
+                                <tr>
+                                  <th class="border-0 py-2">Profile Picture</th>
+                                  <th class="border-0 py-2">Student</th>
+                                  <th class="border-0 py-2">Email</th>
+                                  <th class="border-0 py-2">Status</th>
+                                  <th class="border-0 py-2">Applied Date</th>
+                                  <th class="border-0 py-2">Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let app of getPaginatedApplicationsi(internshipId)" class="border-bottom">
+                                <td class="py-2 d-flex justify-content-center align-items-center">
+                                <img [src]="app.studentProfilePicture?.profilePictureUrl || 'assets/images/default-profile.png'"
+                                  alt="Profile Picture" class="rounded-circle" width="50" height="50">
                                 </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div class="d-flex justify-content-end align-items-center p-2">
-                            <button class="btn btn-sm btn-outline-secondary me-2" (click)="changePage(internshipId, -1)"
-                              [disabled]="groupedInternshipApplications[internshipId].currentPage === 1">
-                              Previous
-                            </button>
-                            <span class="small">
-                              Page {{ groupedInternshipApplications[internshipId].currentPage }} of {{
-                              Math.ceil(groupedInternshipApplications[internshipId].applications.length /
-                              groupedInternshipApplications[internshipId].pageSize)
-                              }}
-                            </span>
-                            <button class="btn btn-sm btn-outline-secondary ms-2" (click)="changePage(internshipId, 1)"
-                              [disabled]="groupedInternshipApplications[internshipId].currentPage >=
-                                          Math.ceil(groupedInternshipApplications[internshipId].applications.length / groupedInternshipApplications[internshipId].pageSize)">
-                              Next
-                            </button>
+                                  <td class="py-2">
+                                    <div class="fw-medium">{{app.student?.userName}}</div>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted
+                                      ">{{app.studentProfilePicture?.email}}</small>
+                                  </td>
+                                  <td class="py-2">
+                                    <span class="badge" [ngClass]="{
+                                      'bg-success-subtle text-success': app.status === 'APPLICATIONS_RECEIVED',
+                                      'bg-warning-subtle text-warning': app.status === 'RESUME_SCREENING',
+                                      'bg-gradient-info text-dark':app.status === 'SHORTLISTED',
+                                      'bg-gradient-primary text-white':app.status === 'PHONE_INTERVIEW',
+                                      'bg-primary-subtle text-muted': app.status === 'TECHNICAL_ASSESSMENT',
+                                      'bg-secondary-subtle text-secondary':app.status ==='FINAL_INTERVIEW',
+                                      'bg-gradient-success text-success':app.status ==='OFFER_EXTENDED',
+                                      'bg-danger-subtle text-danger': app.status === 'REJECTED'
+                                    }">{{app.status}}</span>
+                                  </td>
+                                  <td class="py-2">
+                                    <small class="text-muted">{{app.appliedDate | date}}</small>
+                                  </td>
+                                  <td class="py-2">
+                                    <div class="d-flex gap-1 align-items-center">
+                                      <select [(ngModel)]="selectedStatuses[app.id]" 
+                                        class="form-select form-select-sm" style="width: auto;">
+                                         <option value="APPLICATIONS_RECEIVED">APPLICATIONS_RECEIVED</option>
+                                        <option value="RESUME_SCREENING">RESUME_SCREENING</option>
+                                        <option value="SHORTLISTED">SHORTLISTED</option>
+                                        <option value="TECHNICAL_ASSESSMENT">TECHNICAL_ASSESSMENT</option>
+                                        <option value="FINAL_INTERVIEW">FINAL_INTERVIEW</option>
+                                        <option value="OFFER_EXTENDED">OFFER_EXTENDED</option>
+                                        <option value="REJECTED">Rejected</option>
+                                      </select>
+                                      <button class="btn btn-outline-primary btn-sm" (click)="updateStatus(app.id)" 
+                                        title="Update Status">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                      </button>
+                                      <button class="btn btn-outline-success btn-sm" (click)="downloadResume(app.id)" 
+                                        title="Download Resume">
+                                        <i class="bi bi-download"></i>
+                                      </button>
+                                      <button class="btn btn-outline-danger btn-sm" (click)="deleteApplication(app.id)"
+                                        title="Delete Application">
+                                        <i class="bi bi-trash"></i>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
-                        </td>
-                      </tr>
-                    </ng-container>
+                          <div class="d-flex justify-content-end align-items-center mt-3">
+                            <nav aria-label="Internship application pagination">
+                              <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item" [class.disabled]="groupedInternshipApplications[internshipId].currentPage === 1">
+                                  <button class="page-link" (click)="changePagei(internshipId, -1)">Previous</button>
+                                </li>
+                                <li class="page-item active">
+                                  <span class="page-link">
+                                    {{groupedInternshipApplications[internshipId].currentPage}} of 
+                                    {{Math.ceil(groupedInternshipApplications[internshipId].applications.length / groupedInternshipApplications[internshipId].pageSize)}}
+                                  </span>
+                                </li>
+                                <li class="page-item" [class.disabled]="groupedInternshipApplications[internshipId].currentPage >= Math.ceil(groupedInternshipApplications[internshipId].applications.length / groupedInternshipApplications[internshipId].pageSize)">
+                                  <button class="page-link" (click)="changePagei(internshipId, 1)">Next</button>
+                                </li>
+                              </ul>
+                            </nav>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                   </ng-container>
-                </tbody>
-              </table>
-              <div class="d-flex justify-content-center align-items-center gap-3 p-3 border-top">
-                <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === 1"
-                  (click)="prevPage1()">Previous</button>
-                <span>Page {{ currentPage }} of {{ totalPages }}</span>
-                <button class="btn btn-sm btn-outline-secondary" [disabled]="currentPage === totalPages"
-                  (click)="nextPage1()">Next</button>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-center align-items-center gap-3 p-3 bg-light border-top">
+            <nav aria-label="Job pagination">
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <button class="page-link" (click)="prevPage1()">Previous</button>
+                </li>
+                <li class="page-item active">
+                  <span class="page-link">Page {{currentPage}} of {{totalPages}}</span>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <button class="page-link" (click)="nextPage1()">Next</button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+    <div class="card shadow-sm border-0 rounded-3 mb-4">
+  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+    <div>
+      <h5 class="mb-0 fw-bold text-dark">
+        <i class="bi bi-clock-history text-info me-2"></i>Recent Applications
+      </h5>
+      <small class="text-muted">Latest candidate applications</small>
+    </div>
+    <button class="btn btn-outline-primary btn-sm" (click)="viewAllApplications()">
+      View All Applications
+      <span class="badge bg-primary ms-2" *ngIf="applications && applications.length > 5">
+        {{applications.length - 5}}+
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0">
+    <div class="list-group list-group-flush" *ngIf="applications && applications.length > 0">
+      <div class="list-group-item border-0 p-3" *ngFor="let app of getRecentApplications()">
+        <div class="d-flex align-items-center">
+          <div class="position-relative me-3">
+            <img [src]="app.studentProfilePicture?.profilePictureUrl"
+              class="rounded-circle border shadow-sm" width="50" height="50" alt="Candidate" />
+            <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle"
+              style="width: 12px; height: 12px;"></span>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div>
+              <h6 class="mb-0 fw-medium">
+                {{app.student?.userFirstName}} {{app.student?.userLastName}}
+              </h6>
+              <small class="text-muted">
+                  <i class="bi bi-at me-1"></i>{{app.student?.userName}}
+                </small>
+              </div>
+              <span class="badge" [ngClass]="{
+                'bg-primary-subtle text-primary': app.job,
+                'bg-success-subtle text-success': app.internship
+              }">
+                <i class="bi" [ngClass]="{
+                  'bi-briefcase': app.job,
+                  'bi-mortarboard': app.internship
+                }" class="me-1"></i>
+                {{app.job ? 'Job' : 'Internship'}}
+              </span>
+            </div>
+            <div class="mb-1">
+              <span class="fw-medium text-dark" *ngIf="app.job">
+                <i class="bi bi-briefcase text-primary me-1"></i>
+                {{app.job.title}}
+              </span>
+              <span class="fw-medium text-dark" *ngIf="app.internship">
+                <i class="bi bi-mortarboard text-success me-1"></i>
+                {{app.internship.title}}
+              </span>
+            </div>
+            <div class="mb-1" *ngIf="app.job?.companyName || app.internship?.companyName">
+              <small class="text-muted">
+                <i class="bi bi-building me-1"></i>
+                {{app.job?.companyName || app.internship?.companyName}}
+              </small>
+            </div>
+            <p class="text-muted small mb-0">
+              <i class="bi bi-calendar me-1"></i>
+              Applied {{getRelativeDate(app.appliedDate)}}
+            </p>
+          </div>
+          <div class="ms-3">
+            <div class="btn-group">
+              <button class="btn btn-outline-success btn-sm"
+                (click)="shortlistApplication(app.id)"
+                [disabled]="app.status === 'SHORTLISTED'"
+                title="Shortlist Application">
+                <i class="bi bi-check-lg me-1"></i>Shortlist
+              </button>
+              <button class="btn btn-outline-danger btn-sm"
+                (click)="rejectApplication(app.id)"
+                [disabled]="app.status === 'REJECTED'"
+                title="Reject Application">
+                <i class="bi bi-x-lg me-1"></i>Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Show More Indicator -->
+      <div class="list-group-item border-0 p-3 text-center bg-light" *ngIf="applications.length > 5">
+        <button class="btn btn-link text-decoration-none p-0" (click)="viewAllApplications()">
+          <i class="bi bi-three-dots me-2"></i>
+          <span class="fw-medium">{{applications.length - 5}} more applications</span>
+          <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="applications?.length === 0" class="p-4 text-center text-muted">
+      <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
+      <p class="mb-0">No applications found.</p>
+    </div>
+  </div>
+</div>
+    </div>
+
+   <div class="col-lg-4">
+    
+  <!-- Calendar Section -->
+  <div class="card shadow-sm border-0 rounded-3 mb-4">
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+      <div>
+        <h5 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-calendar3 text-primary me-2"></i>Event Calendar
+        </h5>
+        <small class="text-muted">Create Events to memorize</small>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="calendar-container">
+        <div class="header d-flex justify-content-between align-items-center mb-3">
+          <button class="btn btn-sm btn-outline-primary" (click)="prevMonth()">&lt;</button>
+          <h2 class="h5 mb-0">{{ currentMonth | date:'MMMM yyyy' }}</h2>
+          <button class="btn btn-sm btn-outline-primary" (click)="nextMonth()">&gt;</button>
+        </div>
+
+        <div class="weekdays d-flex text-center mb-2">
+          <div *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" class="flex-fill fw-semibold">
+            {{ day }}
+          </div>
+        </div>
+
+        <div class="weeks">
+          <div *ngFor="let week of weeks" class="d-flex mb-1">
+            <div *ngFor="let day of week" class="flex-fill border rounded p-2 text-center"
+                 [class.bg-light]="!day" [class.bg-warning]="isToday(day)"
+                 [class.text-dark]="isToday(day)" (click)="day && onDateClick(day)">
+              <div class="date-number">{{ day?.getDate() }}</div>
+              <div class="dots mt-1">
+                <span *ngFor="let ev of getEventsForDate(day)" class="dot bg-primary rounded-circle d-inline-block"
+                      style="width:6px; height:6px;" title="{{ ev.title }}"></span>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <hr>
+      <div class="mb-2">
+      <h6 class="fw-semibold text-primary mb-2">📅 Upcoming Events</h6>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let event of upcomingEvents" class="list-group-item px-0 d-flex justify-content-between align-items-start">
+          <div>
+            <strong>{{ event.title }}</strong><br />
+            <small class="text-muted">{{ event.dateTime | date: 'fullDate' }} • {{ event.dateTime | date: 'shortTime' }}</small>
+          </div>
+          <span class="badge bg-light text-dark">{{ event.description }}</span>
+        </li>
+        <li *ngIf="upcomingEvents.length === 0" class="list-group-item px-0 text-muted">
+          No upcoming events
+        </li>
+      </ul>
+    </div>
+    </div>
+  </div>
 
+  <!-- Modal for events -->
+  <div class="modal-backdrop fade show" *ngIf="showEventModal"></div>
+  <div class="modal d-block" tabindex="-1" *ngIf="showEventModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <h5 class="modal-title">Events on {{ selectedDate | date:'fullDate' }}</h5>
+          <div class="d-flex align-items-center gap-2">
+            <button mat-raised-button color="primary" (click)="toggleReminders()">
+              {{ remindersEnabled ? 'Disable Reminders' : 'Enable Reminders' }}
+            </button>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <ul class="list-unstyled mb-3">
+            <li *ngFor="let event of selectedDateEvents" class="mb-2 border-bottom pb-2">
+              <strong>{{ event.title }}</strong><br />
+              <small>{{ event.description }}</small><br />
+              <small>{{ event.dateTime | date:'shortTime' }}</small><br />
+              <button class="btn btn-sm btn-warning me-2" (click)="onEditEvent(event)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="onDeleteEvent(event)">Delete</button>
+            </li>
+          </ul>
 
-        <div class="card shadow-sm">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-          <h5 class="mb-0">Recent Applications</h5>
-          <button class="btn btn-sm btn-primary">View All Applications</button>
+          <form [formGroup]="eventForm" (ngSubmit)="onSaveEvent()">
+            <input formControlName="title" class="form-control mb-2" placeholder="Title" required />
+            <input formControlName="description" class="form-control mb-2" placeholder="Description" />
+            <input formControlName="dateTime" type="datetime-local" class="form-control mb-3" required />
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary">{{ editingEvent ? 'Update' : 'Add' }}</button>
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Upcoming Interviews -->
+      <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+          <div>
+            <h5 class="mb-0 fw-bold text-dark">
+              <i class="bi bi-calendar-event text-primary me-2"></i>Upcoming Interviews
+            </h5>
+            <small class="text-muted">Your scheduled interviews</small>
+          </div>
+          <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary btn-sm" routerLink="/employer/interview">
+          <i class="bi bi-plus-lg me-1"></i>Schedule New
+        </button>
+        <button class="btn btn-outline-info btn-sm" (click)="viewAllInterviews()" *ngIf="interviews.length > 0">
+          <i class="bi bi-list me-1"></i>View All
+          <span class="badge bg-info ms-1" *ngIf="interviews.length > 3">
+            {{interviews.length - 3}}+
+          </span>
+        </button>
+      </div>
         </div>
         <div class="card-body p-0">
           <div class="list-group list-group-flush">
-            <div class="list-group-item p-3">
-              <div class="d-flex align-items-center">
-                <img src="assets/images/candidate1.jpg" class="rounded-circle me-3" width="48" height="48" alt="Candidate">
-                <div class="flex-grow-1">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <h6 class="mb-0">Alex Johnson</h6>
-                    <span class="badge bg-primary">Senior Software Engineer</span>
-                  </div>
-                  <p class="text-muted small mb-0">5 years experience • React, Node.js, AWS</p>
+            <div class="list-group-item border-0 p-3" *ngFor="let interview of getRecentInterviews()">
+              <div class="d-flex">
+                <div class="bg-primary-subtle text-primary rounded text-center p-2 me-3" style="min-width: 50px;">
+                  <div class="fw-bold">{{interview.interviewDate | date: 'dd'}}</div>
+                  <div class="small">{{interview.interviewDate | date: 'MMM'}}</div>
                 </div>
-                <div class="ms-3 text-end">
-                  <div class="text-muted small mb-1">Applied 2 days ago</div>
-                  <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-success">Shortlist</button>
-                    <button class="btn btn-sm btn-outline-danger">Reject</button>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1 fw-medium">{{interview.student.userName}}
+                    <span *ngIf="interview.job" class="badge bg-primary-subtle text-primary ms-2">
+                      {{interview.job.title}}
+                    </span>
+                     <span *ngIf="interview.job" class="badge bg-primary-subtle text-primary ms-2">
+                      {{interview.job.companyName}}
+                    </span>
+                  </h6>
+                  <p class="small text-muted mb-1">
+                    <i class="bi bi-clock me-1"></i>
+                    {{interview.startTime}} - {{interview.endTime}}
+                  </p>
+                  <p class="small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>
+                    {{interview.notes || 'No notes provided'}}
+                  </p>
+                  <p class="small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>
+                    {{interview.status || 'No status provided'}}
+                    <span class="badge" [ngClass]="{
+                    'bg-success-subtle text-success': !isPast(interview.interviewDate, interview.endTime),
+                    'bg-secondary-subtle text-secondary': isPast(interview.interviewDate, interview.endTime)
+                  }">
+                      {{ isPast(interview.interviewDate, interview.endTime) ? 'Completed' : 'Upcoming' }}
+                      </span>
+                      
+                      <div class="d-flex gap-1 flex-wrap">
+                        <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/employer/interview-update', interview.id]">
+                          <i class="bi bi-pencil me-1"></i>Reschedule
+                        </button>
+                        <a *ngIf="interview.meetingLink && !isPast(interview.interviewDate, interview.endTime)"
+                          class="btn btn-outline-info btn-sm" [href]="interview.meetingLink" target="_blank" title="Join Meeting">
+                          <i class="bi bi-camera-video"></i>
+                        </a>
+                      
+                        <button class="btn btn-outline-primary btn-sm" (click)="getInterviewById(interview.id!)">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                    <button class="btn btn-outline-danger btn-sm" (click)="deleteInterview(interview.id!)">
+                      <i class="bi bi-trash"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="list-group-item p-3">
-              <div class="d-flex align-items-center">
-                <img src="assets/images/candidate2.jpg" class="rounded-circle me-3" width="48" height="48" alt="Candidate">
-                <div class="flex-grow-1">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <h6 class="mb-0">Maria Garcia</h6>
-                    <span class="badge bg-primary">UX/UI Designer</span>
-                  </div>
-                  <p class="text-muted small mb-0">4 years experience • Figma, Adobe XD, Sketch</p>
-                </div>
-                <div class="ms-3 text-end">
-                  <div class="text-muted small mb-1">Applied 3 days ago</div>
-                  <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-success">Shortlist</button>
-                    <button class="btn btn-sm btn-outline-danger">Reject</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="list-group-item p-3">
-              <div class="d-flex align-items-center">
-                <img src="assets/images/candidate3.jpg" class="rounded-circle me-3" width="48" height="48" alt="Candidate">
-                <div class="flex-grow-1">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <h6 class="mb-0">David Kim</h6>
-                    <span class="badge bg-primary">Marketing Specialist</span>
-                  </div>
-                  <p class="text-muted small mb-0">3 years experience • SEO, Content Marketing, Social Media</p>
-                </div>
-                <div class="ms-3 text-end">
-                  <div class="text-muted small mb-1">Applied 1 day ago</div>
-                  <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-success">Shortlist</button>
-                    <button class="btn btn-sm btn-outline-danger">Reject</button>
-                  </div>
-                </div>
-              </div>
+            <div class="list-group-item border-0 p-3 text-center bg-light" *ngIf="interviews.length > 3">
+          <button class="btn btn-link text-decoration-none p-0" (click)="viewAllInterviews()">
+            <i class="bi bi-three-dots me-2"></i>
+            <span class="fw-medium">{{interviews.length - 3}} more interviews</span>
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+            <div *ngIf="interviews.length === 0" class="list-group-item border-0 text-center p-4 text-muted">
+              <i class="bi bi-calendar-x fs-1 mb-3"></i>
+              <p class="mb-0">No upcoming interviews scheduled.</p>
             </div>
           </div>
-        </div>
-        </div>
-        </div>
-
-        
-        <div class="col-lg-4">
-          <div class="card shadow-sm mb-5">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-              <h5 class="mb-0">Upcoming Interviews</h5>
-              <button class="btn btn-sm btn-outline-primary" routerLink="/employer/interview">Schedule New</button>
-            </div>
-
-            <div class="card-body p-0">
-              <div class="list-group list-group-flush">
-                <div class="list-group-item p-3" *ngFor="let interview of interviews">
-                  <div class="d-flex">
-                    <!-- Left date box -->
-                    <div class="bg-light rounded text-center p-2 me-3" style="min-width: 45px;">
-                      <div class="fw-bold">{{ interview.interviewDate | date: 'dd' }}</div>
-                      <div class="small text-muted">{{ interview.interviewDate | date: 'MMM' }}</div>
-                    </div>
-
-                    <!-- Interview details -->
-                    <div>
-                      <h6 class="mb-1">{{ interview.student.userName }}
-                        <span *ngIf="interview.job">- {{ interview.job.title }}</span>
-
-                      </h6>
-                      <p class="small text-muted mb-0">
-                        <i class="bi bi-clock me-1"></i>
-                        {{ interview.startTime }} - {{ interview.endTime }}
-                      </p>
-                      <p class="small text-muted mb-0">
-                        <i class="bi bi-people me-1"></i>
-                        {{ interview.notes || 'No notes provided' }}
-                      </p>
-                       <p class="small text-muted mb-0">
-                        <i class="bi bi-check-circle me-1"></i>
-                        {{ interview.status || 'No status provided' }}
-                      </p>
-
-                      <!-- Action buttons -->
-                      <div class="mt-2">
-                        <button class="btn btn-sm btn-outline-secondary me-1"
-                          [routerLink]="['/employer/interview-update', interview.id]">Reschedule</button>
-                        <a *ngIf="interview.meetingLink" class="btn btn-sm btn-outline-info"
-                          [href]="interview.meetingLink" target="_blank">Join Meeting</a>
-                        <button class="btn btn-sm btn-outline-danger ms-1"
-                          (click)="deleteInterview(interview.id!)">Cancel</button>
-                        <button class="btn btn-sm btn-outline-dark ms-1" (click)="getInterviewById(interview.id!)"><i
-                            class="bi bi-eye"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div *ngIf="interviews.length === 0" class="list-group-item text-center p-4 text-muted">
-                  No upcoming interviews scheduled.
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Selected interview display -->
-          <div *ngIf="selectedinterview" class="card mt-3 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Interview Details</h5>
-                <button class="btn btn-sm btn-outline-danger" (click)="selectedinterview = undefined">Close</button>
-              </div>
-              <hr>
-              <p><strong>Student:</strong> {{ selectedinterview.student.userName }}</p>
-              <p><strong>Date:</strong> {{ selectedinterview.interviewDate }}</p>
-              <p><strong>Time:</strong> {{ selectedinterview.startTime }} - {{ selectedinterview.endTime }}</p>
-              <p><strong>Mode:</strong> {{ selectedinterview.mode }}</p>
-              <p><strong>Location:</strong> {{ selectedinterview.location }}</p>
-              <p><strong>Notes:</strong> {{ selectedinterview.notes }}</p>
-              <p *ngIf="selectedinterview.meetingLink">
-                <strong>Meeting Link:</strong>
-                <a [href]="selectedinterview.meetingLink" target="_blank">{{ selectedinterview.meetingLink }}</a>
-              </p>
-            </div>
-          </div>
-
         </div>
       </div>
 
+      <!-- Interview Details Modal -->
+      <div *ngIf="selectedinterview" class="card shadow border-0 rounded-3 mb-4">
+        <div class="card-header bg-primary text-white border-0 d-flex justify-content-between align-items-center py-3">
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-info-circle me-2"></i>Interview Details
+          </h5>
+          <button class="btn btn-outline-light btn-sm" (click)="selectedinterview = undefined">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-person text-primary me-2"></i>
+                <strong>Student:</strong>
+                <span class="ms-2">{{selectedinterview.student.userName}}</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-calendar text-primary me-2"></i>
+                <strong>Date:</strong>
+                <span class="ms-2">{{selectedinterview.interviewDate}}</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-clock text-primary me-2"></i>
+                <strong>Time:</strong>
+                <span class="ms-2">{{selectedinterview.startTime}} - {{selectedinterview.endTime}}</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-laptop text-primary me-2"></i>
+                <strong>Mode:</strong>
+                <span class="ms-2">{{selectedinterview.mode}}</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-geo-alt text-primary me-2"></i>
+                <strong>Location:</strong>
+                <span class="ms-2">{{selectedinterview.location}}</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-sticky text-primary me-2 mt-1"></i>
+                <strong>Notes:</strong>
+                <span class="ms-2">{{selectedinterview.notes}}</span>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="selectedinterview.meetingLink">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-link text-primary me-2"></i>
+                <strong>Meeting Link:</strong>
+                <a [href]="selectedinterview.meetingLink" target="_blank" class="ms-2 text-decoration-none">
+                  {{selectedinterview.meetingLink}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-white py-3">
-          <h5 class="mb-0">Quick Actions</h5>
+      <!-- Hiring Pipeline -->
+      <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card-header bg-white border-0 py-3">
+          <h5 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-funnel text-success me-2"></i>Hiring Pipeline
+          </h5>
+          <small class="text-muted">Track your recruitment progress</small>
+        </div>
+        <div class="card-body">
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Applications Received</span>
+              <span class="badge bg-primary">{{counts.APPLICATIONS_RECEIVED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-primary" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.APPLICATIONS_RECEIVED)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Resume Screening</span>
+              <span class="badge bg-info">{{counts.RESUME_SCREENING || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-info" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.RESUME_SCREENING)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Shortlisted</span>
+              <span class="badge bg-primary-subtle">{{counts.SHORTLISTED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-primary-subtle" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.SHORTLISTED)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Phone Interview</span>
+              <span class="badge bg-warning">{{counts.PHONE_INTERVIEW || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-warning" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.PHONE_INTERVIEW)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Technical Assessment</span>
+              <span class="badge bg-secondary">{{counts.TECHNICAL_ASSESSMENT || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-secondary" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.TECHNICAL_ASSESSMENT)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Rejected</span>
+              <span class="badge bg-danger">{{counts.REJECTED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-danger" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.REJECTED)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Final Interview</span>
+              <span class="badge bg-dark">{{counts[ApplicationStage.FINAL_INTERVIEW] || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-dark" role="progressbar"
+                [style.width.%]="getStagePercentage(ApplicationStage.FINAL_INTERVIEW)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="fw-medium">Offer Extended</span>
+              <span class="badge bg-success">{{counts.OFFER_EXTENDED || 0}}</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+              <div class="progress-bar bg-success" role="progressbar"  
+              [style.width.%]="getStagePercentage(ApplicationStage.OFFER_EXTENDED)" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white border-0 py-3">
+          <h5 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-lightning text-warning me-2"></i>Quick Actions
+          </h5>
+          <small class="text-muted">Frequently used actions</small>
         </div>
         <div class="card-body">
           <div class="row g-3">
             <div class="col-6">
-              <a href="#" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3"
+              <a class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3 text-decoration-none border-2" 
                 routerLink="/employer/jobs">
-                <i class="bi bi-briefcase fs-4 mb-2"></i>
-                <span>Post Job</span>
+                <i class="bi bi-briefcase fs-3 mb-2"></i>
+                <span class="fw-medium">Post Job</span>
               </a>
             </div>
             <div class="col-6">
-              <a href="#" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3">
-                <i class="bi bi-search fs-4 mb-2"></i>
-                <span>Post Internship</span>
+              <a class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3 text-decoration-none border-2" 
+                routerLink="/employer/internships">
+                <i class="bi bi-mortarboard fs-3 mb-2"></i>
+                <span class="fw-medium">Post Internship</span>
               </a>
             </div>
             <div class="col-6">
-              <a href="#" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3"
+              <a class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3 text-decoration-none border-2" 
                 routerLink="/employer/interview">
-                <i class="bi bi-calendar-plus fs-4 mb-2"></i>
-                <span>Schedule Interview</span>
+                <i class="bi bi-calendar-plus fs-3 mb-2"></i>
+                <span class="fw-medium">Schedule Interview</span>
               </a>
             </div>
             <div class="col-6">
-              <a href="#" class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3">
-                <i class="bi bi-file-earmark-text fs-4 mb-2"></i>
-                <span>Reports</span>
+              <a class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3 text-decoration-none border-2">
+                <i class="bi bi-file-earmark-text fs-3 mb-2"></i>
+                <span class="fw-medium">Reports</span>
               </a>
             </div>
           </div>
         </div>
       </div>
-
-
-             <div class="card shadow-sm">
-        <div class="card-header bg-white py-3">
-          <h5 class="mb-0">Hiring Pipeline</h5>
-        </div>
-        <div class="card-body">
-          <div class="mb-4">
-            <div class="d-flex justify-content-between mb-1">
-              <span>Applications Received</span>
-              <span>87</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="d-flex justify-content-between mb-1">
-              <span>Resume Screening</span>
-              <span>42</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 48%;" aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="d-flex justify-content-between mb-1">
-              <span>Phone Interview</span>
-              <span>28</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 32%;" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="d-flex justify-content-between mb-1">
-              <span>Technical Assessment</span>
-              <span>18</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="d-flex justify-content-between mb-1">
-              <span>Final Interview</span>
-              <span>12</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" role="progressbar" style="width: 14%;" aria-valuenow="14" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div>
-            <div class="d-flex justify-content-between mb-1">
-              <span>Offer Extended</span>
-              <span>8</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-success" role="progressbar" style="width: 9%;" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     </div>
+  </div>
+</div>
+ 

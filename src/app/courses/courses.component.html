@@ -1,0 +1,107 @@
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Explore Courses</h2>
+
+  <!-- Filter Section -->
+  <div class="card shadow-sm p-4 mb-5">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input [(ngModel)]="filters.search" placeholder="Search by title, faculty" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" [(ngModel)]="filters.priceMin" placeholder="Min Price" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" [(ngModel)]="filters.priceMax" placeholder="Max Price" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" [(ngModel)]="filters.durationMin" placeholder="Min Duration (weeks)" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <input type="number" [(ngModel)]="filters.durationMax" placeholder="Max Duration (weeks)" class="form-control" />
+      </div>
+      <div class="col-md-1">
+        <button (click)="applyFilters()" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Cards Grid -->
+  <div *ngIf="paginatedCourses.length > 0; else noCoursesFound" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" *ngFor="let course of paginatedCourses">
+      <div class="card h-100 border-0 shadow-sm rounded-4">
+        
+        <!-- Image -->
+        <img [src]="course.courseImages?.[0]?.url || 'assets/placeholder.png'" class="card-img-top rounded-top"
+             alt="Course Image" style="height: 180px; object-fit: cover;" />
+
+        <div class="card-body d-flex flex-column justify-content-between">
+          <!-- Title and Duration -->
+          <div>
+            <h5 class="card-title fw-bold">{{ course.courseName }}</h5>
+            <p class="text-muted mb-1">{{ course.duration || 'N/A' }} weeks</p>
+
+            <!-- Faculty -->
+            <p class="mb-1"><strong>Faculty:</strong> {{ course.faculty?.userName || 'N/A' }}</p>
+
+            <!-- Rating -->
+            <p class="mb-1">
+  <ng-container *ngIf="courseRatings[course.id] !== undefined">
+    <span *ngFor="let star of [1,2,3,4,5]">
+      <mat-icon [color]="star <= courseRatings[course.id] ? 'warn' : ''">star</mat-icon>
+    </span>
+    <span class="ms-1 text-muted">({{ courseRatings[course.id] | number:'1.1-1' }})</span>
+  </ng-container>
+  <ng-container *ngIf="courseRatings[course.id] === undefined">
+    <span class="text-muted">Loading rating...</span>
+  </ng-container>
+</p>
+
+
+            <!-- Price -->
+            <div class="mb-2">
+              <ng-container *ngIf="course.discountedPrice && course.discountedPrice < course.price">
+                <span class="text-muted text-decoration-line-through">₹{{ course.price }}</span>
+                &nbsp;
+                <span class="text-success fw-bold">₹{{ course.discountedPrice }}</span>
+                <span class="badge bg-danger ms-2">Save ₹{{ course.price - course.discountedPrice }}</span>
+              </ng-container>
+              <ng-container *ngIf="!course.discountedPrice || course.discountedPrice >= course.price">
+                <strong>Price:</strong> ₹{{ course.price || 0 }}
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="mt-auto d-flex justify-content-between align-items-center">
+            <a [routerLink]="['/courses', course.id]" class="btn btn-outline-primary">Know More</a>
+            <button
+              *ngIf="!course.price || course.price === 0"
+              class="btn btn-success"
+              (click)="enrollFree(course.id)">Enroll Free</button>
+
+            <button
+              *ngIf="course.price && course.price > 0"
+              class="btn btn-primary"
+              (click)="enrollPaid(course.id, course.price)">Enroll & Pay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Courses Message -->
+  <ng-template #noCoursesFound>
+    <p class="text-center text-muted mt-4">No courses found matching the criteria.</p>
+  </ng-template>
+
+  <!-- Pagination Controls -->
+  <div class="d-flex justify-content-center align-items-center my-4" *ngIf="totalPages >= 1">
+    <button class="btn btn-outline-secondary me-3" (click)="prevPage()" [disabled]="currentPage === 1">
+      ‹ Prev
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button class="btn btn-outline-secondary ms-3" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next ›
+    </button>
+  </div>
+</div>

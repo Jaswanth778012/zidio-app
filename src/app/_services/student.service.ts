@@ -1,8 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { StudentProfile } from '../_model/student-profile.model';
 import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model/message.model';
+import { CourseReview } from '../_model/reviewes.model';
+import { UserAuthService } from './user-auth.service';
+import { Application } from '../_model/Application.model';
+import { ApplicationQuestion } from '../_model/applicationQuestion.model';
+import { CourseEnrollment } from '../_model/courseEnrollment.model';
+import { CalendarEvent } from '../_model/CalendarEvent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +16,7 @@ import { Message, PaginatedMessageResponse, SendMessageRequest } from '../_model
 export class StudentService {
    private baseUrl = 'http://localhost:8080/student';
   
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private userAuthService: UserAuthService) {}
   //profile for student
     getProfile(): Observable<StudentProfile> {
         return this.http.get<StudentProfile>(`${this.baseUrl}/profile`);
@@ -74,4 +80,145 @@ export class StudentService {
       markAllAsReadFromSender(userName: string): Observable<any> {
       return this.http.put<any>(`${this.baseUrl}/messages/sender/${userName}/read`, {});
     }
+    getJobById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/jobs/${id}`);
+    }
+
+    getInternshipById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/internships/${id}`);
+    }
+
+     getEnrollmentForCourse(id: number): Observable<CourseEnrollment> {
+    return this.http.get<CourseEnrollment>(`${this.baseUrl}/courseEnroll/${id}`);
+  }
+    markVideoWatched(videoId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/courseProgress/update/${videoId}`,{}  // body is empty—your endpoint reads only the path + principal
+    );
+  }
+
+    getDashboardCounts(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/counts`);
+  }
+
+
+
+
+    //for courses
+    getCourses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/courses`);
+  }
+
+  enrollInFreeCourse(courseId: number): Observable<string> {
+    return this.http.post(`${this.baseUrl}/apply/course/${courseId}`, {}, { responseType: 'text' });
+  }
+
+  enrollInPaidCourse(courseId: number): Observable<string> {
+    return this.http.post(`${this.baseUrl}/apply/course/paid/${courseId}`, {}, { responseType: 'text' });
+  }
+
+  verifyPayment(orderId: string, paymentId: string, signature: string) {
+  const token = this.userAuthService.getToken();
+  console.log('Token sent to backend:', token); // <-- Add this
+  const params = { orderId, paymentId, signature };
+  return this.http.post(`${this.baseUrl}/verify-payment`, null, {
+    params,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    responseType: 'text'
+  });
+}
+
+
+  //reviewsa
+  submitReview(courseId: number, rating: number, comment: string): Observable<CourseReview> {
+    const params = new HttpParams()
+      .set('rating', rating)
+      .set('comment', comment);
+    return this.http.post<CourseReview>(`${this.baseUrl}/course/${courseId}`, null, { params });
+  }
+
+  //Apply
+   applyForJob(jobId: number, formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/apply/job/${jobId}`, formData,{ responseType: 'text' })
+    .pipe(catchError(this.handleError));
+}
+
+
+  applyForInternship(internshipId: number, formData: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/apply/internship/${internshipId}`, formData,{ responseType: 'text' })
+    .pipe(catchError(this.handleError));
+}
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+  let errorMsg: string;
+
+  if (typeof error.error === 'string') {
+    // Backend returned a plain text error message
+    errorMsg = error.error;
+  } else if (error.error instanceof ProgressEvent) {
+    errorMsg = 'Network error';
+  } else {
+    errorMsg = error.error?.message || 'An unknown error occurred';
+  }
+
+  console.error('ApplicationService error', error);
+  return throwError(() => errorMsg);
+}
+
+  getApplicationQuestionsByJobId(jobId: number) {
+  return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/jobs/${jobId}/questions`);
+  }
+
+  getApplicationQuestionsByInternshipId(internshipId: number) {
+    return this.http.get<ApplicationQuestion[]>(`${this.baseUrl}/internships/${internshipId}/questions`);
+  }
+
+   getMyCourses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/my-courses`);
+  }
+
+  getAppliedJobs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/applied-jobs`);
+  }
+
+  getAppliedInternships(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/applied-internships`);
+  }
+
+  getAllApplicationsForStudent() {
+  return this.http.get<Application[]>(`${this.baseUrl}/application/all`);
+  }
+
+
+  //progress
+  updateCourseProgress(videoId: number): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/courseProgress/update/${videoId}`, {});
+  }
+
+  //calendar events
+   getEvents(): Observable<CalendarEvent[]> {
+        return this.http.get<CalendarEvent[]>(`${this.baseUrl}/s/calendar/events`);
+      }
+    
+      getEvent(id: number): Observable<CalendarEvent> {
+        return this.http.get<CalendarEvent>(`${this.baseUrl}/s/calendar/event/${id}`);
+      }
+    
+      createEvent(event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+        return this.http.post<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/s/calendar/event`, event);
+      }
+    
+      updateEvent(id: number, event: CalendarEvent): Observable<{ message: string, event: CalendarEvent }> {
+        return this.http.put<{ message: string, event: CalendarEvent }>(`${this.baseUrl}/s/calendar/event/${id}`, event);
+      }
+    
+      deleteEvent(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/s/calendar/event/${id}`);
+      }
+    
+      getUpcomingEvents(): Observable<CalendarEvent[]> {
+        return this.http.get<CalendarEvent[]>(`${this.baseUrl}/s/calendar/upcoming`);
+      }
+
 }

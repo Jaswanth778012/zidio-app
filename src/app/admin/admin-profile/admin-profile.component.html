@@ -3,7 +3,7 @@
 
   <div class="profile-picture">
     <img *ngIf="profilePicturePreview" [src]="profilePicturePreview" alt="Profile Picture">
-    <input type="file" id="fileInput" (change)="onFileSelected($event)">
+    <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden>
     <label for="fileInput" class="upload-btn">Change Picture</label>
   </div>
 

@@ -15,6 +15,7 @@ export class InterviewUpdateComponent implements OnInit{
   interviewId!: number;
   submitted = false;
   generatedMeetingLink: string | null = null;
+  loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,14 +78,17 @@ export class InterviewUpdateComponent implements OnInit{
       location: formValue.location,
       notes: formValue.notes
     };
+    this.loading = true;
 
     this.employerService.updateInterview(this.interviewId, interview).subscribe({
       next: (res) => {
+        this.loading = false;
          alert('Interview rescheduled successfully');
         this.generatedMeetingLink = res.meetingLink || null;
         this.router.navigate(['/employer']);
       },
       error: () => {
+        this.loading = false;
         this.snackBar.open('Failed to update interview', 'Close', { duration: 3000 });
       }
     });

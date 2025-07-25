@@ -1,0 +1,266 @@
+/* 
+
+.video-manager-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background: #f3f4f6;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Form Styling */ 
+/* 2nd .video-form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+
+.video-form h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.video-form input,
+.video-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.video-form textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.preview-player {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.video-form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.video-form button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+
+.video-form button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+
+.video-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.video-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.video-thumb {
+  width: 100%;
+  border-radius: 8px;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.video-details h3 {
+  margin: 8px 0 4px;
+}
+
+.video-details p {
+  margin: 0 0 10px;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+} */
+
+.video-manager-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  margin-top: 30px;
+}
+
+/* Video Form */
+.video-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.video-form h2 {
+  font-size: 20px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.video-form input,
+.video-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.video-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.preview-player {
+  margin-top: 10px;
+  border-radius: 12px;
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.video-form .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.video-form button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.video-form button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.video-form button[type="button"] {
+  background-color: #e0e0e0;
+}
+
+/* Video List */
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.video-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: #f9fafc;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease;
+}
+
+.video-item:hover {
+  transform: translateY(-3px);
+  background: #eef6ff;
+}
+
+.video-thumb {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.video-details {
+  flex: 1;
+}
+
+.video-details h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.video-details p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #007bff;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.actions button:hover {
+  background: rgba(0, 123, 255, 0.1);
+}

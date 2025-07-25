@@ -1,17 +1,46 @@
-<section class="contact-section">
-  <h2>Contact Us</h2>
-  <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
-    <input type="text" name="name" placeholder="Your Name" ngModel required>
-    <input type="email" name="email" placeholder="Your Email" ngModel required>
-    <textarea name="message" placeholder="Your Message" ngModel required></textarea>
-    <button type="submit">Send Message</button>
-  </form>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg p-4 rounded">
+        <h2 class="text-center mb-4">Contact Us</h2>
 
-  <div class="contact-info">
-    <h3>Our Contact Information</h3>
-    <p><strong>Phone:</strong> (555) 123-4567</p>
-    <p><strong>Email:</strong> info.com</p>
-    <p><strong>Address:</strong> 123 Innovation Drive, Techville, CA 90210</p>
+        <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" novalidate>
+          <div class="mb-3">
+            <input type="text" name="name" placeholder="Your Name" class="form-control"
+              [(ngModel)]="formData.name" #name="ngModel" required />
+            <div *ngIf="name.invalid && name.touched" class="text-danger">Name is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <input type="email" name="email" placeholder="Your Email" class="form-control"
+              [(ngModel)]="formData.email" #email="ngModel" required />
+            <div *ngIf="email.invalid && email.touched" class="text-danger">Valid email is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <input type="text" name="subject" placeholder="Subject" class="form-control"
+              [(ngModel)]="formData.subject" #subject="ngModel" required />
+            <div *ngIf="subject.invalid && subject.touched" class="text-danger">Subject is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <textarea name="message" placeholder="Your Message" rows="5" class="form-control"
+              [(ngModel)]="formData.message" #message="ngModel" required></textarea>
+            <div *ngIf="message.invalid && message.touched" class="text-danger">Message is required.</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100" [disabled]="contactForm.invalid">Send Message</button>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="contact-info text-center">
+          <h5>Our Contact Information</h5>
+          <p><strong>Phone:</strong> (555) 123-4567</p>
+          <p><strong>Email:</strong> info&#64;company.com</p>
+          <p><strong>Address:</strong> 123 Innovation Drive, Techville, CA 90210</p>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
-
+</div>

@@ -1,0 +1,65 @@
+<div class="job-detail-wrapper" *ngIf="!loading && internship">
+  <div class="job-detail-card">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-box" *ngIf="internship.companyLogo">
+        <img [src]="internship.companyLogo" alt="Company Logo" />
+      </div>
+      <div class="job-title">
+        <h1>{{ internship.title }}</h1>
+        <h3>{{ internship.companyName }}</h3>
+        <div class="meta">
+          <span><i class="material-icons">location_on</i> {{ internship.location }}</span>
+          <span><i class="material-icons">business_center</i> {{ internship.internshipType }} / {{ internship.internshipMode }}</span>
+          <span><i class="material-icons">paid</i> {{ internship.stipend }}</span>
+          <span><i class="material-icons">access_time</i> {{ internship.duration }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="job-detail-body">
+      <div class="section">
+        <h4>Description</h4>
+        <p>{{ internship.description }}</p>
+      </div>
+      <div class="section">
+        <h4>Eligibility</h4>
+        <p>{{ internship.eligibility }}</p>
+      </div>
+      <div class="section">
+        <h4>Skills Required</h4>
+        <p>{{ internship.skillsRequired }}</p>
+      </div>
+      <div class="section">
+        <h4>Perks</h4>
+        <p>{{ internship.perks }}</p>
+      </div>
+      <div class="section">
+        <h4>About the Company</h4>
+        <p>{{ internship.aboutCompany }}</p>
+      </div>
+
+      <div class="quick-info">
+        <div><i class="material-icons">event</i><strong>Deadline:</strong> {{ internship.applicationDeadline | date:'mediumDate' }}</div>
+        <div><i class="material-icons">calendar_today</i><strong>Posted:</strong> {{ internship.postedAt | date:'mediumDate' }}</div>
+        <div><i class="material-icons">calendar_today</i><strong>Start Date:</strong> {{ internship.startDate | date:'mediumDate' }}</div>
+        <div><i class="material-icons">group</i><strong>Openings:</strong> {{ internship.numberOfOpenings }}</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="job-footer">
+      <button class="apply-btn" (click)="applyNow()">Apply Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div class="loading-container" *ngIf="loading">
+  <div class="bouncing-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>

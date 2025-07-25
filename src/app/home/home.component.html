@@ -5,24 +5,195 @@
         <p>Your one-stop solution for all your educational needs.</p>
         </div>
     </div>
-    
-    <div class="row">
-        <div class="col-md-4">
-        <h2>Admin Dashboard</h2>
-        <p>Manage users, courses, and more.</p>
-        <button class="btn btn-primary" routerLink="/admin">Go to Admin Dashboard</button>
+
+    <!-- <div class="container py-4">
+  <h2 class="mb-4 fw-bold">Explore Courses</h2>
+
+ 
+  <div class="scroll-row">
+    <div class="card custom-card" *ngFor="let course of courses">
+
+      <img [src]="course.courseImages?.[0]?.url || 'assets/placeholder.png'" class="card-img-top rounded-top"
+           alt="Course Image" />
+
+
+      <div class="card-body d-flex flex-column">
+        <div>
+          <h5 class="card-title fw-bold">{{ course.courseName }}</h5>
+          <p class="text-muted mb-1">{{ course.duration || 'N/A' }} weeks</p>
+          <p class="mb-1"><strong>Faculty:</strong> {{ course.faculty?.userName || 'N/A' }}</p>
+
+
+          <p class="mb-1">
+            <ng-container *ngIf="courseRatings[course.id] !== undefined">
+              <span *ngFor="let star of [1,2,3,4,5]">
+                <mat-icon [color]="star <= courseRatings[course.id] ? 'warn' : ''">star</mat-icon>
+              </span>
+              <span class="ms-1 text-muted">({{ courseRatings[course.id] | number:'1.1-1' }})</span>
+            </ng-container>
+            <ng-container *ngIf="courseRatings[course.id] === undefined">
+              <span class="text-muted">Loading rating...</span>
+            </ng-container>
+          </p>
+
+
+          <div class="mb-2">
+            <ng-container *ngIf="course.discountedPrice && course.discountedPrice < course.price">
+              <span class="text-muted text-decoration-line-through">₹{{ course.price }}</span>
+              <span class="text-success fw-bold ms-1">₹{{ course.discountedPrice }}</span>
+              <span class="badge bg-danger ms-2">Save ₹{{ course.price - course.discountedPrice }}</span>
+            </ng-container>
+            <ng-container *ngIf="!course.discountedPrice || course.discountedPrice >= course.price">
+              <strong>Price:</strong> ₹{{ course.price || 0 }}
+            </ng-container>
+          </div>
         </div>
-    
-        <div class="col-md-4">
-        <h2>Student Dashboard</h2>
-        <p>Access your courses and track your progress.</p>
-        <button class="btn btn-primary" routerLink="/user">Go to Student Dashboard</button>
+
+
+        <div class="mt-auto d-flex justify-content-between">
+          <a [routerLink]="['/courses', course.id]" class="btn btn-outline-primary btn-sm">Know More</a>
+          <button
+            *ngIf="!course.price || course.price === 0"
+            class="btn btn-success btn-sm"
+            (click)="enrollFree(course.id)">Enroll Free</button>
+
+          <button
+            *ngIf="course.price && course.price > 0"
+            class="btn btn-primary btn-sm"
+            (click)="enrollPaid(course.id, course.price)">Enroll & Pay</button>
         </div>
-    
-        <div class="col-md-4">
-        <h2>Employer Dashboard</h2>
-        <p>Find the right candidates for your job openings.</p>
-        <button class="btn btn-primary" routerLink="/employer">Go to Employer Dashboard</button>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Latest Jobs</h2>
+
+  <div class="scroll-row">
+    <mat-card *ngFor="let job of jobs" class="card">
+      <img mat-card-image [src]="job.companyLogo || 'assets/job-placeholder.png'" alt="Company Logo" />
+
+      <mat-card-title>{{ job.title }}</mat-card-title>
+
+      <mat-card-content>
+        <p class="fw-bold">{{ job.companyName }}</p>
+        <p>{{ job.location }}</p>
+      </mat-card-content>
+
+      <div class="card-buttons">
+        <button mat-raised-button color="primary">View</button>
+        <button mat-raised-button color="accent">Apply</button>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Latest Internships</h2>
+
+  <div class="scroll-row">
+    <mat-card *ngFor="let internship of internships" class="card">
+      <img mat-card-image [src]="internship.companyLogo || 'assets/internship-placeholder.png'" alt="Company Logo" />
+
+      <mat-card-title>{{ internship.title }}</mat-card-title>
+
+      <mat-card-content>
+        <p class="fw-bold">{{ internship.companyName }}</p>
+        <p>{{ internship.location }}</p>
+      </mat-card-content>
+
+      <div class="card-buttons">
+        <button mat-raised-button color="primary">View</button>
+        <button mat-raised-button color="accent">Apply</button>
+      </div>
+    </mat-card>
+  </div>
+</div> -->
+
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Explore Courses</h2>
+  <div class="scroll-row">
+    <div class="custom-card" *ngFor="let course of courses">
+      <img [src]="course.courseImages?.[0]?.url || 'assets/placeholder.png'" alt="Course Image" class="card-img" />
+      <div class="card-content">
+        <h5 class="card-title">{{ course.courseName }}</h5>
+        <p class="text-muted small">{{ course.duration || 'N/A' }} weeks</p>
+        <p class="small"><strong>Faculty:</strong> {{ course.faculty?.userName || 'N/A' }}</p>
+
+        <!-- Ratings -->
+        <div class="ratings mb-2">
+          <ng-container *ngIf="courseRatings[course.id] !== undefined">
+            <span *ngFor="let star of [1,2,3,4,5]">
+              <mat-icon [color]="star <= courseRatings[course.id] ? 'warn' : ''">star</mat-icon>
+            </span>
+            <span class="ms-1 text-muted">({{ courseRatings[course.id] | number:'1.1-1' }})</span>
+          </ng-container>
+          <ng-container *ngIf="courseRatings[course.id] === undefined">
+            <span class="text-muted small">Loading rating...</span>
+          </ng-container>
+        </div>
+
+        <!-- Price -->
+        <div class="price mb-3">
+          <ng-container *ngIf="course.discountedPrice && course.discountedPrice < course.price">
+            <span class="text-muted text-decoration-line-through">₹{{ course.price }}</span>
+            <span class="text-success fw-bold ms-1">₹{{ course.discountedPrice }}</span>
+            <span class="badge bg-danger ms-2">Save ₹{{ course.price - course.discountedPrice }}</span>
+          </ng-container>
+          <ng-container *ngIf="!course.discountedPrice || course.discountedPrice >= course.price">
+            <strong>Price:</strong> ₹{{ course.price || 0 }}
+          </ng-container>
+        </div>
+
+        <!-- Buttons -->
+        <div class="card-buttons">
+          <a [routerLink]="['/courses', course.id]" class="btn btn-outline-primary btn-sm w-100">Know More</a>
+          <button *ngIf="!course.price || course.price === 0" class="btn btn-success btn-sm w-100" (click)="enrollFree(course.id)">Enroll Free</button>
+          <button *ngIf="course.price && course.price > 0" class="btn btn-primary btn-sm w-100" (click)="enrollPaid(course.id, course.price)">Enroll & Pay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Latest Jobs</h2>
+  <div class="scroll-row">
+    <div class="custom-card" *ngFor="let job of jobs">
+      <img [src]="job.companyLogo || 'assets/job-placeholder.png'" alt="Company Logo" class="card-img" />
+      <div class="card-content">
+        <h5 class="card-title">{{ job.title }}</h5>
+        <p class="fw-semibold text-muted mb-1">{{ job.companyName }}</p>
+        <p class="small">{{ job.location }}</p>
+        <div class="card-buttons">
+          <button mat-raised-button color="primary" class="w-100" [routerLink]="['/jobs', job.id]">View</button>
+          <button mat-raised-button color="accent" class="w-100" [routerLink]="['/jobsapply', job.id]">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERNSHIPS -->
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold">Latest Internships</h2>
+  <div class="scroll-row">
+    <div class="custom-card" *ngFor="let internship of internships">
+      <img [src]="internship.companyLogo || 'assets/internship-placeholder.png'" alt="Company Logo" class="card-img" />
+      <div class="card-content">
+        <h5 class="card-title">{{ internship.title }}</h5>
+        <p class="fw-semibold text-muted mb-1">{{ internship.companyName }}</p>
+        <p class="small">{{ internship.location }}</p>
+        <div class="card-buttons">
+          <button mat-raised-button color="primary" class="w-100" [routerLink]="['/internships', internship.id]">View</button>
+          <button mat-raised-button color="accent" class="w-100" [routerLink]="['/internshipsapply', internship.id]">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

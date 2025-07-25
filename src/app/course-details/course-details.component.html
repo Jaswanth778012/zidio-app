@@ -1,0 +1,143 @@
+
+ <div class="loading-container" *ngIf="loading">
+  <div class="bouncing-loader">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<div class="course-details-container" *ngIf="!loading">
+  <!-- Course Header Section -->
+  <div class="course-header">
+    <div class="course-title-section">
+      <h1>{{ course.courseName }}</h1>
+      <div class="course-meta">
+        <span class="course-category" *ngIf="course.category">{{ course.category.name }}</span>
+        <div class="course-rating" *ngIf="course.averageRating">
+          <mat-icon class="star-icon">star</mat-icon>
+          <span>{{ course.averageRating | number:'1.1-1' }} ({{ course.reviewCount || 0 }} reviews)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Main Content -->
+  <div class="course-content-wrapper">
+    <!-- Left Column - Course Details -->
+    <div class="course-main-content">
+      <!-- Course Image -->
+      <div class="course-image-container" *ngIf="course.courseImages">
+        <img [src]="course.courseImages[0].url" alt="{{ course.courseName }}" class="course-image">
+      </div>
+      
+      <!-- Course Description Card -->
+      <div class="course-card">
+        <h2 class="card-title">About This Course</h2>
+        <p class="course-description">{{ course.description }}</p>
+      </div>
+      
+      <!-- What You'll Learn Card -->
+      <div class="course-card" *ngIf="course.learningOutcomes && course.learningOutcomes.length > 0">
+        <h2 class="card-title">What You'll Learn</h2>
+        <ul class="learning-outcomes-list">
+          <li *ngFor="let outcome of course.learningOutcomes">
+            <mat-icon class="check-icon">check_circle</mat-icon>
+            <span>{{ outcome }}</span>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Course Content -->
+      <div class="course-card">
+        <app-course-syllabus [syllabusList]="course.syllabus" [enrolled]="enrolled"></app-course-syllabus>
+      </div>
+      
+      <!-- Instructor Info Card -->
+      <div class="course-card" *ngIf="course.faculty">
+        <h2 class="card-title">Instructor</h2>
+        <div class="instructor-info">
+          <div class="instructor-avatar">
+            <mat-icon class="instructor-icon">person</mat-icon>
+          </div>
+          <div class="instructor-details">
+            <h3 class="instructor-name">{{ course.faculty.userName }}</h3>
+            <p class="instructor-bio" *ngIf="course.faculty.userName">{{ course.faculty.userFirstName }} {{course.faculty.userLastName}}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reviews Section -->
+      <div class="course-card reviews-section">
+        <app-studentreview [id]="course.id"></app-studentreview>
+      </div>
+    </div>
+    
+    <!-- Right Column - Course Sidebar -->
+    <div class="course-sidebar">
+      <div class="sidebar-card">
+        <div class="price-section" *ngIf="course.price">
+          <h2 class="price">{{ course.discountedPrice | currency:'INR':'symbol' }}</h2>
+          <h3 class="ptext-muted text-decoration-line-through">{{ course.price | currency:'INR':'symbol' }}</h3>
+        </div>
+        
+        <button mat-raised-button *ngIf="course.price && course.price > 0" color="primary" (click)="enrollPaid(course.id, course.price)" class="enroll-button">
+          Enroll & Pay
+        </button>
+         <button mat-raised-button *ngIf="!course.price || course.price === 0" color="accent" (click)="enrollFree(course.id)" class="enroll-button">
+          Enroll Free
+        </button>
+        
+        <div class="course-info-list">
+          <div class="info-item">
+            <mat-icon>access_time</mat-icon>
+            <span>Duration: {{ course.duration || 'Self-paced' }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>school</mat-icon>
+            <span>Level: {{ course.level || 'All Levels' }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>people</mat-icon>
+            <span>Students: {{ course.enrollmentCount || 0 }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>language</mat-icon>
+            <span>Language: {{ course.language || 'English' }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>update</mat-icon>
+            <span>Last Updated: {{ course.createdAt | date }}</span>
+          </div>
+        </div>
+        
+        <div class="includes-section">
+          <h3>This Course Includes:</h3>
+          <ul class="includes-list">
+            <li *ngIf="getTotalVideos() > 0">
+              <mat-icon>videocam</mat-icon>
+              <span>{{ getTotalVideos() }} video lectures</span>
+            </li>
+            <li>
+              <mat-icon>insert_drive_file</mat-icon>
+              <span>Downloadable resources</span>
+            </li>
+            <li>
+              <mat-icon>all_inclusive</mat-icon>
+              <span>Full lifetime access</span>
+            </li>
+            <li>
+              <mat-icon>phone_android</mat-icon>
+              <span>Access on mobile and TV</span>
+            </li>
+            <li>
+              <mat-icon>card_membership</mat-icon>
+              <span>Certificate of completion</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

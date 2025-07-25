@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployerService } from '../../_services/employer.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -32,24 +32,24 @@ internshipSearchTerm: string = '';
     this.internshipForm = this.fb.group({
       title: [''], description: [''], location: [''], duration: [''], stipend: [''],
       applicationDeadline: [''], startDate: [''], companyName: [''], aboutCompany: [''],
-      numberOfOpenings: [''], eligibility: [''], perks: ['']
+      numberOfOpenings: [''], eligibility: [''], perks: [''], internshipType: ['FULL_TIME', Validators.required],
+      internshipMode: ['ONSITE', Validators.required] // default value
     });
   }
 
   onInternshipFileChange(event: any) {
-    this.selectedInternshipFile = event.target.files[0];
+    const file = event.target.files[0];
+    this.selectedInternshipFile = file ? file : null;
   }
 
   createInternship() {
     if(this.selectedInternshipFile){
     this.employerService.createInternship(this.internshipForm.value, this.selectedInternshipFile).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
+      this.afterInternshipSaved('Internship created successfully');
     });
   }
   else{
-    alert('Please select a file before creating a internship.');
+    alert('Please select a company logo before creating a internship.');
 
   }
   }
@@ -59,12 +59,22 @@ internshipSearchTerm: string = '';
       id,
       this.internshipForm.value,
       this.selectedInternshipFile === null ? undefined : this.selectedInternshipFile
-    ).subscribe(() => {
-      this.loadInternships();
-      this.internshipForm.reset();
-      this.selectedInternshipFile = undefined!;
-      this.editInternship = null;
+    ).subscribe({
+      next: () => {
+        this.afterInternshipSaved('Internship updated successfully');
+      },
+      error: () => {
+        this.snackBar.open('Failed to update internship', 'Close', { duration: 3000 });
+      }
     });
+  }
+
+  afterInternshipSaved(message: string) {
+    this.loadInternships();
+    this.internshipForm.reset();
+    this.selectedInternshipFile = null;
+    this.editInternship = null; // Reset edit internship
+    this.snackBar.open(message, 'Close', { duration: 3000 }); 
   }
 
    editInternshipForm(internship: any) {

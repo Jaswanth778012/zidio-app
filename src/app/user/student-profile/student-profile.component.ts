@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { StudentService } from '../../_services/student.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-profile',
@@ -12,7 +13,7 @@ export class StudentProfileComponent {
   profilePicturePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
 
-  constructor(private studentService: StudentService,private fb: FormBuilder) {this.profileForm = this.fb.group({
+  constructor(private studentService: StudentService,private fb: FormBuilder,private router: Router) {this.profileForm = this.fb.group({
       userFirstName: [''],
       userLastName: [''],
       email: [''],
@@ -28,8 +29,7 @@ export class StudentProfileComponent {
       this.studentService.getProfile().subscribe(data=>{
         this.profileForm.patchValue(data);
         if(data.profilePictureUrl){
-          const baseUrl = 'http://localhost:8080';
-          this.profilePicturePreview = baseUrl +data.profilePictureUrl;
+          this.profilePicturePreview = data.profilePictureUrl;
         }
       });
     }
@@ -70,6 +70,7 @@ export class StudentProfileComponent {
             // Clear the image preview and selected file
             this.profilePicturePreview = null;
             this.selectedFile = null;
+            this.router.navigate(['/student']); // Navigate to the profile page
           },
           error: (error) => {
             console.error('Error updating profile:', error);

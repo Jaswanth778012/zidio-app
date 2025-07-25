@@ -75,7 +75,29 @@ import { StudentsentComponent } from './user/studentsent/studentsent.component';
 import { StudentmessageComponent } from './user/studentmessage/studentmessage.component';
 import { InterviewComponent } from './employer/interview/interview.component';
 import { InterviewUpdateComponent } from './employer/interview-update/interview-update.component';
-
+import { ApplicationsComponent } from './employer/applications/applications.component';
+import { InterviewsComponent } from './employer/interviews/interviews.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { FooterComponent } from './footer/footer.component';
+import { InternshipsComponent } from './internships/internships.component';
+import { JobsComponent } from './jobs/jobs.component';
+import { CourseEnrollmentManagementComponent } from './admin/course-enrollment-management/course-enrollment-management.component';
+import { RemainderSnackbarComponent } from './remainder-snackbar/remainder-snackbar.component';
+import { CoursesComponent } from './courses/courses.component';
+import { StudentreviewComponent } from './user/studentreview/studentreview.component';
+import { CourseDetailsComponent } from './course-details/course-details.component';
+import { ApplicationComponent } from './user/application/application.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { InternshipapplicationComponent } from './user/internshipapplication/internshipapplication.component';
+import { InternshipDetailsComponent } from './internship-details/internship-details.component';
+import { MatPaginator } from "@angular/material/paginator";
+import { SyllabusComponent } from './admin/syllabus/syllabus.component';
+import { VideoContentComponent } from './admin/video-content/video-content.component';
+import { CourseComponent } from './admin/course/course.component';
+import { CourseSyllabusComponent } from './course-syllabus/course-syllabus.component';
+import { LearningDetailComponent } from './user/learning-detail/learning-detail.component';
+import { AllcoursesComponent } from './user/allcourses/allcourses.component';
+import { AllapplicationsComponent } from './user/allapplications/allapplications.component';
 
 
 @NgModule({
@@ -119,6 +141,27 @@ import { InterviewUpdateComponent } from './employer/interview-update/interview-
     StudentmessageComponent,
     InterviewComponent,
     InterviewUpdateComponent,
+    ApplicationsComponent,
+    InterviewsComponent,
+    FooterComponent,
+    InternshipsComponent,
+    JobsComponent,
+    CourseEnrollmentManagementComponent,
+    RemainderSnackbarComponent,
+    CoursesComponent,
+    StudentreviewComponent,
+    CourseDetailsComponent,
+    ApplicationComponent,
+    JobDetailsComponent,
+    InternshipapplicationComponent,
+    InternshipDetailsComponent,
+    SyllabusComponent,
+    VideoContentComponent,
+    CourseComponent,
+    CourseSyllabusComponent,
+    LearningDetailComponent,
+    AllcoursesComponent,
+    AllapplicationsComponent,
    
 
 
@@ -156,8 +199,10 @@ import { InterviewUpdateComponent } from './employer/interview-update/interview-
     MatProgressSpinnerModule,
     MatDialogModule,
     MatMenuModule,
-    MatTooltipModule
-  ],
+    MatTooltipModule,
+    MatChipsModule,
+    MatPaginator
+],
   providers: [
     // authGuard is removed as it should be used in route configuration, not as a provider
     AuthGuard,

@@ -1,6 +1,6 @@
 import { Component,HostListener, OnInit , ViewChild} from '@angular/core';
 import { UserAuthService } from '../_services/user-auth.service';
-import { Router } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AdminService } from '../_services/admin.service';
@@ -23,23 +23,32 @@ export class HeaderComponent implements OnInit {
   sidebarOpen = false;
   isDesktop = true;
    unreadCount: number = 0;
+   loading = false;
      @ViewChild('sidenav') sidenav!: MatSidenav;
-    @ViewChild('employerSidenav') employerSidenav!: MatSidenav;
 
-    @HostListener('window:resize', [])
-    onResize() {
-      this.isDesktop = window.innerWidth > 768;
-      if (!this.isDesktop) {
-        this.sidebarOpen = false;
-      }
+  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService,private adminService: AdminService,private breakpointObserver: BreakpointObserver) {
+    this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      this.loading = true;
+    } else if (
+      event instanceof NavigationEnd ||
+      event instanceof NavigationCancel ||
+      event instanceof NavigationError
+    ) {
+      setTimeout(() => this.loading = false, 300); // optional delay
     }
-  constructor(private userAuthService: UserAuthService, private router: Router,public userService: UserService,private adminService: AdminService,private breakpointObserver: BreakpointObserver) { }
+  });
+   }
 
   ngOnInit(): void {
     // Initialization logic here
      this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
-        this.isSmallScreen = result.matches;
+         this.isSmallScreen = result.matches;
+      this.isDesktop = !result.matches;
+      if (!this.isDesktop) {
+        this.sidebarOpen = false;
+      }
       });
   }
 

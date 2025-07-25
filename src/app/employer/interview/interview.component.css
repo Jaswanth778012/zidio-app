@@ -1,0 +1,84 @@
+/* .loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+}
+
+.bouncing-loader {
+  display: flex;
+  justify-content: space-between;
+  width: 70px;
+}
+
+.bouncing-loader > div {
+  width: 18px;
+  height: 18px;
+  background-color: #d55e19;
+  border-radius: 50%;
+  animation: bouncing 0.6s infinite alternate;
+}
+
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bouncing {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0.7;
+  }
+} */
+
+/* Replace this selector with .loading-container if that's what you're using */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+}
+
+/* Bouncing loader animation */
+.bouncing-loader {
+  display: flex;
+  justify-content: space-between;
+  width: 70px;
+}
+
+.bouncing-loader > div {
+  width: 18px;
+  height: 18px;
+  background-color: #d55e19;
+  border-radius: 50%;
+  animation: bouncing 0.6s infinite alternate;
+}
+
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bouncing {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0.7;
+  }
+}
+
+
+
