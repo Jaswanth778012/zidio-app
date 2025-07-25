@@ -16,17 +16,23 @@ public class ImageModel {
 	private long id;
 	private String imageName;
 	private String type;
-	
+	private String url;
 	@Column(length = 50000000)
 	private byte[] picByte;
 	
 	public ImageModel() {
 		
 	}
-	public ImageModel(String imageName, String type, byte[] picByte) {
+	public ImageModel(String imageName, String type, String url) {
 		this.imageName = imageName;
 		this.type = type;
-		this.picByte = picByte;
+		this.url = url;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public long getId() {
 		return id;

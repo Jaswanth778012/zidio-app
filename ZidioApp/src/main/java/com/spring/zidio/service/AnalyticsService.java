@@ -11,6 +11,7 @@ import com.spring.zidio.PostStatus;
 import com.spring.zidio.User;
 import com.spring.zidio.UserStatus;
 import com.spring.zidio.dao.CourseDao;
+import com.spring.zidio.dao.CourseEnrollmentDao;
 import com.spring.zidio.dao.InternshipDao;
 import com.spring.zidio.dao.JobDao;
 import com.spring.zidio.dao.UserDao;
@@ -29,6 +30,9 @@ public class AnalyticsService {
 
     @Autowired
     private CourseDao courseDao;
+    
+    @Autowired
+    private CourseEnrollmentDao courseEnrollmentDao;
 
     public Map<String, Object> getDashboardStats() {
         Map<String, Object> stats = new HashMap<>();
@@ -49,7 +53,9 @@ public class AnalyticsService {
         long jobCount = jobDao.count();
         long internshipCount = internshipDao.count();
         long courseCount = courseDao.count();
-
+        
+        long courseEnrollmentCount = courseEnrollmentDao.count();
+        
         long approvedJobs = jobDao.countByStatus(PostStatus.APPROVED);
         long pendingJobs = jobDao.countByStatus(PostStatus.PENDING);
         long flaggedJobs = jobDao.countByStatus(PostStatus.FLAGGED);
@@ -72,6 +78,7 @@ public class AnalyticsService {
         stats.put("jobsCount", jobCount);
         stats.put("internshipsCount", internshipCount);
         stats.put("coursesCount", courseCount);
+        stats.put("courseEnrollmentCount", courseEnrollmentCount);
 
         stats.put("approvedJobs", approvedJobs);
         stats.put("pendingJobs", pendingJobs);

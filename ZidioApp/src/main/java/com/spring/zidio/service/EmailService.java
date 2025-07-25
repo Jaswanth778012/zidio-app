@@ -11,9 +11,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendInterviewEmail(String to, String subject, String body) {
+    public void sendInterviewEmail(String from,String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("your-email@gmail.com");
+        message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);

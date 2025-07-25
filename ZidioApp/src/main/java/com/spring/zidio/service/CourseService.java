@@ -24,7 +24,7 @@ import com.spring.zidio.payload.CourseUpdateRequest;
 public class CourseService {
 
     @Autowired 
-    private CourseDao courseDao;
+    public CourseDao courseDao;
     @Autowired private UserDao userDao;
     @Autowired private CategoryDao categoryDao;
     @Autowired private AuditLogService auditLogService;
@@ -255,7 +255,11 @@ public class CourseService {
 Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 return courseDao.filterCourses(categoryId, status, minEnroll, maxEnroll, minPrice, maxPrice, search, pageable);
 }
- 
+    public Course getCourseById(Long id) {
+        return courseDao.findById(id)
+            .orElseThrow(() -> new RuntimeException("Course not found with ID: " + id));
+    }
+
 
 }
 

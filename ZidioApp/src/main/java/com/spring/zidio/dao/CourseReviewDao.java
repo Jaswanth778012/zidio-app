@@ -9,5 +9,6 @@ import com.spring.zidio.CourseReview;
 
 public interface CourseReviewDao extends JpaRepository<CourseReview, Long> {
     List<CourseReview> findByCourse(Course course);
+    List<CourseReview> findByReviewerUsernameAndCourse(String username, Course course);
     List<CourseReview> findByFlaggedTrue();
 }

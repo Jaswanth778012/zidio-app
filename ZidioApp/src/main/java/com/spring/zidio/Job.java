@@ -65,6 +65,11 @@ public class Job {
     @JsonIgnore
     private List<Application> applications; // ✅ New: List of Applications
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "job_id")
+    @JsonIgnore
+    private List<ApplicationQuestion> jobApplicationQuestions;
+
     public enum JobType {
         FULL_TIME,
         PART_TIME,

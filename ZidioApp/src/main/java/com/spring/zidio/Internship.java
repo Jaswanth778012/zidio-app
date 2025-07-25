@@ -72,6 +72,12 @@ public class Internship {
     @JsonIgnore
     private List<Application> applications;
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "internship_id")
+    @JsonIgnore
+    private List<ApplicationQuestion> internshipApplicationQuestions;
+
+    
     public enum InternshipType{
 		FULL_TIME,
 		PART_TIME,

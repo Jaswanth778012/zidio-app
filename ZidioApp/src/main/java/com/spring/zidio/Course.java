@@ -6,8 +6,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -97,6 +98,7 @@ public class Course {
     private User faculty;
     
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<CourseReview> reviews;
     
  
@@ -107,5 +109,13 @@ public class Course {
     @Column(precision = 10, scale = 2)
     private BigDecimal discountedPrice;
     
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("course") 
+    private List<Syllabus> syllabus;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<CourseProgress> progress;
+
  
 }

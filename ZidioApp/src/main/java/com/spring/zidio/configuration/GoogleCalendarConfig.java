@@ -23,7 +23,7 @@ import com.google.api.services.calendar.CalendarScopes;
 @Configuration
 public class GoogleCalendarConfig {
 	
-		 private static final String APPLICATION_NAME = "calender";
+		 private static final String APPLICATION_NAME = "InterviewScheduler";
 		    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance(); // ✅ Updated here
 		    private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
@@ -46,6 +46,7 @@ public class GoogleCalendarConfig {
 		        )
 		        .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
 		        .setAccessType("offline")
+		        .setApprovalPrompt("force") 
 		        .build();
 
 		        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();

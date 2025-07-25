@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.spring.zidio.service.UserService;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 @EnableJpaRepositories(basePackages = "com.spring.zidio.dao")
 public class ZidioAppApplication implements CommandLineRunner {
 	

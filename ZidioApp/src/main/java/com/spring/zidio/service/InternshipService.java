@@ -121,6 +121,12 @@ public class InternshipService {
             PageRequest.of(page, size)
         );
     }
+    
+    public Internship getInternshipById(Long id) {
+        return internshipDao.findById(id)
+            .orElseThrow(() -> new RuntimeException("Internship not found with id: " + id));
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.spring.zidio.service;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +28,17 @@ public class InterviewService {
 
 	@Autowired
 	private EmployerProfileDao employerProfileRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
-	public Interview ScheduleInterview(Interview interview)
+	public Interview ScheduleInterview(Interview interview, Principal principal)
 	{
 		String studentEmail = studentProfileRepository.findByUsername(interview.getStudent().getUserName())
 				.map(StudentProfile::getEmail)
 				.orElseThrow(() -> new RuntimeException("Student email not found"));
+		
+		String employerUserName = principal.getName();
 		
 		String employerEmail = employerProfileRepository.findByUsername(interview.getEmployer().getUserName())
 				.map(EmployerProfile::getEmail)
@@ -41,6 +47,22 @@ public class InterviewService {
 		try {
 	        String meetLink = googleCalendarService.createCalendarEvent(interview, studentEmail, employerEmail);
 	        interview.setMeetingLink(meetLink);
+	        
+	        String subject = "Interview Scheduled";
+	        String body = "Hi " + interview.getStudent().getUserName() + ",\n\n" +
+	        			"Thank you for your interest in the"+(interview.getJob() != null ? interview.getJob().getTitle() : interview.getInternship().getTitle())  + " position at" +(interview.getJob() != null ? interview.getJob().getCompanyName() : interview.getInternship().getCompanyName())  + ".\n\n" +
+	                      "We’d like to invite you to interview with us. please use the below meeting link to join the interview\n\n" +
+	                      "Interview Details:\n" +
+	                      "Position: " + (interview.getJob() != null ? interview.getJob().getTitle() : interview.getInternship().getTitle()) + "\n" +
+	                      "Date: " + interview.getInterviewDate() + "\n" +
+	                      "Time: " + interview.getStartTime() + " to " + interview.getEndTime() + "\n" +
+	                      "Mode: " + interview.getMode() + "\n" +
+	                      "Meeting Link: " + meetLink + "\n\n" +
+	                      "If you have any questions or technical difficulties, feel free to reply to this email.\n"+
+	                      "Best regards,\n" +
+	                      employerUserName;
+
+	        emailService.sendInterviewEmail(employerEmail, studentEmail, subject, body);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	        throw new RuntimeException("Failed to schedule calendar event: " + e.getMessage());
@@ -90,6 +112,20 @@ public class InterviewService {
 	        try {
 	            String newMeetLink = googleCalendarService.createCalendarEvent(interview, studentEmail, employerEmail);
 	            existingInterview.setMeetingLink(newMeetLink);
+	            String subject = "Interview Rescheduled";
+	            String body = "Hi " + interview.getStudent().getUserName() + ",\n\n" +
+	                          "Your interview for the "+(interview.getJob() != null ? interview.getJob().getTitle() : interview.getInternship().getTitle())+"has been successfully rescheduled.\n\n" +
+	            			  "Please find the updated details below:\n\n" +
+	                          "New Date: " + interview.getInterviewDate() + "\n" +
+	                          "Time: " + interview.getStartTime() + " to " + interview.getEndTime() + "\n" +
+	                          "Mode: " + interview.getMode() + "\n" +
+	                          "Location: " + interview.getLocation() + "\n" +
+	                          "New Meeting Link: " + newMeetLink + "\n\n" +
+	                          "Notes: " + interview.getNotes() + "\n\n" +
+	                          "Regards,\n" + interview.getEmployer().getUserName();
+
+	            emailService.sendInterviewEmail(employerEmail, studentEmail, subject, body);
+
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	            throw new RuntimeException("Failed to update calendar event: " + e.getMessage());

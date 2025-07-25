@@ -14,6 +14,8 @@ public interface UserDao extends JpaRepository<User, String> {
 	// User findByUserName(String userName);
 	Optional<User> findByUserName(String userName);
 	
+//	User findByUserName(String userName);
+	
 	@Query("SELECT u FROM User u JOIN u.roles r WHERE r.roleName = 'Employer'")
 	List<User> findAllEmployers();
 

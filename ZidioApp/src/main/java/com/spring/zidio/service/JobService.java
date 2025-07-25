@@ -97,7 +97,11 @@ public class JobService {
         return jobDao.save(job);
     }
     
-    
+    public Job getJobById(Long id) {
+        return jobDao.findById(id)
+            .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
+    }
+
 
     public void deleteJob(Long id) {
         jobDao.deleteById(id);

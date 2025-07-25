@@ -2,10 +2,6 @@ package com.spring.zidio.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,13 +38,16 @@ import com.spring.zidio.AuditLog;
 import com.spring.zidio.Category;
 import com.spring.zidio.Course;
 import com.spring.zidio.CourseAuditLog;
+import com.spring.zidio.CourseEnrollment;
 import com.spring.zidio.CourseReview;
 import com.spring.zidio.ImageModel;
 import com.spring.zidio.Internship;
 import com.spring.zidio.Job;
 import com.spring.zidio.Message;
 import com.spring.zidio.Report;
+import com.spring.zidio.Syllabus;
 import com.spring.zidio.User;
+import com.spring.zidio.VideoContent;
 import com.spring.zidio.dao.UserDao;
 import com.spring.zidio.payload.CourseRequest;
 import com.spring.zidio.payload.CourseUpdateRequest;
@@ -59,13 +57,18 @@ import com.spring.zidio.service.AdminProfileService;
 import com.spring.zidio.service.AnalyticsService;
 import com.spring.zidio.service.AuditLogService;
 import com.spring.zidio.service.CategoryService;
+import com.spring.zidio.service.CloudinaryService;
+import com.spring.zidio.service.CourseEnrollmentService;
+
 import com.spring.zidio.service.CourseReviewService;
 import com.spring.zidio.service.CourseService;
 import com.spring.zidio.service.InternshipService;
 import com.spring.zidio.service.JobService;
 import com.spring.zidio.service.MessageService;
 import com.spring.zidio.service.ReportService;
+import com.spring.zidio.service.SyllabusService;
 import com.spring.zidio.service.UserService;
+import com.spring.zidio.service.VideoContentService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -115,7 +118,18 @@ public class AdminController {
     @Autowired
     private MessageService messageService;
     
-    private static final String UPLOAD_DIR = "uploads/";
+    @Autowired
+    private CloudinaryService cloudinaryService;
+    
+    @Autowired
+    private CourseEnrollmentService courseEnrollmentService;
+    
+    @Autowired
+    private SyllabusService syllabusService;
+    
+    @Autowired
+    private VideoContentService videoContentService;
+    
     
     //Users and students employers custtomization
     @GetMapping("/users")
@@ -206,28 +220,17 @@ public class AdminController {
     
     public Set<ImageModel> uploadImage(MultipartFile[] multipartFiles) throws IOException {
     	Set<ImageModel> imageModels = new HashSet<>();
-    	
+    	if(multipartFiles != null) {
     	for (MultipartFile file : multipartFiles) {
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get("uploads", fileName);
-            Files.createDirectories(filePath.getParent()); // Ensure directory exists
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            ImageModel imageModel = new ImageModel(
-                fileName,  // Save only the filename
-                file.getContentType(),
-                null// Don't save bytes in DB
-            );
+    		String url = cloudinaryService.uploadFile(file);
+    		ImageModel imageModel = new ImageModel(
+    				file.getOriginalFilename(),
+    				file.getContentType(),
+    				url
+    				);
             imageModels.add(imageModel);
         }
-//    	for(MultipartFile file : multipartFiles) {
-//			ImageModel imageModel = new ImageModel(
-//			file.getOriginalFilename(),
-//			file.getContentType(),
-//			file.getBytes()
-//			);
-//			imageModels.add(imageModel);
-//    }
+    	}
     	return imageModels;
     }
 
@@ -289,6 +292,33 @@ public class AdminController {
                     .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
+    
+    @GetMapping("/course/enroll/all")
+    public List<CourseEnrollment> getAllEnrollments() {
+        return courseEnrollmentService.getAllEnrollments();
+    }
+
+    @GetMapping("/course/enroll/{courseId}")
+    public List<CourseEnrollment> getByCourseId(@PathVariable Long courseId) {
+        return courseEnrollmentService.getEnrollmentsByCourseId(courseId);
+    }
+
+    @GetMapping("/course/enroll/student/{username}")
+    public List<CourseEnrollment> getByStudentUsername(@PathVariable String username) {
+        return courseEnrollmentService.getEnrollmentsByStudentUsername(username);
+    }
+    
+    @GetMapping("/course/enrollby/{id}")
+    public CourseEnrollment getEnrollmentById(@PathVariable Long id) {
+        return courseEnrollmentService.getEnrollmentById(id);
+    }
+    
+    @DeleteMapping("/course/{enrollmentId}")
+    public String deleteEnrollmentById(@PathVariable Long enrollmentId) {
+        boolean deleted = courseEnrollmentService.deleteEnrollment(enrollmentId);
+        return deleted ? "Enrollment deleted." : "Enrollment not found.";
+    }
+    
 
 
     @DeleteMapping("/courses/{id}/delete")
@@ -310,21 +340,11 @@ public class AdminController {
         }
     }
     
-    @GetMapping("/courses/image/{imageName}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
-        Path imagePath = Paths.get("uploads", imageName); // adjust if needed
-        if (!Files.exists(imagePath)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        byte[] imageBytes = Files.readAllBytes(imagePath);
-        String mimeType = Files.probeContentType(imagePath);
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(mimeType))
-                .body(imageBytes);
+    @GetMapping("/courses/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
+        Course course = courseService.getCourseById(id);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
-
     
 
 
@@ -352,28 +372,17 @@ public class AdminController {
     }
 
     //reviews of courses
-    @GetMapping("/reviews/flagged")
+    @GetMapping("course/reviews/flagged")
     public ResponseEntity<List<CourseReview>> getFlaggedReviews() {
         return ResponseEntity.ok(courseReviewService.getFlaggedReviews());
     }
 
-    @GetMapping("/courses/{courseId}/reviews")
-    public ResponseEntity<List<CourseReview>> getReviewsForCourse(@PathVariable Long courseId) {
-        return ResponseEntity.ok(courseReviewService.getReviewsForCourse(courseId));
-    }
 
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         courseReviewService.deleteReview(id);
         return ResponseEntity.ok().build();
     }
-
-    @PutMapping("/reviews/{id}/flag")
-    public ResponseEntity<Void> flagReview(@PathVariable Long id) {
-        courseReviewService.flagReview(id);
-        return ResponseEntity.ok().build();
-    }
-    
     
 
     //Internship customization
@@ -582,7 +591,6 @@ public class AdminController {
     
     //Category endpoints
     @GetMapping("/categories")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<Category>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
@@ -638,21 +646,13 @@ public class AdminController {
             profile.setPhone(phone);
 
             if (profilePicture != null && !profilePicture.isEmpty()) {
-                // Save file
-                String fileName = System.currentTimeMillis() + "-" + profilePicture.getOriginalFilename();
-                Path uploadPath = Paths.get(UPLOAD_DIR);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(profilePicture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                profile.setProfilePictureUrl("/" + UPLOAD_DIR + fileName);
+            	String imageUrl = cloudinaryService.uploadprofile(profilePicture, "admin-profile_pictures");
+				profile.setProfilePictureUrl(imageUrl);
             }
 
             AdminProfile savedProfile = adminProfileService.saveOrUpdateProfile(profile);
             return ResponseEntity.ok(savedProfile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
     }
@@ -732,6 +732,138 @@ public class AdminController {
     public ResponseEntity<List<Message>> markAllAsReadFromSender(@PathVariable String userName) {
         return ResponseEntity.ok(messageService.markAllAsReadFromSender(userName));
     }
+    
+    //syllabus
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<List<Syllabus>> getSyllabusByCourseId(@PathVariable Long courseId) {
+        List<Syllabus> syllabusList = syllabusService.getByCourseId(courseId);
+        return new ResponseEntity<>(syllabusList, HttpStatus.OK);
+    }
+    @PostMapping("/syllabus")
+    public ResponseEntity<Syllabus> createSyllabus(@RequestBody Syllabus syllabus) {
+        Syllabus createdSyllabus = syllabusService.createSyllabus(syllabus);
+        return ResponseEntity.ok(createdSyllabus);
+    }
+    
+    @PutMapping("/upsyllabus/{id}")
+    public Syllabus updateSyllabus(@PathVariable Long id,@RequestBody Syllabus syllabus)
+    {
+    	return syllabusService.update(id,syllabus);
+    }
+    
+    @GetMapping("/syllabus")
+    public List<Syllabus> getAllSyllabus() {
+		return syllabusService.getAllSyllabus();
+	}
+    
+    @GetMapping("/syll/{id}")
+    public Syllabus getSyllabusById(@PathVariable Long id) {
+		return syllabusService.getById(id);
+	}
+    
+    @DeleteMapping("/syllabus/{id}")
+    public void deleteSyllabus(@PathVariable Long id) {
+		syllabusService.deleteSyllabus(id);
+	}
+    
+    //Video Content
+    
+    @PostMapping("/syllabus/{syllabusId}/video-content")
+    public VideoContent saveVideoContent(
+            @PathVariable Long syllabusId,
+            @RequestParam(required = false) MultipartFile file,
+            @RequestParam(required = false) String videoUrl,
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam(required = false) Integer duration
+    ) {
+        VideoContent videoContent = new VideoContent();
+        videoContent.setTitle(title);
+        videoContent.setDescription(description);
+
+        if (file != null && !file.isEmpty()) {
+            Map uploadResult = cloudinaryService.uploadVideo(file, "courseVideos");
+            String uploadedUrl = uploadResult.get("url").toString();
+            Double durationSec = (Double) uploadResult.getOrDefault("duration", 0.0);
+
+            videoContent.setVideoUrl(uploadedUrl);
+            videoContent.setDuration(durationSec.intValue());
+        } else if (videoUrl != null && !videoUrl.isBlank()) {
+            if (duration == null || duration <= 0) {
+                throw new RuntimeException("Duration must be provided when using a video URL.");
+            }
+            videoContent.setVideoUrl(videoUrl);
+            videoContent.setDuration(duration);
+        } else {
+            throw new RuntimeException("Either a video file or videoUrl must be provided.");
+        }
+
+        Syllabus syllabus = syllabusService.getById(syllabusId);
+        if (syllabus == null) {
+            throw new RuntimeException("Syllabus not found with id: " + syllabusId);
+        }
+
+        videoContent.setSyllabus(syllabus);
+        return videoContentService.create(videoContent);
+    }
+
+ 
+    @PutMapping("/video-content/{id}")
+    public VideoContent updateVideoContent(
+            @PathVariable Long id,
+            @RequestParam(required = false) MultipartFile file,
+            @RequestParam(required = false) String videoUrl,
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam(required = false) Integer duration
+            
+    ) {
+        VideoContent videoContent = videoContentService.getById(id);
+        if (videoContent == null) {
+            throw new RuntimeException("VideoContent not found with id: " + id);
+        }
+
+        videoContent.setTitle(title);
+        videoContent.setDescription(description);
+
+        if (file != null && !file.isEmpty()) {
+        	 Map uploadResult = cloudinaryService.uploadVideo(file, "courseVideos");
+             String uploadedUrl = uploadResult.get("url").toString();
+             Double durationSec = (Double) uploadResult.getOrDefault("duration", 0.0);
+
+             videoContent.setVideoUrl(uploadedUrl);
+             videoContent.setDuration(durationSec.intValue());
+        } else if (videoUrl != null && !videoUrl.isBlank()) {
+        	if (duration == null || duration <= 0) {
+                throw new RuntimeException("Duration must be provided when using a video URL.");
+            }
+            videoContent.setVideoUrl(videoUrl);
+            videoContent.setDuration(duration);
+        }
+        
+        
+
+        return videoContentService.update(videoContent);
+    }
+
+    @GetMapping("/videos-content/{id}")
+    public VideoContent getVideoById(@PathVariable Long id) {
+        return videoContentService.getById(id);
+    }
+
+    @DeleteMapping("/video-content/{id}")
+    public void deleteVideo(@PathVariable Long id) {
+        videoContentService.delete(id);
+    }
+    
+    @GetMapping("/video-content/{syllabusId}")
+    public ResponseEntity<List<VideoContent>> getVideosBySyllabusId(@PathVariable Long syllabusId) {
+        List<VideoContent> videos = videoContentService.getBySyllabusId(syllabusId);
+        return new ResponseEntity<>(videos, HttpStatus.OK);
+    }
+    
+    //courseProgress
+    
 }
 
 

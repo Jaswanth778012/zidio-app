@@ -17,9 +17,11 @@ public class CourseReviewService {
     @Autowired private CourseDao courseDao;
     @Autowired private CourseReviewDao reviewRepo;
     @Autowired private AdminNotificationService notificationService;
+    
     public List<CourseReview> getReviewsForCourse(Long id) {
         Course course = courseDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
+
         return reviewRepo.findByCourse(course);
     }
 
@@ -41,8 +43,8 @@ public class CourseReviewService {
         return reviewRepo.save(review);
     }
 
-    public void flagReview(Long reviewId) {
-        CourseReview review = reviewRepo.findById(reviewId)
+    public void flagReview(Long id) {
+        CourseReview review = reviewRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
         review.setFlagged(true);
         
@@ -57,7 +59,15 @@ public class CourseReviewService {
         reviewRepo.save(review);
     }
 
-    public void deleteReview(Long reviewId) {
-        reviewRepo.deleteById(reviewId);
+    public void deleteReview(Long id) {
+        reviewRepo.deleteById(id);
+    }
+    
+    public double getAverageRating(Long id) {
+        List<CourseReview> reviews = getReviewsForCourse(id);
+        return reviews.stream()
+                .mapToInt(CourseReview::getRating)
+                .average()
+                .orElse(0.0);
     }
 }

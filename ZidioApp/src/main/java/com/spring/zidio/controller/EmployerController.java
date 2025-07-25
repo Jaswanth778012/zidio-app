@@ -1,10 +1,7 @@
 package com.spring.zidio.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
+
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -12,14 +9,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,9 +30,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.spring.zidio.Application;
+import com.spring.zidio.ApplicationQuestion;
+import com.spring.zidio.ApplicationStage;
+import com.spring.zidio.CalendarEvent;
 //import com.spring.zidio.Application;
 import com.spring.zidio.EmployerProfile;
 import com.spring.zidio.Internship;
@@ -45,11 +43,14 @@ import com.spring.zidio.Job;
 import com.spring.zidio.Message;
 import com.spring.zidio.User;
 import com.spring.zidio.dao.ApplicationDao;
+import com.spring.zidio.dao.ApplicationQuestionDao;
 import com.spring.zidio.dao.InternshipDao;
 import com.spring.zidio.dao.JobDao;
 import com.spring.zidio.dao.UserDao;
 import com.spring.zidio.payload.SendMessageRequest;
 import com.spring.zidio.service.ApplicationService;
+import com.spring.zidio.service.CalendarEventService;
+import com.spring.zidio.service.CloudinaryService;
 import com.spring.zidio.service.EmployerProfileService;
 import com.spring.zidio.service.InternshipService;
 import com.spring.zidio.service.InterviewService;
@@ -89,37 +90,30 @@ public class EmployerController {
 	    private ApplicationService applicationService;
 	    
 	    @Autowired
+	    private ApplicationQuestionDao applicationQuestionDao;
+	    @Autowired
 	    private ApplicationDao applicationDao;
 	    
 	    @Autowired
 	    private InterviewService interviewService;
 	    
-	    private static final String UPLOAD_DIR = "uploads/";
+	    @Autowired
+	    private CloudinaryService cloudinaryService;
+	    
+	    @Autowired
+	    private CalendarEventService eventService;
+	    
 	    
 	    @PostMapping("/jobs")
 	    public ResponseEntity<Job> createJob(@RequestPart("job") Job job,@RequestPart("file")  MultipartFile file,  Principal principal) {
 	    	try {
-	            String uploadDir = "uploads/logos/";
-	            String fileName = file.getOriginalFilename();
-	            Path uploadPath = Paths.get(uploadDir);
-
-	            if (!Files.exists(uploadPath)) {
-	                Files.createDirectories(uploadPath);
-	            }
-
-	            Path filePath = uploadPath.resolve(fileName);
-	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-	            String logoPath = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                    .path("/uploads/logos/")
-	                    .path(fileName)
-	                    .toUriString();
-	            job.setCompanyLogo(logoPath);
+	    		String imageUrl = cloudinaryService.uploadLogo(file,"CompanyLogos");
+	    		job.setCompanyLogo(imageUrl);
 	        User employer = userService.findByUsername(principal.getName());
 	        Job createdJob = jobService.createJob(job, employer);
 	        return ResponseEntity.ok(createdJob);
 	    }catch (Exception e) {
-	            return ResponseEntity.status(500).body(null); // Handle error appropriately
+	            return ResponseEntity.status(500).body(null); 
 	        }
 	    }
 
@@ -134,21 +128,8 @@ public class EmployerController {
 	    public ResponseEntity<Job> updateJob(@PathVariable Long id, @RequestPart("job") Job updatedJob, @RequestPart(value = "file", required = false) MultipartFile file) {
 	    	 try {
 	    	if (file != null && !file.isEmpty()) {
-	            String uploadDir = "uploads/logos/";
-	            String fileName = file.getOriginalFilename();
-	            Path uploadPath = Paths.get(uploadDir);
-
-	            if (!Files.exists(uploadPath)) {
-	                Files.createDirectories(uploadPath);
-	            }
-
-	            Path filePath = uploadPath.resolve(fileName);
-	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-	            String logoPath = "/uploads/logos/" + fileName;
-
-	            // Set the logo path in the updatedJob object
-	            updatedJob.setCompanyLogo(logoPath);
+	    		String imageUrl = cloudinaryService.uploadLogo(file,"CompanyLogos");
+	    		updatedJob.setCompanyLogo(imageUrl);
 	        }
 
 	    	Job job = jobService.updateJobDetails(id, updatedJob);
@@ -196,19 +177,8 @@ public class EmployerController {
 	    @PostMapping("/internships")
 	    public ResponseEntity<Internship> createInternship(@RequestPart("internship") Internship internship,@RequestPart("file")  MultipartFile file, Principal principal) {
 	    	try {
-	            String uploadDir = "uploads/logos/";
-	            String fileName = file.getOriginalFilename();
-	            Path uploadPath = Paths.get(uploadDir);
-
-	            if (!Files.exists(uploadPath)) {
-	                Files.createDirectories(uploadPath);
-	            }
-
-	            Path filePath = uploadPath.resolve(fileName);
-	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-	            String logoPath = "/uploads/logos/" + fileName;
-	            internship.setCompanyLogo(logoPath);
+	    		String imageUrl = cloudinaryService.uploadInternshipLogo(file,"InternshipLogos");
+	    		internship.setCompanyLogo(imageUrl);
 	    	User employer = userService.findByUsername(principal.getName());
 	        Internship createdIntern = internshipService.createInternship(internship, employer);
 	        return ResponseEntity.ok(createdIntern);
@@ -216,7 +186,7 @@ public class EmployerController {
 	            return ResponseEntity.status(500).body(null); // Handle error appropriately
 	        }
 	    }
-//
+
 	    @GetMapping("/internships")
 	    public ResponseEntity<List<Internship>> getAllInternships() {
 	        return ResponseEntity.ok(internshipService.getAllInternships());
@@ -226,21 +196,8 @@ public class EmployerController {
 	    public ResponseEntity<Internship> updateInternship(@PathVariable Long id, @RequestPart("internship") Internship updatedInternship, @RequestPart(value = "file", required = false) MultipartFile file) {
 	    	try {
 		    	if (file != null && !file.isEmpty()) {
-		            String uploadDir = "uploads/logos/";
-		            String fileName = file.getOriginalFilename();
-		            Path uploadPath = Paths.get(uploadDir);
-
-		            if (!Files.exists(uploadPath)) {
-		                Files.createDirectories(uploadPath);
-		            }
-
-		            Path filePath = uploadPath.resolve(fileName);
-		            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-		            String logoPath = "/uploads/logos/" + fileName;
-
-		            // Set the logo path in the updatedJob object
-		            updatedInternship.setCompanyLogo(logoPath);
+		    		String imageUrl = cloudinaryService.uploadInternshipLogo(file,"InternshipLogos");
+		    		updatedInternship.setCompanyLogo(imageUrl);
 		        }
 	    	Internship internship = internshipService.updateInternshipDetails(id, updatedInternship);
 	        return ResponseEntity.ok(internship);
@@ -278,14 +235,6 @@ public class EmployerController {
 	    	    return internshipService.getFilteredInternships(page, size, search);
 	    	}
 	    
-//	    public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
-//        return ResponseEntity.ok(messageService.sendMessage(message));
-//    }
-//	    @GetMapping("/messages/test")
-//	    public ResponseEntity<String> testMessage(){
-//	    	String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//	    	return ResponseEntity.ok("Hello " + username + ", this is a test message!");
-//	    }
 	    //Indashboard Message service
 	    @PostMapping("/messages")
 	    public ResponseEntity<?> sendMessage(@RequestBody SendMessageRequest request) {
@@ -301,10 +250,7 @@ public class EmployerController {
 	                                .body("Error: " + e.getMessage());
 	       }
 	    }
-	    
-	    
 
-//	    
 	    @GetMapping("/messages")
 	    public List<Message> getAllMessages() {
 	        return messageService.getAllMessages();
@@ -410,18 +356,12 @@ public class EmployerController {
 	    		profile.setCompanyType(companyType);
 	    		if(profilePicture !=null && !profilePicture.isEmpty())
 	    		{
-	    			String fileName = System.currentTimeMillis() + "-" + profilePicture.getOriginalFilename();
-	    			Path uploadPath = Paths.get(UPLOAD_DIR);
-	    			if(!Files.exists(uploadPath)) {
-	    				Files.createDirectories(uploadPath);
-	    			}
-	    			Path filePath = uploadPath.resolve(fileName);
-	    			Files.copy(profilePicture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-	    			profile.setProfilePictureUrl("/" + UPLOAD_DIR + fileName);
+	    			String profilePictureUrl = cloudinaryService.uploadprofile(profilePicture,"Employer_ProfilePictures");
+	    			profile.setProfilePictureUrl(profilePictureUrl);
 	    		}
 	    		EmployerProfile updatedProfile = employerProfileService.saveOrUpdateProfile(profile);
 	    		return ResponseEntity.ok(updatedProfile);
-	    	}catch(IOException e) {
+	    	}catch(Exception e) {
 	    		return ResponseEntity.status(500).build(); // Handle error appropriately
 	    	}
 	    	
@@ -432,7 +372,7 @@ public class EmployerController {
 	    
 	    @GetMapping("/job/{jobId}")
 	    public ResponseEntity<List<Application>> getByJob(@PathVariable Long jobId) {
-	        List<Application> apps = applicationService.findByJob(jobId);
+	        List<Application> apps = applicationService.getByJobId(jobId);
 	        if (apps.isEmpty()) return ResponseEntity.noContent().build();
 	        return ResponseEntity.ok(apps);
 	    }
@@ -440,7 +380,7 @@ public class EmployerController {
 	    // Find by internshipId
 	    @GetMapping("/internship/{internshipId}")
 	    public ResponseEntity<List<Application>> getByInternship(@PathVariable Long internshipId) {
-	        List<Application> apps = applicationService.findByInternship(internshipId);
+	        List<Application> apps = applicationService.getByInternshipId(internshipId);
 	        if (apps.isEmpty()) return ResponseEntity.noContent().build();
 	        return ResponseEntity.ok(apps);
 	    }
@@ -456,7 +396,7 @@ public class EmployerController {
 	    // Update status
 	    @PutMapping("/{id}/status")
 	    public ResponseEntity<?> updateStatus(@PathVariable Long id,
-	                                          @RequestParam String status) {
+	                                          @RequestParam ApplicationStage status) {
 	        try {
 	            Application updatedApp = applicationService.updateStatus(id, status);
 	            return ResponseEntity.ok(updatedApp);
@@ -472,37 +412,47 @@ public class EmployerController {
 	    }
 	    
 	    //Get All Applications
+	    @PreAuthorize("hasRole('Employer')")
 	    @GetMapping("/All")
 	    public List<Application> getAllApplications() {
-	        return applicationService.getAllApplications();
+	        try {
+	            return applicationService.getAllApplications();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            throw e;  // or return emptyList()
+	        }
 	    }
+
 	    
 	    @GetMapping("/recent")
 	    public List<Application> getRecentApplications(){
 	    	return applicationDao.findTop3ByOrderByAppliedDateDesc();
 	    }
 	    
+	    @GetMapping("/count")
+	    public ResponseEntity<Long> countByStage(@RequestParam("stage") ApplicationStage stage) {
+	        return ResponseEntity.ok(applicationService.countByStage(stage));
+	    }
+
+	    // ✅ Get applications by stage
+	    @GetMapping("/phase")
+	    public ResponseEntity<List<Application>> getApplicationsByStage(@RequestParam("stage") ApplicationStage stage) {
+	        return ResponseEntity.ok(applicationService.getApplicationsByStage(stage));
+	    }
+	    
 	    //Download Resume
 	    @GetMapping("/resume/{id}")
-	    public ResponseEntity<Resource> downloadResume(@PathVariable Long id) {
-	        Application application = applicationDao.findById(id)
-	                .orElseThrow(() -> new RuntimeException("Application not found"));
-
-	        String resumePath = application.getResumeUrl();
-	        if (resumePath == null || resumePath.isBlank()) {
-	            throw new RuntimeException("Resume not available for this application");
+	    public ResponseEntity<?> downloadResume(@PathVariable Long id) {
+	        try {
+	            String resumeUrl = applicationService.getResumeDownloadUrl(id);
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.add("Location", resumeUrl);
+	            return new ResponseEntity<>(headers, HttpStatus.FOUND); // 302 Redirect
+	        } catch (RuntimeException e) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	        }
-
-	        // Extract filename
-	        String fileName = Paths.get(resumePath).getFileName().toString();
-
-	        Resource resource = applicationService.loadResume(fileName);
-
-	        return ResponseEntity.ok()
-	                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-	                .body(resource);
 	    }
+
 	    
 	    //interviews
 	    @PostMapping("/interviews")
@@ -535,7 +485,7 @@ public class EmployerController {
 	        interview.setStudent(student);
 	        interview.setStatus(Interview.Status.SCHEDULED); // Set default status
 
-	        Interview createdInterview = interviewService.ScheduleInterview(interview);
+	        Interview createdInterview = interviewService.ScheduleInterview(interview,principal);
 	        return ResponseEntity.ok(createdInterview);
 	    }
 
@@ -574,7 +524,121 @@ public class EmployerController {
 	        return ResponseEntity.ok("Interview with ID " + id + " has been cancelled successfully.");
 	    }
 	    
-	   
+	    //Calendar Event
+	    @GetMapping("/calendar/events")
+	    public List<CalendarEvent> getAllEvents(Principal principal) {
+	        return eventService.getAllEvents(principal);
+	    }
+	    
+	    @PostMapping("/calendar/event")
+	    public ResponseEntity<Map<String, Object>> createEvent(@RequestBody CalendarEvent event,Principal principal) {
+	        try {
+	            CalendarEvent createdEvent = eventService.createEvent(event,principal);
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("message", "Event created successfully.");
+	            response.put("event", createdEvent);
+	            return ResponseEntity.status(201).body(response);
+	        } catch (RuntimeException e) {
+	            Map<String, Object> error = new HashMap<>();
+	            error.put("message", "Failed to create event.");
+	            return ResponseEntity.badRequest().body(error);
+	        }
+	    }
+	    
+	    @GetMapping("/calendar/event/{id}")
+	    public ResponseEntity<CalendarEvent> getEventById(@PathVariable Long id) {
+	        CalendarEvent event = eventService.getEventById(id);
+	        if (event != null) {
+	            return ResponseEntity.ok(event);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
+	    @PutMapping("/calendar/event/{id}")
+	    public ResponseEntity<Map<String, Object>> updateEvent(@PathVariable Long id, @RequestBody CalendarEvent updatedEvent,Principal principal) {
+	        try {
+	            CalendarEvent event = eventService.updateEvent(id, updatedEvent,principal);
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("message", "Event updated successfully.");
+	            response.put("event", event);
+	            return ResponseEntity.ok(response);
+	        } catch (RuntimeException e) {
+	            Map<String, Object> error = new HashMap<>();
+	            error.put("message", "Event not found or update failed.");
+	            return ResponseEntity.status(404).body(error);
+	        }
+	    }
+	    
+	    @DeleteMapping("/calendar/event/{id}")
+	    public ResponseEntity<Void> deleteEvent(@PathVariable Long id,Principal principal) {
+	        eventService.deleteEvent(id,principal);
+	        return ResponseEntity.noContent().build();
+	    }
+	    
+	    @GetMapping("/upcoming")
+	    public List<CalendarEvent> getUpcomingEvents(Principal principal) {
+	        return eventService.getUpcomingEvents(principal);
+	    }
+	    
+	    @PostMapping("/job/{jobId}")
+	    public List<ApplicationQuestion> addQuestionsToJob(@PathVariable Long jobId, @RequestBody List<ApplicationQuestion> questions) {
+	        Job job = jobDao.findById(jobId)
+	            .orElseThrow(() -> new RuntimeException("Job not found"));
+
+	        questions.forEach(q -> {
+	            // Validation
+	            if (q.getQuestionText() == null || q.getQuestionText().trim().isEmpty()) {
+	                throw new RuntimeException("Question text cannot be empty");
+	            }
+	            if (q.getQuestionType() == null || (!q.getQuestionType().equalsIgnoreCase("TEXT") &&
+	                                                !q.getQuestionType().equalsIgnoreCase("MULTIPLE_CHOICE"))) {
+	                throw new RuntimeException("Question type must be TEXT or MULTIPLE_CHOICE");
+	            }
+	            if (q.getQuestionType().equalsIgnoreCase("MULTIPLE_CHOICE") && (q.getOptions() == null || q.getOptions().isEmpty())) {
+	                throw new RuntimeException("Options must be provided for multiple-choice questions");
+	            }
+
+	            q.setJob(job);
+	            q.setInternship(null); // Not an internship question
+	        });
+
+	        return applicationQuestionDao.saveAll(questions);
+	    }
+
+	    @PostMapping("/internship/{internshipId}")
+	    public List<ApplicationQuestion> addQuestionsToInternship(@PathVariable Long internshipId, @RequestBody List<ApplicationQuestion> questions) {
+	        Internship internship = internshipDao.findById(internshipId)
+	            .orElseThrow(() -> new RuntimeException("Internship not found"));
+
+	        questions.forEach(q -> {
+	            // Validation
+	            if (q.getQuestionText() == null || q.getQuestionText().trim().isEmpty()) {
+	                throw new RuntimeException("Question text cannot be empty");
+	            }
+	            if (q.getQuestionType() == null || (!q.getQuestionType().equalsIgnoreCase("TEXT") &&
+	                                                !q.getQuestionType().equalsIgnoreCase("MULTIPLE_CHOICE"))) {
+	                throw new RuntimeException("Question type must be TEXT or MULTIPLE_CHOICE");
+	            }
+	            if (q.getQuestionType().equalsIgnoreCase("MULTIPLE_CHOICE") && (q.getOptions() == null || q.getOptions().isEmpty())) {
+	                throw new RuntimeException("Options must be provided for multiple-choice questions");
+	            }
+
+	            q.setInternship(internship);
+	            q.setJob(null); // Not a job question
+	        });
+
+	        return applicationQuestionDao.saveAll(questions);
+	    }
+
+	    
+	    
+	    @DeleteMapping("/application-questions/{id}")
+	    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
+	        applicationService.deleteApplicationQuestion(id);
+	        return ResponseEntity.ok("Question deleted successfully");
+	    }
+
+
 	    
 	    
 }

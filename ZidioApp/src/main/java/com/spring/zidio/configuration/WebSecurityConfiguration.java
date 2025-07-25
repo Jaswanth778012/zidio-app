@@ -39,9 +39,10 @@ public class WebSecurityConfiguration {
                 .and()
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/authenticate","/registerNewUser","/updatePassword","/uploads/**","/uploads/resumes/**","/uploads/logos/**").permitAll()
+                        .requestMatchers("/authenticate","/registerNewUser","/updatePassword","/auth/courses","/uploads/**","/uploads/resumes/**","/uploads/logos/**","/auth/**").permitAll()
                         .requestMatchers("/admin/courses/image/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/courses").hasRole("Admin")
+                        .requestMatchers("/admin/categories/**").hasRole("Admin")
                         .requestMatchers("/admin/**").hasRole("Admin")
                         .requestMatchers("/student/**").hasRole("Student")
                         .requestMatchers("/employer/**").hasRole("Employer")
@@ -57,7 +58,7 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public static AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

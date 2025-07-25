@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
@@ -11,13 +13,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +47,8 @@ public class Application {
 	private User student;
 	
 	private LocalDate appliedDate;
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private ApplicationStage status = ApplicationStage.APPLICATIONS_RECEIVED;
 	private String resumeUrl;
 	private LocalDateTime timestamp = LocalDateTime.now();
 	
@@ -93,8 +97,7 @@ public class Application {
 	//Identity information
 	private String aadharNumber;
 	
-	//E-signature
-	private String eSignature;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "application", orphanRemoval = true)
     private List<Education> educationHistory;
@@ -111,8 +114,11 @@ public class Application {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "application", orphanRemoval = true)
     private List<Certification> certifications;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "application", orphanRemoval = true)
-    private List<ApplicationQuestion> applicationQuestions;
+    @OneToMany(mappedBy = "application" ,orphanRemoval = true)
+    private List<ApplicationQuestionAnswer> applicationQuestionAnswers;
+    
+  //E-signature
+  	private String eSignature;
 	
 	public boolean isForJob() {
 		return job != null;

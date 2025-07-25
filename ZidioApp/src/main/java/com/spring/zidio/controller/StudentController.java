@@ -1,13 +1,13 @@
 package com.spring.zidio.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,15 +30,39 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.zidio.Application;
+import com.spring.zidio.ApplicationQuestion;
+import com.spring.zidio.CalendarEvent;
+import com.spring.zidio.Contact;
+import com.spring.zidio.Course;
+import com.spring.zidio.CourseEnrollment;
+import com.spring.zidio.CourseProgress;
+import com.spring.zidio.CourseReview;
+import com.spring.zidio.Internship;
+import com.spring.zidio.Job;
 //import com.spring.zidio.Application;
 import com.spring.zidio.Message;
 import com.spring.zidio.StudentProfile;
+import com.spring.zidio.Syllabus;
 import com.spring.zidio.User;
+import com.spring.zidio.VideoContent;
+import com.spring.zidio.dao.ApplicationDao;
+import com.spring.zidio.dao.CourseDao;
+import com.spring.zidio.dao.CourseEnrollmentDao;
 import com.spring.zidio.dao.UserDao;
+import com.spring.zidio.dao.VideoContentDao;
 //import com.spring.zidio.payload.ApplicationRequest;
 import com.spring.zidio.payload.SendMessageRequest;
 import com.spring.zidio.service.ApplicationService;
+import com.spring.zidio.service.CalendarEventService;
+import com.spring.zidio.service.CloudinaryService;
+import com.spring.zidio.service.CourseEnrollmentService;
+import com.spring.zidio.service.CourseProgressService;
+import com.spring.zidio.service.CourseReviewService;
+import com.spring.zidio.service.CourseService;
+import com.spring.zidio.service.InternshipService;
+import com.spring.zidio.service.JobService;
 import com.spring.zidio.service.MessageService;
+import com.spring.zidio.service.RazorpayService;
 import com.spring.zidio.service.StudentProfileService;
 
 
@@ -51,12 +75,55 @@ public class StudentController {
 	private StudentProfileService studentProfileService;
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private CourseDao courseDao;
+	
+	@Autowired
+	private ApplicationDao applicationDao;
+	
+	@Autowired
+	private CourseEnrollmentDao courseEnrollmentRepository;
+	
+	@Autowired
+	private JobService jobService;
+	
+	@Autowired
+	private InternshipService internshipService;
+	
+	@Autowired
+	private CourseService courseService;
+	
+	@Autowired
+	private CourseReviewService courseReviewService;
+	
 	@Autowired
 	private MessageService messageService;
 	
 	@Autowired
+	private CloudinaryService cloudinaryService;
+	
+	@Autowired
 	private ApplicationService applicationService;
-	private static final String UPLOAD_DIR = "uploads/";
+	
+	@Autowired
+	private CourseEnrollmentService courseEnrollmentService;
+	
+	@Autowired
+	private RazorpayService razorpayService;
+	
+	@Autowired
+	private VideoContentDao videoContentDao;
+	
+	@Autowired
+	private CourseProgressService courseProgressService;
+	
+	@Autowired
+	private CourseEnrollmentService enrollmentService;
+	
+	@Autowired
+	private CalendarEventService eventService;
+	
 	
 	@GetMapping("/profile")
     public ResponseEntity<StudentProfile> getProfile(Principal principal) {
@@ -107,20 +174,13 @@ public class StudentController {
 
             if (profilePicture != null && !profilePicture.isEmpty()) {
                 // Save file
-                String fileName = System.currentTimeMillis() + "-" + profilePicture.getOriginalFilename();
-                Path uploadPath = Paths.get(UPLOAD_DIR);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(profilePicture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-                profile.setProfilePictureUrl("/" + UPLOAD_DIR + fileName);
+                String imageUrl = cloudinaryService.uploadprofile(profilePicture, "student_profile_pictures");
+                profile.setProfilePictureUrl(imageUrl);
             }
 
             StudentProfile savedProfile = studentProfileService.saveOrUpdateProfile(profile);
             return ResponseEntity.ok(savedProfile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
     }
@@ -212,40 +272,307 @@ public class StudentController {
 //	                                 .body("Error: " + e.getMessage());
 //	        }
 //	    }
-//	    @GetMapping("/applications/job/{jobId}")
-//	    public ResponseEntity<List<Application>> getApplicationsByJob(@PathVariable Long jobId) {
-//	        List<Application> applications = applicationService.getByJob(jobId);
-//	        return ResponseEntity.ok(applications);
-//	    }
+	    
+	    @GetMapping("/jobs/{id}")
+	    public Job getJobById(@PathVariable Long id) {
+	        return jobService.getJobById(id);
+	    }
+	    
+	    @GetMapping("/internships/{id}")
+	    public Internship getInternshipById(@PathVariable Long id) {
+	        return internshipService.getInternshipById(id);
+	    }
 //	    
-//	    @GetMapping("/internship/{internshipId}")
-//	    public ResponseEntity<List<Application>> getApplicationsByInternship(@PathVariable Long internshipId) {
-//	        return ResponseEntity.ok(applicationService.getApplicationsByInternship(internshipId));
-//	    }
-	    @PostMapping("/apply/job")
+	    @GetMapping("/internship/{internshipId}")
+	    public ResponseEntity<List<Application>> getApplicationsByInternship(@PathVariable Long internshipId) {
+	        return ResponseEntity.ok(applicationService.getByInternshipId(internshipId));
+	    }
+	    @PostMapping("/apply/job/{id}")
 	    public ResponseEntity<?> applyforJob(
+	    		@PathVariable Long id,
 	            @RequestPart("application") Application application,
-	            @RequestPart("resume") MultipartFile resume) {
+	            @RequestPart("resume") MultipartFile resume, Principal principal) {
 	        try {
-	            Application savedApp = applicationService.applyforJob(application, resume);
+	            Application savedApp = applicationService.applyforJob(id,application, resume, principal);
 	            return ResponseEntity.ok(savedApp);
 	        } catch (RuntimeException | IOException e) {
+	        	e.printStackTrace(); 
 	            return ResponseEntity.badRequest().body(e.getMessage());
 	        }
 	    }
 	    
-	    @PostMapping("/apply/internship")
+	    @PostMapping("/apply/internship/{id}")
 	    public ResponseEntity<?> applyForInternship(
+	    		@PathVariable Long id,
 	            @RequestPart("application") Application application,
-	            @RequestPart("resume") MultipartFile resume) {
+	            @RequestPart("resume") MultipartFile resume, Principal principal) {
 	        try {
-	            Application savedApp = applicationService.applyForInternship(application, resume);
+	        		          
+	            System.out.println("Applying for internship with ID: " + id);
+	        	System.out.println("Received application data: " + application);
+	            System.out.println("Resume file name: " + resume.getOriginalFilename());
+	            Application savedApp = applicationService.applyForInternship(id,application, resume, principal);
 	            return ResponseEntity.ok(savedApp);
 	        } catch (RuntimeException | IOException e) {
+	        	e.printStackTrace();
 	            return ResponseEntity.badRequest().body(e.getMessage());
 	        }
 	    }
 	    
+	    @GetMapping("/jobs/{jobId}/questions")
+	    public ResponseEntity<List<ApplicationQuestion>> getQuestionsByJobId(@PathVariable Long jobId) {
+	        List<ApplicationQuestion> questions = applicationService.getApplicationQuestionsByJobId(jobId);
+	        return ResponseEntity.ok(questions);
+	    }
+	    @GetMapping("/internships/{internshipId}/questions")
+	    public ResponseEntity<List<ApplicationQuestion>> getQuestionsByInternshipId(@PathVariable Long internshipId) {
+	        List<ApplicationQuestion> questions = applicationService.getApplicationQuestionsByInternshipId(internshipId);
+	        return ResponseEntity.ok(questions);
+	    }
+
 	    
+	    @GetMapping("/courses")
+	    public List<Course> getCourses() {
+	        return courseService.getAllCourses();
+	    }
+	    
+	    @PostMapping("/apply/course/{courseId}")
+	    public ResponseEntity<String> enrollInFreeCourse(@PathVariable Long courseId, Principal principal) {
+	        String username = principal.getName();
+	        String response = courseEnrollmentService.enrollInFreeCourse(courseId, username);
+	        return ResponseEntity.ok(response);
+	    }
+	    
+	    @PostMapping("/apply/course/paid/{courseId}")
+	    public ResponseEntity<String> enrollInPaidCourse(@PathVariable Long courseId, Principal principal) {
+	        String username = principal.getName();
+	        String response = courseEnrollmentService.enrollInPaidCourse(courseId, username);
+	        return ResponseEntity.ok(response);
+	    }
+	    @PostMapping("/update-payment")
+	    public String updatePaymentStatus(@RequestParam String orderId,
+	                                      @RequestParam String paymentId,
+	                                      @RequestParam String signature,
+	                                      @RequestParam String status,
+	                                      Principal principal) {
+
+	        String username = principal.getName();
+
+	        boolean updated = courseEnrollmentService.updatePaymentStatus(orderId, paymentId, signature, username, status);
+
+	        return updated ? "Payment status updated." : "Enrollment not found.";
+	    }
+
+	    @PostMapping("/verify-payment")
+	    public String verifyPayment(
+	            @RequestParam String orderId,
+	            @RequestParam String paymentId,
+	            @RequestParam String signature,
+	            Principal principal) {
+
+	        String username = principal.getName();
+
+	        boolean valid = razorpayService.verifyPaymentSignature(orderId, paymentId, signature);
+
+	        if (!valid) {
+	            return "Invalid payment signature.";
+	        }
+
+	        boolean enrolled = courseEnrollmentService.confirmEnrollmentAfterPayment(orderId, paymentId, signature, username);
+
+	        if (!enrolled) {
+	            return "Enrollment not found or already confirmed.";
+	        }
+
+	        return "Payment verified and enrollment confirmed.";
+	    }
+
+	    
+	    @GetMapping("/my-courses")
+	    public ResponseEntity<List<Course>> getMyCourses(Principal principal) {
+	        String username = principal.getName(); // This gets the logged-in user's username
+	        List<Course> courses = courseEnrollmentService.getEnrolledCoursesForStudent(username);
+	        return ResponseEntity.ok(courses);
+	    }
+	    
+	    @GetMapping("/applied-jobs")
+	    public ResponseEntity<List<Application>> getAppliedJobs(Principal principal) {
+	        String username = principal.getName();
+	        List<Application> applications = applicationService.getAppliedJobs(username);
+	        return ResponseEntity.ok(applications);
+	    }
+
+	    @GetMapping("/applied-internships")
+	    public ResponseEntity<List<Application>> getAppliedInternships(Principal principal) {
+	        String username = principal.getName();
+	        List<Application> applications = applicationService.getAppliedInternships(username);
+	        return ResponseEntity.ok(applications);
+	    }
+	    
+	    @GetMapping("/application/all")
+	    public List<Application> getAllApplicationsByStudent(Principal principal) {
+	        return applicationService.findByStudent(principal.getName());
+	    }
+	    
+	    //course review service
+	    @PostMapping("/course/{id}")
+	    public ResponseEntity<CourseReview> submitReview(@PathVariable Long id,
+	                                                     Principal principal,
+	                                                     @RequestParam int rating,
+	                                                     @RequestParam String comment) {
+	    		        String username = principal.getName();
+	        CourseReview review = courseReviewService.submitReview(id, username, rating, comment);
+	        return ResponseEntity.ok(review);
+	    }
+	    
+	    
+
+	    @PostMapping("/courseProgress/update/{videoId}")
+	    public CourseProgress updateProgressAfterVideoWatch(
+	            Principal principal,
+	            @PathVariable Long videoId) {
+
+	        String username = principal.getName();
+	        User student = userDao.findByUserName(username)
+	                .orElseThrow(() -> new RuntimeException("User not found"));
+
+	        // Fetch video
+	        VideoContent video = videoContentDao.findById(videoId)
+	                .orElseThrow(() -> new RuntimeException("Video not found"));
+
+	        // Get syllabus → course
+	        Syllabus syllabus = video.getSyllabus();
+	        Course course = syllabus.getCourse();
+
+	        // Get or create course progress
+	        CourseProgress progress = courseProgressService.getByStudentAndCourse(student, course);
+	        if (progress == null) {
+	            progress = new CourseProgress();
+	            progress.setStudent(student);
+	            progress.setCourse(course);
+	        }
+
+	        // Mark video as watched
+	        courseProgressService.markVideoAsWatched(student, course, video);
+
+	        // Get all videos in course
+	        List<VideoContent> allVideos = videoContentDao.findAllByCourse(course);
+	        Set<Long> watchedVideoIds = courseProgressService.getWatchedVideoIds(student, course);
+
+	        int watchedCount = watchedVideoIds.size();
+	        int totalVideos = allVideos.size();
+	        int progressPercent = (int) ((watchedCount * 100.0) / totalVideos);
+	        boolean completed = watchedCount == totalVideos;
+
+	        // Update progress
+	        progress.setVideo(video); // Last watched
+	        progress.setWatchedVideosCount(watchedCount);
+	        progress.setProgressPercentage(progressPercent);
+	        progress.setCompleted(completed);
+	        progress.setLastWatched(LocalDateTime.now());
+
+	        return courseProgressService.save(progress);
+	    }
+
+	    
+	    @GetMapping("/course/{courseId}")
+	    public List<CourseProgress> getByCourseId(@PathVariable Long courseId) {
+	        return courseProgressService.getByCourseId(courseId);
+	    }
+
+	    @GetMapping("/video/{videoId}")
+	    public List<CourseProgress> getByVideoId(@PathVariable Long videoId) {
+	        return courseProgressService.getByVideoId(videoId);
+	    }
+	    
+	    @GetMapping("/courseEnroll/{id}")
+	    public ResponseEntity<CourseEnrollment> getEnrollmentForCurrentUser(
+	            @PathVariable Long id,
+	            Principal principal) {
+	        
+	        String username = principal.getName();
+	        CourseEnrollment enrollment = enrollmentService.getEnrollmentForUserAndCourse(username, id);
+	        return ResponseEntity.ok(enrollment);
+	    }
+	    
+	    //calendar events
+	    @GetMapping("/s/calendar/events")
+	    public List<CalendarEvent> getAllEvents(Principal principal) {
+	        return eventService.getAllEvents(principal);
+	    }
+	    
+	    @PostMapping("/s/calendar/event")
+	    public ResponseEntity<Map<String, Object>> createEvent(@RequestBody CalendarEvent event,Principal principal) {
+	        try {
+	            CalendarEvent createdEvent = eventService.createEvent(event,principal);
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("message", "Event created successfully.");
+	            response.put("event", createdEvent);
+	            return ResponseEntity.status(201).body(response);
+	        } catch (RuntimeException e) {
+	            Map<String, Object> error = new HashMap<>();
+	            error.put("message", "Failed to create event.");
+	            return ResponseEntity.badRequest().body(error);
+	        }
+	    }
+	    
+	    @GetMapping("/s/calendar/event/{id}")
+	    public ResponseEntity<CalendarEvent> getEventById(@PathVariable Long id) {
+	        CalendarEvent event = eventService.getEventById(id);
+	        if (event != null) {
+	            return ResponseEntity.ok(event);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
+	    @PutMapping("/s/calendar/event/{id}")
+	    public ResponseEntity<Map<String, Object>> updateEvent(@PathVariable Long id, @RequestBody CalendarEvent updatedEvent,Principal principal) {
+	        try {
+	            CalendarEvent event = eventService.updateEvent(id, updatedEvent,principal);
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("message", "Event updated successfully.");
+	            response.put("event", event);
+	            return ResponseEntity.ok(response);
+	        } catch (RuntimeException e) {
+	            Map<String, Object> error = new HashMap<>();
+	            error.put("message", "Event not found or update failed.");
+	            return ResponseEntity.status(404).body(error);
+	        }
+	    }
+	    
+	    @DeleteMapping("/s/calendar/event/{id}")
+	    public ResponseEntity<Void> deleteEvent(@PathVariable Long id,Principal principal) {
+	        eventService.deleteEvent(id,principal);
+	        return ResponseEntity.noContent().build();
+	    }
+	    
+	    @GetMapping("/s/calendar/upcoming")
+	    public List<CalendarEvent> getUpcomingEvents(Principal principal) {
+	        return eventService.getUpcomingEvents(principal);
+	    }
+	    
+	    //dashboard counts
+	    @GetMapping("/counts")
+	    public Map<String, Long> getDashboardCounts(Principal principal) {
+	        String username = principal.getName();
+	        User student = userDao.findByUserName(username)
+	                .orElseThrow(() -> new RuntimeException("User not found"));
+
+	        Long appliedJobs = applicationDao.countByStudentAndJobIsNotNull(student);
+	        Long appliedInternships = applicationDao.countByStudentAndInternshipIsNotNull(student);
+	        Long enrolledPaidCourses = courseEnrollmentRepository.countByStudentAndCourse_PriceGreaterThan(student, 0.0);
+	        Long enrolledFreeCourses = courseEnrollmentRepository.countByStudentAndCourse_PriceEquals(student, 0.0);
+
+	        Map<String, Long> result = new HashMap<>();
+	        result.put("appliedJobs", appliedJobs);
+	        result.put("appliedInternships", appliedInternships);
+	        result.put("paidCourses", enrolledPaidCourses);
+	        result.put("freeCourses", enrolledFreeCourses);
+	        return result;
+	    }
+	    
+
+
+
 
 }
