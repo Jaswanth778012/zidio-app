@@ -109,13 +109,9 @@ Erukea server
 └──src/main/java
         └──com.example.cloud
 zidioApp/
-└── src/
-    └── main/
-        └── java/
-            └── com/
-                └── spring/
-                    ├── deserializer/
-                    └── zidio/
+└── src/main/java/com/spring
+                      ├── deserializer/
+                        └── zidio/
                         ├── configuration/
                         ├── controller/
                         ├── dao/
@@ -180,6 +176,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 📬 Contact & Support
 Developer: pothina venkata sai jaswanth kumar
-linkedin: https://www.linkedin.com/in/pothina-jaswanth-kumar-838781249 
+🌐 LinkedIn: https://www.linkedin.com/in/pothina-jaswanth-kumar-838781249 
 If you encounter any issues, reach out via the Contact Us page on the platform. All queries are automatically emailed to the administrator.
 
