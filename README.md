@@ -3,9 +3,7 @@
 **Zidio Connect** is a full-stack web application built with **Spring Boot** and **Angular**, designed to be a unified platform for **courses, jobs, and internships**. Whether you're an **admin**, **student**, or **employer**, Zidio Connect streamlines education and career opportunities in one intuitive portal.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
-
 ---
-
 ## 🚀 Features Overview
 
 ### 👨‍🎓 Student Portal
@@ -49,7 +47,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 | **Contact Us**  | Submit issues or queries (auto-email to admin)      |
 
 ---
-
 ## 🛠️ Tech Stack
 
 | Layer         | Technology Used                                                                    |
@@ -63,10 +60,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 | **Email**     | JavaMailSender (SMTP)                                                              |
 | **Scheduling**| Google Calendar API + Google Meet                                                  |
 | **Auth**      | JWT-based Role-Based Access (Admin, Student, Employer)                             |
-
-
 ---
-
 ## 💡 Key Integrations
 - ✅ **Razorpay** for paid course enrollment
 - 📅 **Google Calendar & Meet** for interview scheduling
@@ -74,11 +68,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - 📧 **SMTP Email** for contact, registration, and scheduling
 - 🧭 **Netflix Eureka Server** for service discovery and microservices registry
 - 💬 **In-dashboard Messaging System** between student, employer, and admin
-
 ---
 
 ## 📂 Folder Structure (Simplified)
-
 <details> <summary>🖥️ Frontend (Angular)</summary>
 frontend/
 └── src/
@@ -161,9 +153,7 @@ zidio-connect/
 ---
 
 ---
-
 ## 🧪 How to Run
-
 ### Backend (Spring Boot)
 cd backend
 ./mvnw spring-boot:run
