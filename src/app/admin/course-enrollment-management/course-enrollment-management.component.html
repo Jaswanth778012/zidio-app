@@ -56,6 +56,7 @@
               <th>Course End Date</th>
               <th>Course Price</th>
               <th>Course Discounted Price</th>
+              <th>Enrollment Status</th>
               <th>Enrollment Date</th>
               
             </tr>
@@ -81,6 +82,7 @@
               <td>{{ enrollment.course?.endDate | date: 'short' }}</td>
               <td>{{ enrollment.course?.price | currency:'INR':'symbol' }}</td>
               <td>{{ enrollment.course?.discountedPrice | currency:'INR':'symbol' }} </td>
+              <td>{{ enrollment.enrollmentStatus }}</td>
               <td>{{ enrollment.enrollmentAt | date: 'short' }}</td>
 
             </tr>
