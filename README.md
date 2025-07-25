@@ -184,5 +184,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 👨‍💻 **Developer**: Pothina Venkata Sai Jaswanth Kumar  
 🌐 **LinkedIn**: https://www.linkedin.com/in/pothina-jaswanth-kumar-838781249 
-If you encounter any issues, reach out via the Contact Us page on the platform. All queries are automatically emailed to the administrator.
+
+**If you encounter any issues, reach out via the Contact Us page on the platform. All queries are automatically emailed to the administrator.**
 
