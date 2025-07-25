@@ -180,8 +180,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-📬 Contact & Support
-Developer: pothina venkata sai jaswanth kumar
-🌐 LinkedIn: https://www.linkedin.com/in/pothina-jaswanth-kumar-838781249 
+## 📬 Contact & Support
+
+👨‍💻 **Developer**: Pothina Venkata Sai Jaswanth Kumar  
+🌐 **LinkedIn**: https://www.linkedin.com/in/pothina-jaswanth-kumar-838781249 
 If you encounter any issues, reach out via the Contact Us page on the platform. All queries are automatically emailed to the administrator.
 
