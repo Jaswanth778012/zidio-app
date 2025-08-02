@@ -45,6 +45,7 @@ import com.spring.zidio.Internship;
 import com.spring.zidio.Job;
 import com.spring.zidio.Message;
 import com.spring.zidio.Report;
+import com.spring.zidio.ReportStatus;
 import com.spring.zidio.Syllabus;
 import com.spring.zidio.User;
 import com.spring.zidio.VideoContent;
@@ -454,7 +455,7 @@ public class AdminController {
     }
 
     //getting reports from users
-    @GetMapping("/reports")
+    @GetMapping("/unresolvedreports")
     public List<Report> getReports() {
         return reportService.getUnresolvedReports();
     }
@@ -465,18 +466,42 @@ public class AdminController {
         return ResponseEntity.ok("Report resolved.");
     }
     
-    //submit reports
-    @PostMapping("/report")
-    public ResponseEntity<Report> submitReport(@RequestBody Report report) {
-    	
-    	  AdminNotification notification = new AdminNotification();
-    	    notification.setType("Report");
-    	    notification.setTitle("New Report Submitted");
-    	    notification.setMessage("A report has been submitted regarding content ID " + report.getId());
-    	    notification.setPriority("HIGH");
-    	    adminNotificationService.createNotification(notification);
-        return ResponseEntity.ok(reportService.submitReport(report));
+    @GetMapping("/Allreports")
+    public List<Report> getAllReports() {
+		return reportService.getAllReports();
+	}
+    
+    @GetMapping("/reports/{id}")
+    public ResponseEntity<Report> getReportById(@PathVariable Long id) {
+		Optional<Report> report = reportService.getReportById(id);
+		return report.map(ResponseEntity::ok)
+					 .orElse(ResponseEntity.notFound().build());
+	}
+    
+    @PutMapping("/{id}/update-status")
+    public ResponseEntity<Report> updateStatus(
+            @PathVariable Long id,
+            @RequestParam ReportStatus status,
+            @RequestParam(required = false) String resolutionNotes,
+            @RequestParam(defaultValue = "false") boolean resolved
+    ) {
+        Report updatedReport = reportService.updateReportStatus(id, status, resolutionNotes, resolved);
+        return ResponseEntity.ok(updatedReport);
     }
+    
+    @DeleteMapping("/reports/{id}")
+    public void deleteReport(@PathVariable Long id) {
+		reportService.deleteReport(id);
+		
+		AdminNotification notification = new AdminNotification();
+		notification.setType("Report");
+		notification.setTitle("Report Deleted");
+		notification.setMessage("Admin deleted report ID " + id);
+		notification.setPriority("MEDIUM");
+ 	   notification.setReferenceId(String.valueOf(id));
+		adminNotificationService.createNotification(notification);
+	}
+    
     
     //auditlog services
     @GetMapping("/logs")

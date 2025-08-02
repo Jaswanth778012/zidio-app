@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.zidio.AdminNotification;
 import com.spring.zidio.Application;
 import com.spring.zidio.ApplicationQuestion;
 import com.spring.zidio.CalendarEvent;
-import com.spring.zidio.Contact;
 import com.spring.zidio.Course;
 import com.spring.zidio.CourseEnrollment;
 import com.spring.zidio.CourseProgress;
@@ -41,6 +41,7 @@ import com.spring.zidio.Internship;
 import com.spring.zidio.Job;
 //import com.spring.zidio.Application;
 import com.spring.zidio.Message;
+import com.spring.zidio.Report;
 import com.spring.zidio.StudentProfile;
 import com.spring.zidio.Syllabus;
 import com.spring.zidio.User;
@@ -52,6 +53,7 @@ import com.spring.zidio.dao.UserDao;
 import com.spring.zidio.dao.VideoContentDao;
 //import com.spring.zidio.payload.ApplicationRequest;
 import com.spring.zidio.payload.SendMessageRequest;
+import com.spring.zidio.service.AdminNotificationService;
 import com.spring.zidio.service.ApplicationService;
 import com.spring.zidio.service.CalendarEventService;
 import com.spring.zidio.service.CloudinaryService;
@@ -63,6 +65,7 @@ import com.spring.zidio.service.InternshipService;
 import com.spring.zidio.service.JobService;
 import com.spring.zidio.service.MessageService;
 import com.spring.zidio.service.RazorpayService;
+import com.spring.zidio.service.ReportService;
 import com.spring.zidio.service.StudentProfileService;
 
 
@@ -70,6 +73,12 @@ import com.spring.zidio.service.StudentProfileService;
 @RequestMapping("/student")
 @CrossOrigin
 public class StudentController {
+	
+	@Autowired
+	private AdminNotificationService adminNotificationService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	@Autowired
 	private StudentProfileService studentProfileService;
@@ -571,6 +580,28 @@ public class StudentController {
 	        return result;
 	    }
 	    
+	    //Reports
+	    @PostMapping("/report")
+	    public ResponseEntity<Report> submitReport(@RequestPart("report") Report report,@RequestPart(value = "file", required = false) MultipartFile file, Principal principal) {
+	    	if (file != null && !file.isEmpty()) {
+	            String url = cloudinaryService.reportissue(file, "student_report_attachments");
+	            report.setAttachmentUrl(url);
+	        }
+	    	  AdminNotification notification = new AdminNotification();
+	    	    notification.setType("Report");
+	    	    notification.setTitle("New Report Submitted");
+	    	    notification.setMessage("A report has been submitted regarding content ID " + report.getId());
+	    	    notification.setPriority("HIGH");
+	    	    adminNotificationService.createNotification(notification);
+	        return ResponseEntity.ok(reportService.submitReport(report, principal));
+	    }
+	    
+	    
+	    @GetMapping("/my-reports")
+	    public ResponseEntity<List<Report>> getReportsByCurrentUser(Principal principal) {
+	        List<Report> reports = reportService.getReportsByUser(principal);
+	        return ResponseEntity.ok(reports);
+	    }
 
 
 

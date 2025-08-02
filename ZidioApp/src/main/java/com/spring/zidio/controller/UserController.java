@@ -208,7 +208,6 @@ public class UserController {
 	        response.put("message", "Message sent successfully");
 	        return ResponseEntity.ok(response);
 	    }
-	    
 	    //TeamMember
 	    @PostMapping("/auth/upload")
 	    public ResponseEntity<?> uploadTeamMemberWithPhoto(

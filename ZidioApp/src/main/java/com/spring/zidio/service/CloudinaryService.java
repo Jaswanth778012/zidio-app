@@ -79,5 +79,13 @@ public class CloudinaryService {
 			throw new RuntimeException("Failed to upload logo", e);
 		}
 	}
-
+	
+	public String reportissue(MultipartFile file, String folder) {
+		try {
+			Map uploadteamphoto = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder", folder));
+			return uploadteamphoto.get("url").toString();
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to upload logo", e);
+		}
+	}
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.zidio.AdminNotification;
 import com.spring.zidio.Application;
 import com.spring.zidio.ApplicationQuestion;
 import com.spring.zidio.ApplicationStage;
@@ -41,6 +42,7 @@ import com.spring.zidio.Internship;
 import com.spring.zidio.Interview;
 import com.spring.zidio.Job;
 import com.spring.zidio.Message;
+import com.spring.zidio.Report;
 import com.spring.zidio.User;
 import com.spring.zidio.dao.ApplicationDao;
 import com.spring.zidio.dao.ApplicationQuestionDao;
@@ -48,6 +50,7 @@ import com.spring.zidio.dao.InternshipDao;
 import com.spring.zidio.dao.JobDao;
 import com.spring.zidio.dao.UserDao;
 import com.spring.zidio.payload.SendMessageRequest;
+import com.spring.zidio.service.AdminNotificationService;
 import com.spring.zidio.service.ApplicationService;
 import com.spring.zidio.service.CalendarEventService;
 import com.spring.zidio.service.CloudinaryService;
@@ -56,6 +59,7 @@ import com.spring.zidio.service.InternshipService;
 import com.spring.zidio.service.InterviewService;
 import com.spring.zidio.service.JobService;
 import com.spring.zidio.service.MessageService;
+import com.spring.zidio.service.ReportService;
 import com.spring.zidio.service.UserService;
 
 @RestController
@@ -102,6 +106,12 @@ public class EmployerController {
 	    
 	    @Autowired
 	    private CalendarEventService eventService;
+	    
+	    @Autowired
+	    private AdminNotificationService adminNotificationService;
+	    
+	    @Autowired
+	    private ReportService reportService;
 	    
 	    
 	    @PostMapping("/jobs")
@@ -636,6 +646,27 @@ public class EmployerController {
 	    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
 	        applicationService.deleteApplicationQuestion(id);
 	        return ResponseEntity.ok("Question deleted successfully");
+	    }
+	    
+	    @PostMapping("/report")
+	    public ResponseEntity<Report> submitReport(@RequestPart("report") Report report,@RequestPart(value = "file", required = false) MultipartFile file, Principal principal) {
+	    	if (file != null && !file.isEmpty()) {
+	            String url = cloudinaryService.reportissue(file, "Employer_report_attachments");
+	            report.setAttachmentUrl(url);
+	        }
+	    	  AdminNotification notification = new AdminNotification();
+	    	    notification.setType("Report");
+	    	    notification.setTitle("New Report Submitted");
+	    	    notification.setMessage("A report has been submitted regarding content ID " + report.getId());
+	    	    notification.setPriority("HIGH");
+	    	    adminNotificationService.createNotification(notification);
+	        return ResponseEntity.ok(reportService.submitReport(report, principal));
+	    }
+	    
+	    @GetMapping("/my-reports")
+	    public ResponseEntity<List<Report>> getReportsByCurrentUser(Principal principal) {
+	        List<Report> reports = reportService.getReportsByUser(principal);
+	        return ResponseEntity.ok(reports);
 	    }
 
 

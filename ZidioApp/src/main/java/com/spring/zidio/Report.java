@@ -3,6 +3,8 @@ package com.spring.zidio;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,13 +22,22 @@ public class Report {
 
     private String reason;
 
-    private String type; // JOB, INTERNSHIP, OTHER
+    private String type; 
 
     private boolean resolved = false;
+    
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "reported_by")
     private User reportedBy;
+    
+    private String attachmentUrl;
+    
+    @Enumerated(EnumType.STRING)
+    private ReportStatus status = ReportStatus.PENDING;
+
+    private String resolutionNotes;
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = true)
